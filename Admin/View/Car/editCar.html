@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>修改车辆</title>
+
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}//assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
+
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-toastr/toastr.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- END THEME GLOBAL STYLES -->
+    <!-- BEGIN THEME LAYOUT STYLES -->
+    <link href="{$smarty.const.PUBLIC_URL}/assets/layouts/layout/css/layout.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/layouts/layout/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/layouts/layout/css/custom.min.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white"  style="background: #FFFFFF;">
+<div class="page-wrapper">
+    <div class="page-content">
+        <div>
+            <div class="portlet light">
+                <div class="portlet-body form">
+                <form class="form-horizontal" role="form" action="/index.php/Admin/Car/editCarDo" method="post" id="editCarForm">
+                    <input type="hidden" name="id" value="{$car.id}">
+
+                    <div class="form-body">
+
+
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">车辆名称</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control input-inline input-medium" placeholder="车辆名称" name="car_name" id="car_name" value="{$car.car_name}">
+                                <span style="color: #FF0000;">*</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">车辆品牌</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control input-inline input-medium" placeholder="车辆品牌" name="brand" id="brand" value="{$car.brand}">
+                                <span style="color: #FF0000;">*</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">车牌号码</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control input-inline input-medium" placeholder="车牌号码"  name="car_num" id="car_num" value="{$car.car_num}">
+                                <span style="color: #FF0000;">*</span>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">座位数</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control input-inline input-medium" placeholder="座位数，只能为纯数字" name="seat_num" id="seat_num" value="{$car.seat_num}">
+                                <span style="color: #FF0000;">*</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">车辆性质</label>
+                            <div class="col-md-8">
+                                <select class="form-control input-inline input-medium"  name="is_law_car">
+                                    <option value="0" {if $car.is_law_car eq 0}selected = "selected"{/if}>自有车辆</option>
+                                    <option value="1" {if $car.is_law_car eq 1}selected = "selected"{/if}>执法车辆</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">车辆类型</label>
+                            <div class="col-md-8">
+                                <select class="form-control input-inline input-medium" name="type_id">
+                                    {foreach $carTypes as $k=>$v}
+                                    <option value="{$v.id}" {if $car.type_id eq $v.id}selected = "selected"{/if}>{$v.type_name}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">编号</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control input-inline input-medium" placeholder="车辆编号" name="number" value="{$car.number}">
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">车机IMEI编码</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control input-inline input-medium" placeholder="车机IMEI编码，启用车载GPS生效" name="imei" value="{$car.imei}">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">原属单位</label>
+                            <div class="col-md-8">
+                            <input type="text" name="old_company"  class="form-control input-inline input-medium" placeholder="原属单位" value="{$car.old_company}">
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">现属单位</label>
+                            <div class="col-md-8">
+                            <input type="text" name="new_company"  class="form-control input-inline input-medium" placeholder="现属单位" value="{$car.new_company}">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">是否有行驶证</label>
+                            <div class="col-md-8">
+                            <select class="form-control input-inline input-medium" name="hava_driver_lince">
+                                <option value="有" {if $car.hava_driver_lince eq "有"}selected = "selected"{/if}>有</option>
+                                <option value="无" {if $car.hava_driver_lince eq "无"}selected = "selected"{/if}>无</option>
+                            </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">是否有登记证</label>
+                            <div class="col-md-8">
+                            <select class="form-control input-inline input-medium" name="have_registration">
+                                <option value="有" {if $car.have_registration eq "有"}selected = "selected"{/if}>有</option>
+                                <option value="无" {if $car.have_registration eq "无"}selected = "selected"{/if}>无</option>
+                            </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">车辆购置税</label>
+                            <div class="col-md-8">
+                            <select class="form-control input-inline input-medium" name="have_tax">
+                                <option value="有" {if $car.have_tax eq "有"}selected = "selected"{/if}>有</option>
+                                <option value="无" {if $car.have_tax eq "无"}selected = "selected"{/if}>无</option>
+                            </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">交强险到期时间</label>
+                            <div class="col-md-8">
+                                <div class="input-group date form_datetime  input-medium" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input1">
+                                    <input name="compulsory_insurance_time" class="form-control" size="16" type="text" value="{$car.compulsory_insurance_time|date_format:'%Y-%m-%d'}" readonly>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">商业险到期时间</label>
+                            <div class="col-md-8">
+                            <div class="input-group date form_datetime input-medium" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input1">
+                                <input name="commercial_insurance_time" class="form-control" size="16" type="text" value="{$car.commercial_insurance_time|date_format:'%Y-%m-%d'}" readonly>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">下次年检时间</label>
+                            <div class="col-md-8">
+                            <div class="input-group date form_datetime  input-medium" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input1">
+                                <input name="next_inspect_time" class="form-control" size="16" type="text" value="{$car.commercial_insurance_time|date_format:'%Y-%m-%d'}"  readonly>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">购买日期</label>
+                            <div class="col-md-8">
+                                <div class="input-group date form_datetime  input-medium" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input1">
+                                    <input name="buy_time" class="form-control" size="16" type="text" value="{$car.buy_time|date_format:'%Y-%m-%d'}" readonly>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">发动机号码</label>
+                            <div class="col-md-8">
+                                <input type="text" name="engine_num" class="form-control input-inline input-medium" placeholder="发动机号码"  value="{$car.engine_num}">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">车架号</label>
+                            <div class="col-md-8">
+                                <input type="text" name="frame_num"  class="form-control input-inline input-medium" placeholder="车架号" value="{$car.frame_num}">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">下次保养公里数</label>
+                            <div class="col-md-8">
+                                <input type="text" name="next_maintain_num"  class="form-control input-inline input-medium" placeholder="下次保养公里数"  value="{$car.next_maintain_num}">
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">当前公里数</label>
+                            <div class="col-md-8">
+                                <input type="text" name="maintain_interval"  class="form-control input-inline input-medium" placeholder="当前公里数" value="{$car.maintain_interval}">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">当前状态</label>
+                            <div class="col-md-8">
+                                <select class="form-control input-inline input-medium"  name="state" id="state">
+                                    <option value="1" {if $car.state eq 1}selected = "selected"{/if}>空闲</option>
+                                    <option value="2" {if $car.state eq 2}selected = "selected"{/if}>维修中</option>
+                                    <option value="3" {if $car.state eq 3}selected = "selected"{/if}>出车中</option>
+                                    <option value="4" {if $car.state eq 4}selected = "selected"{/if}>报废</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="form-actions col-md-12">
+                        <div class="row">
+                            <div class="col-md-offset-5 col-md-7">
+                                <button type="submit" class="btn green" >提交</button>
+                                <button type="button" class="btn default" onClick="layer_close();">取消</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
+
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/clockface/js/clockface.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/js/jquery.form.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-toastr/toastr.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/js/js.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/plugin/layer/layer.js" type="text/javascript"></script>
+
+<script>
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "positionClass": "toast-top-center",
+        "onclick": null,
+        "showDuration": "1000",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+
+    $('.form_datetime').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        minView: 2,
+        showMeridian: 1
+    });
+
+
+    $("#editCarForm").submit(function () {
+
+        //校验数据
+        //toastr.error('Are you the 6 fingered man?');
+        if(isE($("#car_name").val())){ toastr.error('车辆名称不得为空！');  $("#car_name").focus();return false; }
+        if(isE($("#brand").val())){ toastr.error('车辆品牌不得为空！');  $("#brand").focus();return false; }
+        if(isE($("#car_num").val())){ toastr.error('车牌号码不得为空！');  $("#car_num").focus();return false; }
+        if(isE($("#seat_num").val())){ toastr.error('座位数不得为空！');  $("#seat_num").focus();return false; }
+
+        if(isNaN($("#seat_num").val())){ toastr.error('座位数只能为数字！');  $("#seat_num").focus();return false; }
+
+        $(this).ajaxSubmit(function (data) {
+            if(data.code==1){
+                layer.msg('修改成功!', { icon: 1 });
+                setTimeout("window.parent.location.reload()",2000);
+            }else{
+                layer.msg('提交失败，请重试!', { icon: 0 });
+            }
+        });
+        return false;
+    });
+
+    $(document).ready(function(){
+
+    })
+
+
+
+
+</script>
+</html>
+
+

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>修改计费价格</title>
+
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}//assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
+
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-toastr/toastr.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- END THEME GLOBAL STYLES -->
+    <!-- BEGIN THEME LAYOUT STYLES -->
+    <link href="{$smarty.const.PUBLIC_URL}/assets/layouts/layout/css/layout.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/layouts/layout/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/layouts/layout/css/custom.min.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white"  style="background: #FFFFFF;">
+<div class="page-wrapper">
+    <div class="page-content">
+        <div>
+            <div class="portlet light">
+                <div class="portlet-body form">
+                <form class="form-horizontal" role="form" action="/index.php/Admin/TravelSet/editChargingDo" method="post" id="addCarForm">
+                    <input type="hidden" name="id" value="{$charging.id}" />
+
+                    <div class="form-body">
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">车辆类型</label>
+                            <div class="col-md-8">
+                                <select class="form-control input-inline input-medium" name="car_type_id">
+                                    {foreach $carTypes as $k=>$v}
+                                    <option value="{$v.id}"  {if $charging.car_type_id eq $v.id}selected = "selected"{/if}>{$v.type_name}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">区域类型</label>
+                            <div class="col-md-8">
+                                <select class="form-control input-inline input-medium" name="type">
+                                    <option value="1" {if $charging.type eq "1"}selected = "selected"{/if}>市内</option>
+                                    <option value="2" {if $charging.type eq "2"}selected = "selected"{/if}>市外</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">时间段开始（不包含）</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control input-inline input-medium" placeholder="时间段开始（不包含）" name="start_time" id="start_time" value="{$charging.start_time}">
+                                <span style="color: #FF0000;">*</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">时间段结束（包含）</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control input-inline input-medium" placeholder="时间段结束（包含）" name="end_time" id="end_time" value="{$charging.end_time}">
+                                <span style="color: #FF0000;">*</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">价格（每公里）</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control input-inline input-medium" placeholder="价格" name="price" id="price"  value="{$charging.price}">
+                                <span style="color: #FF0000;">*</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">备注</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control input-inline input-medium" placeholder="备注" name="remark" id="remark" value="{$charging.remark}">
+                                <span style="color: #FF0000;">*</span>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="form-actions col-md-12">
+                        <div class="row">
+                            <div class="col-md-offset-5 col-md-7">
+                                <button type="submit" class="btn green" >提交</button>
+                                <button type="button" class="btn default" onClick="layer_close();">取消</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
+
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/clockface/js/clockface.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/js/jquery.form.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-toastr/toastr.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/js/js.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/plugin/layer/layer.js" type="text/javascript"></script>
+
+<script>
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "positionClass": "toast-top-center",
+        "onclick": null,
+        "showDuration": "1000",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+
+    $('.form_datetime').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        minView: 2,
+        showMeridian: 1
+    });
+
+
+    $("#addCarForm").submit(function () {
+
+        //校验数据
+        //toastr.error('Are you the 6 fingered man?');
+        if(isE($("#start_time").val())){ toastr.error('时间端开始不得为空！');  $("#start_time").focus();return false; }
+        if(isE($("#end_time").val())){ toastr.error('时间端结束不得为空！');  $("#end_time").focus();return false; }
+        if(isE($("#price").val())){ toastr.error('价格不得为空！');  $("#price").focus();return false; }
+
+        $(this).ajaxSubmit(function (data) {
+            if(data.code==1){
+                layer.msg('修改成功!', { icon: 1 });
+                setTimeout("window.parent.location.reload()",2000);
+            }else{
+                layer.msg('提交失败，请重试!', { icon: 0 });
+            }
+        });
+        return false;
+    })
+
+
+
+
+</script>
+</html>
+
+

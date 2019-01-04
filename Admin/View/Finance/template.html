@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>公务用车</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="Preview page of Metronic Admin Theme #1 for statistics, charts, recent events and reports" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/morris/morris.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/jqvmap/jqvmap/jqvmap.css" rel="stylesheet" type="text/css" />
+
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
+    <!-- END PAGE LEVEL PLUGINS -->
+
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-toastr/toastr.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
+    <!-- END THEME GLOBAL STYLES -->
+    <!-- BEGIN THEME LAYOUT STYLES -->
+    <link href="{$smarty.const.PUBLIC_URL}/assets/layouts/layout/css/layout.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/layouts/layout/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/layouts/layout/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <!-- END THEME LAYOUT STYLES -->
+    <link rel="shortcut icon" href="favicon.ico" />
+</head>
+<body>
+<body class="page-sidebar-closed-hide-logo page-content-white">
+    <div class="page-wrapper">
+
+        <div class="page-container">
+            <!-- BEGIN SIDEBAR -->
+            <div class="page-sidebar-wrapper">
+                <div class="page-sidebar navbar-collapse collapse">
+
+                    <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
+
+                        <li class="sidebar-toggler-wrapper hide">
+                            <div class="sidebar-toggler">
+                                <span></span>
+                            </div>
+                        </li>
+
+                        {if $carLeft3 neq null }
+                        <li class="nav-item start active open">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="icon-home"></i>
+                                <span class="title">费用管理</span>
+                                <span class="selected"></span>
+                                <span class="arrow open"></span>
+                            </a>
+                            <ul class="sub-menu">
+                                {foreach $carLeft3 as $k=>$v}
+                                <li class="nav-item start {if $v.url|strpos:$smarty.const.ACTION_NAME !== false } active open{/if}">
+                                    <a href="{$v.url}" class="nav-link ">
+                                        <i class="icon-bulb"></i>
+                                        <span class="title">{$v.name}</span>
+                                        <span class="selected"></span>
+                                    </a>
+                                </li>
+                                {/foreach}
+                            </ul>
+                        </li>
+                        {/if}
+
+                        <li class="nav-item start active open">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="icon-home"></i>
+                                <span class="title">服务单位</span>
+                                <span class="selected"></span>
+                                <span class="arrow open"></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item start {if $smarty.const.ACTION_NAME == 'repairShop' } active open{/if} ">
+                                    <a href="/index.php/Admin/Finance/repairShop" class="nav-link ">
+                                        <i class="icon-bulb"></i>
+                                        <span class="title">车辆维修服务单位</span>
+                                        <!--<span class="badge badge-success">1</span>-->
+                                    </a>
+                                </li>
+                                <li class="nav-item start {if $smarty.const.ACTION_NAME == 'washShop' } active open{/if}">
+                                    <a href="/index.php/Admin/Finance/washShop" class="nav-link ">
+                                        <i class="icon-bulb"></i>
+                                        <span class="title">洗车服务单位</span>
+                                        <!--<span class="badge badge-success">1</span>-->
+                                    </a>
+                                </li>
+                                <li class="nav-item start {if $smarty.const.ACTION_NAME == 'oilShop' } active open{/if}">
+                                    <a href="/index.php/Admin/Finance/oilShop" class="nav-link ">
+                                        <i class="icon-bulb"></i>
+                                        <span class="title">加油服务单位</span>
+                                        <!--<span class="badge badge-success">1</span>-->
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item start active open">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="icon-home"></i>
+                                <span class="title">维修类型</span>
+                                <span class="selected"></span>
+                                <span class="arrow open"></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item start {if $smarty.const.ACTION_NAME == 'carRepair' } active open{/if} ">
+                                    <a href="/index.php/Admin/Finance/carRepair" class="nav-link ">
+                                        <i class="icon-bulb"></i>
+                                        <span class="title">车辆维修类型</span>
+                                        <!--<span class="badge badge-success">1</span>-->
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="page-content-wrapper">
+                {block name=pageContent}{/block}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{block name=script}{/block}

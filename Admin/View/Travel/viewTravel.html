@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查看出行</title>
+
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}//assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
+
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-toastr/toastr.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- END THEME GLOBAL STYLES -->
+    <!-- BEGIN THEME LAYOUT STYLES -->
+    <link href="{$smarty.const.PUBLIC_URL}/assets/layouts/layout/css/layout.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/layouts/layout/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/layouts/layout/css/custom.min.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        td{
+            height: 30px;
+            line-height: 30px;
+            padding: 0 5px;
+        }
+    </style>
+
+</head>
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white"  style="background: #FFFFFF;">
+<div class="page-wrapper">
+    <div class="page-content">
+        <div>
+            <form action="/index.php/Admin/Travel/editTravelDo" method="post" id="editTravel">
+                <input type="hidden" name="id" value="{$travel.id}">
+                <div class="portlet light">
+                    <table width="1020" border="1" cellspacing="0" cellpadding="0" class="travelDetailTable">
+                        <tr>
+                            <td colspan="2" >流水单号：</td>
+                            <td colspan="2" style="text-align: left">{$travel.serial_number}</td>
+                            <td>服务车辆所属</td>
+                            <td colspan="2"　style="text-align: left">
+                                {if $travel.arrange_type_id==1}
+                                玖玖专车{$travel.jj_id}
+                                {else}
+                                自有车辆
+                                {/if}                            </td>
+                        </tr>
+                        {if $travel.center_error_msg or $travel.manage_error_msg}
+
+                        <tr>
+                            <td colspan="2" style="color: red">驳回信息</td>
+                            <td colspan="5" style="color: red;text-align: left" >{$travel.center_error_msg}{$travel.manage_error_msg}</td></tr>
+                        <tr>
+                            {/if}
+                        <tr>
+                            <td width="30" rowspan="9" style="line-height: 20px;">出行申请数据</td>
+                            <td width="140">用车单位</td>
+                            <td width="155">{$company.company_name}</td>
+                            <td width="140">用车人</td>
+                            <td width="155">
+                                <select class="form-control" name="use_user_id" id="use_user_id">
+                                    {foreach $users as $w=>$r}
+                                    <option value="{$r.id}" {if $r.id eq $use_user.id}selected="selected"{/if}>{$r.user_name}--{$r.user_phone}</option>
+                                    {/foreach}
+                                </select>                            </td>
+                            <td width="140">申请时间</td>
+                            <td width="250">
+                                <div class="input-group date form_datetime col-md-5" data-date="" data-date-format="yyyy-mm-dd hh:ii" data-link-field="dtp_input1">
+                                    <input name="sign_time" id="sign_time" class="form-control" size="16" type="text"  value="{$travel.sign_time|date_format:'%Y-%m-%d %H:%M'}" readonly style="width: 150px">
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>                                </div>                            </td>
+                        </tr>
+                        <tr>
+                            <td>出行方式</td>
+                            <td>
+                                <select class="form-control" name="travel_type_id" id="travel_type_id">
+                                    {foreach $travel_types as $k=>$v}
+                                    <option value="{$v.id}" {if $travel_type.travel_name eq $v.travel_name}selected="selected"{/if}>{$v.travel_name}</option>
+                                    {/foreach}
+                                </select>                            </td>
+                            <td>联系电话</td>
+                            <td>
+                                {$use_user.user_phone}                            </td>
+                            <td>预约用车时间</td>
+                            <td>
+                                <div class="input-group date form_datetime col-md-5" data-date="" data-date-format="yyyy-mm-dd hh:ii" data-link-field="dtp_input1">
+                                    <input name="departure_time" id="departure_time" class="form-control" size="16" type="text"  value="{$travel.departure_time|date_format:'%Y-%m-%d %H:%M'}" readonly style="width: 150px">
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>                                </div>                            </td>
+                        </tr>
+
+                        <td>出车时间</td>
+                        <td >
+                            <div class="input-group date form_datetime col-md-5" data-date="" data-date-format="yyyy-mm-dd hh:ii" data-link-field="dtp_input1">
+                                <input name="start_car_time" id="start_car_time" class="form-control" size="16" type="text"  value="{$travel.start_car_time|date_format:'%Y-%m-%d %H:%M'}" readonly style="width: 150px">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>                            </div>                        </td>
+                        <td>结束用车时间</td>
+                        <td  >
+                            <div class="input-group date form_datetime col-md-5" data-date="" data-date-format="yyyy-mm-dd hh:ii" data-link-field="dtp_input1">
+                                <input name="end_use_car_time" id="end_use_car_time" class="form-control" size="16" type="text"  value="{$travel.end_use_car_time|date_format:'%Y-%m-%d %H:%M'}" readonly style="width: 150px">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>                            </div>                        </td>
+                        <td>预计收车时间</td>
+                        <td>
+                            <div class="input-group date form_datetime col-md-5" data-date="" data-date-format="yyyy-mm-dd hh:ii" data-link-field="dtp_input1">
+                                <input name="collecting_time" id="collecting_time" class="form-control" size="16" type="text"  value="{$travel.collecting_time|date_format:'%Y-%m-%d %H:%M'}" readonly style="width: 150px">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>                            </div>                        </td>
+                        </tr>
+                        <tr>
+                            <td>行车路线</td>
+                            <td colspan="3">
+                                <input type="text" name="from_place"  class="form-control"  id="from_place" value="{$travel.from_place}">
+                                <input type="text" name="to_place"  class="form-control"  id="to_place" value="{$travel.to_place}"></td>
+                            <td>支付方式</td>
+                            <td>
+                                <!-- 只有状态为7时才能够修改 -->
+                                {if $travel.state==9}
+                                <input type="text" name="pay_type"  class="form-control" placeholder="支付方式" id="pay_type" value="{$travel.pay_type}">
+                                {else}
+                                {$travel.pay_type}
+                                {/if}                            </td>
+                        </tr>
+                        <tr>
+                            <td>乘车人名单</td>
+                            <td colspan="3"><input  type="text" name="travel_people"  class="form-control" placeholder="乘车人名单" id="travel_people" value="{$travel.travel_people}">                            </td>
+                            <td>乘车人数</td>
+                            <td><input type="text" name="people_num"  class="form-control" placeholder="乘车人数" id="people_num" value="{$travel.people_num}"></td>
+                        </tr>
+                        <tr>
+                            <td>出行性质</td>
+                            <td>
+                                <select class="form-control" name="travel_nature" id="travel_nature" style="width: 140px;">
+                                    {foreach $travel_nature as $k=>$v}
+                                    <option value="{$v.nature_name}" {if $travel.travel_nature eq $v.nature_name}selected="selected"{/if}>{$v.nature_name}</option>
+                                    {/foreach}
+                                </select>                            </td>
+                            <td>出行事由</td>
+                            <td><input type="text" name="travel_reason"  class="form-control" placeholder="出行事由" id="travel_reason" value="{$travel.travel_reason}"></td>
+                            <td>途径路线</td>
+                            <td><input type="text" name="route"  class="form-control" placeholder="途径路线" id="route" value="{$travel.route}"></td>
+                        </tr>
+                        <tr>
+
+
+                            <td>驾驶员姓名</td>
+                            <td>
+                                <!-- 只有派车之后才有司机信息 -->
+                                {if $travel.state>=5}
+                                    {if $travel.arrange_type_id==1}
+                                        {$travel.jj_driver_name}
+                                    {else}
+                                    <select name="driver_id" class="form-control" id="driver_id">
+                                        {foreach $drivers as $k=>$v}
+                                        <option value="{$v.id}" {if $v.id eq $travel.driver_id}selected="selected"{/if}>{$v.driver_name}{$v.driver_phone}</option>
+                                        <!--{if $v.id eq $travel.driver_id}{$v.driver_name}{/if}-->
+                                        {/foreach}
+                                    </select>
+                                    {/if}
+                                {/if}                            </td>
+                            <td>联系方式</td>
+                            <td>
+                                {if $travel.arrange_type_id==1}
+                                    {$travel.jj_driver_phone}
+                                {else}
+                                    {$driver.driver_phone}
+                                {/if}                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
+
+
+                        <tr nowrap="nowrap">
+                            <td>车牌号</td>
+                            <td>
+                                <!-- 只有派车之后才有车辆信息 -->
+                                {if $travel.state>=5}
+                                    {if $travel.arrange_type_id==1}
+                                        {$travel.jj_car_num}
+                                    {else}
+                                    <select name="car_id" class="form-control" id="car_id">
+                                        {foreach $cars as $k=>$v}
+                                        <option value="{$v.id}" {if $v.car_num eq $car.car_num}selected="selected"{/if}>{$v.car_num}{$v.car_name}</option>
+                                        {/foreach}
+                                    </select>
+                                    {/if}
+                                {/if}                            </td>
+                            <td>车辆名称</td>
+                            <td>{$car.car_name}</td>
+                            <td>座位数</td>
+                            <td></td>
+                        </tr>
+
+
+
+                        <tr>
+                            <td>行驶里程</td>
+                            <td>
+                                {if $travel.state==9}
+                                <input type="text" name="mileage"  class="form-control" placeholder="行驶里程" id="mileage" value="{$travel.mileage}">
+                                {/if}                            </td>
+                            <td>开始公里数</td>
+                            <td>
+                                {if $travel.state==9}
+                                <input type="text" name="start_kilometers"  class="form-control" placeholder="开始公里数" id="start_kilometers" value="{$travel.start_kilometers}">
+                                {/if}                            </td>
+                            <td>结束公里数</td>
+                            <td>
+                                {if $travel.state==9}
+                                <input type="text" name="end_kilometers"  class="form-control" placeholder="结束公里数" id="end_kilometers" value="{$travel.end_kilometers}">
+                                {/if}                            </td>
+                        </tr>
+                        <tr>
+                            <td height="70" rowspan="2" style="line-height: 20px;">收费详情</td>
+                            <style>
+                                #fy input{ display: inline-block; padding: 0 4px; width: 40px; }
+                            </style>
+                            <td colspan="6" style="text-align: left" id="fy">
+                                {if $travel.state==9}
+                                路桥费<input type="text" name="fees_sum"  class="form-control" placeholder=""  value="{$travel.fees_sum}">元，停车费<input type="text" name="parking_rate_sum"  class="form-control" placeholder=""  value="{$travel.parking_rate_sum}">
+                                元，司机住宿补贴
+                                <input type="text" name="driver_cost"  class="form-control" value="{$travel.driver_cost}">元，超时费<input type="text" name="over_time_cost"  class="form-control" placeholder=""  value="{$travel.over_time_cost}">元，超公里费<input type="text" name="over_mileage_cost"  class="form-control" placeholder=""  value="{$travel.over_mileage_cost}">元，其他费用<input type="text" name="else_cost"  class="form-control" placeholder=""  value="{$travel.else_cost}">元，司机补贴<input type="text" name="else_cost"  class="form-control" placeholder=""  value="{$travel.driver_bt_cost}">元。
+                                {/if}                            </td>
+                        </tr>
+                        <tr>
+                          <td colspan="6" style="text-align: left" id="fy">出行服务费
+                            <input type="text" name="service_charge"  class="form-control"  value="{$travel.service_charge}">
+                          元</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">其他</td>
+                            <td rowspan="2">对驾驶员服务评价</td>
+                            <td colspan="5" style="text-align: left"><label><input type="checkbox" {if $travel.attitude eq "1"}checked="checked"{/if} disabled="disabled" >非常不满意</label>&nbsp;&nbsp;&nbsp;<label><input type="checkbox" disabled="disabled" {if $travel.attitude eq "2"}checked="checked"{/if}>不满意</label>&nbsp;&nbsp;&nbsp;<label><input type="checkbox" disabled="disabled" {if $travel.attitude eq "3"}checked="checked"{/if}>一般</label>&nbsp;&nbsp;&nbsp;<label><input type="checkbox" disabled="disabled" {if $travel.attitude eq "4"}checked="checked"{/if}>满意</label>&nbsp;&nbsp;&nbsp;<label><input type="checkbox" disabled="disabled" {if $travel.attitude eq "5"}checked="checked"{/if}>非常满意</label></td>
+                        </tr>
+                        <tr>
+                            <td colspan="5" style="text-align: left">意见：{$travel.evaluate}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" style="text-align: left">出行备注：</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <button type="submit" class="btn btn-primary">修改</button>
+                    <input id="biuuu_button" class="btn btn-primary"  type="button" value="打印"></input>
+
+                    <button type="button" class="btn btn-primary" onClick="closeThis();">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div style="width: 0px; height: 0px; overflow:hidden;">
+    <!--打印区域开始-->
+    <!--startprint1-->
+    <table width="950" border="1" cellspacing="0" cellpadding="0" class="travelDetailTable">
+        <tr> <td colspan="2" >流水单号：</td>
+            <td colspan="2" style="text-align: left">{$travel.serial_number}</td>
+            <td>服务车辆所属</td>
+            <td colspan="2"　style="text-align: left">
+
+                {if $travel.arrange_type_id==1}
+                玖玖专车
+                {else}
+                自有车辆
+            {/if}            </td></tr>
+        {if $travel.center_error_msg or $travel.manage_error_msg}
+        <tr><td colspan="2" style="color: red">驳回信息</td>
+            <td colspan="5" style="color: red;text-align: left" >{$travel.center_error_msg}{$travel.manage_error_msg}</td></tr>
+        <tr>
+            {/if}
+        <tr>
+        <tr>
+            <td width="30" rowspan="9">出行申请数据</td>
+            <td width="140">用车单位</td>
+            <td width="155">{$company.company_name}            </td>
+            <td width="140">用车人</td>
+            <td width="155">
+                {$use_user.user_name}            </td>
+            <td width="140">提交时间</td>
+            <td width="250">{$travel.sign_time|date_format:'%Y-%m-%d %H:%M'}            </td>
+        </tr>
+        <tr>
+
+
+            <td>出行方式</td>
+            <td>
+                {$travel_type.travel_name}            </td>
+            <td>联系方式</td>
+            <td>
+                {$use_user.user_phone}            </td>
+
+            <td>预约时间</td>
+            <td>
+                {$travel.departure_time|date_format:'%Y-%m-%d %H:%M'}            </td>
+        </tr>
+        <tr>
+            <td>出车时间</td>
+            <td colspan="2">
+                {$travel.start_car_time|date_format:'%Y-%m-%d %H:%M'}            </td>
+            <td>结束用车时间</td>
+            <td colspan="2">
+                {$travel.end_use_car_time|date_format:'%Y-%m-%d %H:%M'}            </td>
+        </tr>
+        <tr>
+            <td>行车路线</td>
+            <td colspan="3">
+                {$travel.from_place}--{$travel.to_place}            </td>
+            <td>支付方式</td>
+            <td>
+                {$travel.pay_type}            </td>
+        </tr>
+        <tr>
+            <td>乘车人名单</td>
+            <td colspan="3">
+                {$travel.travel_people}            </td>
+            <td>乘车人数</td>
+            <td>
+                {$travel.people_num}            </td>
+        </tr>
+        <tr>
+            <td>出行性质</td>
+            <td>
+                {$travel.travel_nature}            </td>
+            <td>出行事由</td>
+            <td>
+                {$travel.travel_reason}            </td>
+            <td>途径路线</td>
+            <td>
+                {$travel.route}            </td>
+        </tr>
+        <tr>
+
+
+            <td>驾驶员姓名</td>
+            <td>
+                {if $travel.arrange_type_id==1}
+                {$travel.jj_driver_name}
+                {else}
+                {$driver.driver_name}
+                {/if}            </td>
+            <td>联系方式</td>
+            <td>
+                {if $travel.arrange_type_id==1}
+                {$travel.jj_driver_phone}
+                {else}
+                {$driver.driver_phone}
+                {/if}            </td>
+
+            <td></td>
+            <td></td>
+        </tr>
+
+
+
+        <tr nowrap="nowrap">
+            <td>车牌号</td>
+            <td>
+                {if $travel.arrange_type_id==1}
+                {$travel.jj_car_num}
+                {else}
+                {$car.car_num}
+                {/if}            </td>
+            <td>车辆名称</td>
+            <td>
+                {if $travel.arrange_type_id==1}
+                {else}
+                {$car.car_name}
+                {/if}            </td>
+            <td>座位数</td>
+            <td>
+                {if $travel.arrange_type_id==1}
+                {else}
+                {$car.seat_num}
+                {/if}            </td>
+        </tr>
+
+
+
+        <tr>
+            <td>行驶里程</td>
+            <td>
+                {$travel.mileage}            </td>
+            <td>开始公里数</td>
+            <td>{$travel.start_kilometers}</td>
+            <td>结束公里数</td>
+            <td>{$travel.end_kilometers}</td>
+        </tr>
+        <tr>
+            <td height="70" rowspan="2">收费详情</td>
+            <td colspan="6" style="text-align: left">
+                路桥费{$travel.fees_sum}元，停车费{$travel.parking_rate_sum}元,司机住宿补贴{$travel.driver_cost}元，超时费{$travel.over_time_cost}元，超公里费{$travel.over_mileage_cost}元，其他费用{$travel.else_cost}元，司机补贴{$travel.driver_bt_cost}元。            </td>
+        </tr>
+        <tr>
+          <td colspan="6" style="text-align: left">出行服务费{$travel.service_charge}元</td>
+        </tr>
+        <tr>
+            <td rowspan="3">其他</td>
+            <td rowspan="2">对驾驶员服务评价</td>
+            <td colspan="5" style="text-align: left"><label><input type="checkbox" {if $travel.attitude eq "1"}checked="checked"{/if} disabled="disabled" >非常不满意</label>&nbsp;&nbsp;&nbsp;<label><input type="checkbox" disabled="disabled" {if $travel.attitude eq "2"}checked="checked"{/if}>不满意</label>&nbsp;&nbsp;&nbsp;<label><input type="checkbox" disabled="disabled" {if $travel.attitude eq "3"}checked="checked"{/if}>一般</label>&nbsp;&nbsp;&nbsp;<label><input type="checkbox" disabled="disabled" {if $travel.attitude eq "4"}checked="checked"{/if}>满意</label>&nbsp;&nbsp;&nbsp;<label><input type="checkbox" disabled="disabled" {if $travel.attitude eq "5"}checked="checked"{/if}>非常满意</label></td>
+        </tr>
+        <tr>
+            <td colspan="5" style="text-align: left">意见：{$travel.evaluate}</td>
+        </tr>
+        <tr>
+            <td colspan="6" style="text-align: left">出行备注：</td>
+        </tr>
+    </table>
+    <!--endprint1-->
+    <!--打印区域结束-->
+</div>
+
+
+</body>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
+
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/clockface/js/clockface.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/js/jquery.form.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-toastr/toastr.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/js/js.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/plugin/layer/layer.js" type="text/javascript"></script>
+
+<script>
+    function closeThis(){
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
+    }
+
+
+    $("#editTravel").submit(function () {
+        //核验数据
+        var sign_time=$("#sign_time").val();
+        if(!sign_time){ toastr.warning('提交时间不能为空'); $("#sign_time").focus().select(); return false; }
+
+        var departure_time=$("#departure_time").val();
+        if(!departure_time){ toastr.warning('预约时间不能为空'); $("#departure_time").focus().select(); return false; }
+
+        var start_car_time=$("#start_car_time").val();
+        var end_use_car_time=$("#end_use_car_time").val();
+        var sign_timeS = Date.parse(new Date(sign_time));
+        var departure_timeS = Date.parse(new Date(departure_time));
+        var start_car_timeS = Date.parse(new Date(start_car_time));
+        var end_use_car_timeS = Date.parse(new Date(end_use_car_time));
+
+        if(sign_timeS>departure_timeS){
+            toastr.warning('申请时间需早于预约时间'); $("#sign_time").focus().select(); return false;
+        }
+
+        if(start_car_time!=""&&end_use_car_time!=""){
+            if(start_car_timeS>end_use_car_timeS){
+                toastr.warning('出车时间需早于结束用车时间'); $("#start_car_time").focus().select(); return false;
+            }
+        }
+
+        if(start_car_time!=""){
+            if(sign_timeS>start_car_timeS){
+                toastr.warning('申请时间需早于出车时间'); $("#start_car_time").focus().select(); return false;
+            }
+        }
+
+        if($("#start_kilometers").length > 0) {
+            var start_kilometers=$("#start_kilometers").val();
+            var end_kilometers=$("#end_kilometers").val();
+
+            if(start_kilometers!=""&&end_kilometers!=""){
+                if(isNaN(start_kilometers)){
+                    toastr.warning('开始公里数只能为数字'); $("#start_kilometers").focus().select(); return false;
+                }
+                if(isNaN(end_kilometers)){
+                    toastr.warning('结束公里数只能为数字'); $("#end_kilometers").focus().select(); return false;
+                }
+
+                if(parseInt(start_kilometers)>parseInt(end_kilometers)){
+                    toastr.warning('开始公里数不得大于结束公里数'); $("#end_kilometers").focus().select(); return false;
+                }
+            }
+        }
+
+
+        $(this).ajaxSubmit(function (data) {
+            if(data.code==1){
+                layer.msg('提交成功!', { icon: 1 });
+                //setTimeout("window.parent.location.reload()",2000);
+
+                //setTimeout("window.location.href='/index.php/Home/Travel/myTravels'",2500);
+            }else{
+                layer.msg('提交失败，请重试!', { icon: 0 });
+            }
+        });
+
+
+
+        return false;
+    });
+
+
+
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "positionClass": "toast-top-center",
+        "onclick": null,
+        "showDuration": "1000",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+
+    $('.form_datetime').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1
+    });
+
+
+    $(function() {
+        $("input#biuuu_button").click(function () {
+            preview(1);
+        });
+
+
+
+    });
+
+    function preview(oper)
+    {
+        if (oper < 10)
+        {
+            bdhtml=window.document.body.innerHTML;//获取当前页的html代码
+            sprnstr="<!--startprint"+oper+"-->";//设置打印开始区域
+            eprnstr="<!--endprint"+oper+"-->";//设置打印结束区域
+            prnhtml=bdhtml.substring(bdhtml.indexOf(sprnstr)+18); //从开始代码向后取html
+
+            prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr));//从结束代码向前取html
+            window.document.body.innerHTML=prnhtml;
+            window.print();
+            window.document.body.innerHTML=bdhtml;
+        } else {
+            window.print();
+        }
+    }
+
+
+
+
+</script>
+</html>
+
+
