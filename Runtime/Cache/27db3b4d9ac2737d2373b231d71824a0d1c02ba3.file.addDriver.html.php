@@ -1,0 +1,319 @@
+<?php /* Smarty version Smarty-3.1.6, created on 2018-10-17 10:41:32
+         compiled from "/var/www/yxcarnew/Admin/View/Driver/addDriver.html" */ ?>
+<?php /*%%SmartyHeaderCode:10556836985bc6a15c5c33f0-25005806%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+$_valid = $_smarty_tpl->decodeProperties(array (
+  'file_dependency' => 
+  array (
+    '27db3b4d9ac2737d2373b231d71824a0d1c02ba3' => 
+    array (
+      0 => '/var/www/yxcarnew/Admin/View/Driver/addDriver.html',
+      1 => 1530648132,
+      2 => 'file',
+    ),
+  ),
+  'nocache_hash' => '10556836985bc6a15c5c33f0-25005806',
+  'function' => 
+  array (
+  ),
+  'has_nocache_code' => false,
+  'version' => 'Smarty-3.1.6',
+  'unifunc' => 'content_5bc6a15c639e9',
+),false); /*/%%SmartyHeaderCode%%*/?>
+<?php if ($_valid && !is_callable('content_5bc6a15c639e9')) {function content_5bc6a15c639e9($_smarty_tpl) {?><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新增司机</title>
+
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+    <link href="<?php echo @PUBLIC_URL;?>
+/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo @PUBLIC_URL;?>
+/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo @PUBLIC_URL;?>
+//assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo @PUBLIC_URL;?>
+/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link href="<?php echo @PUBLIC_URL;?>
+/assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
+    <link href="<?php echo @PUBLIC_URL;?>
+/assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
+
+    <link href="<?php echo @PUBLIC_URL;?>
+/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo @PUBLIC_URL;?>
+/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo @PUBLIC_URL;?>
+/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo @PUBLIC_URL;?>
+/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo @PUBLIC_URL;?>
+/assets/global/plugins/bootstrap-toastr/toastr.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- END THEME GLOBAL STYLES -->
+    <!-- BEGIN THEME LAYOUT STYLES -->
+    <link href="<?php echo @PUBLIC_URL;?>
+/assets/layouts/layout/css/layout.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo @PUBLIC_URL;?>
+/assets/layouts/layout/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color" />
+    <link href="<?php echo @PUBLIC_URL;?>
+/assets/layouts/layout/css/custom.min.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white"  style="background: #FFFFFF;">
+<div class="page-wrapper">
+    <div class="page-content">
+        <div>
+            <div class="portlet light">
+                <div class="portlet-body form">
+                <form class="form-horizontal" role="form" action="/index.php/Admin/Driver/addDriverDo" method="post" id="addDriverForm">
+                    <div class="form-body">
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">姓名</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control input-inline input-medium" placeholder="姓名" name="driver_name" id="driver_name">
+                                <span style="color: #FF0000;">*</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">联系电话</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control input-inline input-medium" placeholder="联系电话" name="driver_phone" id="driver_phone">
+                                <span style="color: #FF0000;">*</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">密码</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control input-inline input-medium" placeholder="密码" name="driver_pwd" id="driver_pwd">
+                                <span style="color: #FF0000;">*</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">身份证号</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control input-inline input-medium" placeholder="身份证号"  name="driver_idcard" id="driver_idcard">
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">委托管理部门</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control input-inline input-medium" placeholder="委托管理部门" name="department">
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">准驾车型</label>
+                            <div class="col-md-8">
+                            <input type="text" name="lic_type"  class="form-control input-inline input-medium" placeholder="准驾车型">
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">驾驶证到期时间</label>
+                            <div class="col-md-8">
+                            <div class="input-group date form_datetime input-medium" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input1">
+                                <input name="driver_lic_time" class="form-control" size="16" type="text" value="" readonly>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">入职日期</label>
+                            <div class="col-md-8">
+                            <div class="input-group date form_datetime  input-medium" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input1">
+                                <input name="induction_time" class="form-control" size="16" type="text" value="" readonly>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">合同开始时间</label>
+                            <div class="col-md-8">
+                                <div class="input-group date form_datetime  input-medium" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input1">
+                                    <input name="contract_start_time" class="form-control" size="16" type="text" value="" readonly>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">合同结束时间</label>
+                            <div class="col-md-8">
+                                <div class="input-group date form_datetime  input-medium" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input1">
+                                    <input name="contract_end_time" class="form-control" size="16" type="text" value="" readonly>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">地址</label>
+                            <div class="col-md-8">
+                                <input type="text" name="address" class="form-control input-inline input-medium" placeholder="地址">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">备注</label>
+                            <div class="col-md-8">
+                                <input type="text" name="remarks"  class="form-control input-inline input-medium" placeholder="备注">
+                            </div>
+                        </div>
+
+                        <canvas id="drawing" width="113" height="54" style="border:#0F0 solid 1px; display: none;"></canvas>
+                        <img id="image" src="/Public/images/empty.png" style="display: none;"/>
+                        <textarea id="driverNamePhonto" name="driverNamePhonto" style="display:none;"></textarea>
+
+
+                    </div>
+                    <div class="form-actions col-md-12">
+                        <div class="row">
+                            <div class="col-md-offset-5 col-md-7">
+                                <button type="submit" class="btn green" >提交</button>
+                                <button type="button" class="btn default" onClick="layer_close();">取消</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="<?php echo @PUBLIC_URL;?>
+/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+<script src="<?php echo @PUBLIC_URL;?>
+/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+
+<script src="<?php echo @PUBLIC_URL;?>
+/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
+<script src="<?php echo @PUBLIC_URL;?>
+/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script src="<?php echo @PUBLIC_URL;?>
+/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
+
+<script src="<?php echo @PUBLIC_URL;?>
+/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<script src="<?php echo @PUBLIC_URL;?>
+/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
+<script src="<?php echo @PUBLIC_URL;?>
+/assets/global/plugins/clockface/js/clockface.js" type="text/javascript"></script>
+<script src="<?php echo @PUBLIC_URL;?>
+/js/jquery.form.js" type="text/javascript"></script>
+<script src="<?php echo @PUBLIC_URL;?>
+/assets/global/plugins/bootstrap-toastr/toastr.min.js" type="text/javascript"></script>
+<script src="<?php echo @PUBLIC_URL;?>
+/js/js.js" type="text/javascript"></script>
+<script src="<?php echo @PUBLIC_URL;?>
+/plugin/layer/layer.js" type="text/javascript"></script>
+
+<script>
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "positionClass": "toast-top-center",
+        "onclick": null,
+        "showDuration": "1000",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+
+    $('.form_datetime').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        minView: 2,
+        showMeridian: 1
+    });
+
+
+    $("#addDriverForm").submit(function () {
+
+
+
+        //校验数据
+        //toastr.error('Are you the 6 fingered man?');
+        if(isE($("#driver_name").val())){ toastr.error('司机姓名不得为空！');  $("#driver_name").focus();return false; }
+        if(isE($("#driver_pwd").val())){ toastr.error('密码不得为空！');  $("#driver_pwd").focus();return false; }
+
+        if($("#driver_pwd").val().length<=5){ toastr.error('密码不得为少于6位！');  $("#driver_pwd").focus();return false; }
+
+        if(isE($("#driver_phone").val())){ toastr.error('联系电话不得为空！');  $("#driver_phone").focus();return false; }
+        if(isNaN($("#driver_phone").val())){ toastr.error('联系电话只能为数字！');  $("#driver_phone").focus();return false; }
+
+
+
+
+
+        var drawing=document.getElementById("drawing");
+        if(drawing.getContext){
+            //取得绘图上下文对象的引用，“2d”是取得2D上下文对象
+            var context=drawing.getContext("2d");
+            var image=document.getElementById("image");
+            context.drawImage(image,0,0,113,54);//起点为(10,10)，图像大小会变成20x20像素；
+
+            context.font="14px 宋体";
+            context.textAlign="center";
+            context.fillStyle="#FFFFFF";
+            context.textBaseline="middle";//文本的基线
+
+            var driverName=$("#driver_name").val();
+
+            context.fillText(driverName,57,22);
+
+            var ImageBase64 = drawing.toDataURL('image/png');
+
+            $("#driverNamePhonto").val(ImageBase64);
+
+        }
+
+
+        $(this).ajaxSubmit(function (data) {
+            if(data.code==1){
+                layer.msg('新增成功!', { icon: 1 });
+                setTimeout("window.parent.location.reload()",2000);
+            }else{
+                layer.msg(data.error, { icon: 0 });
+            }
+        });
+        return false;
+    })
+
+
+
+
+</script>
+</html>
+
+
+<?php }} ?>

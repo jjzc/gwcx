@@ -1,0 +1,223 @@
+@CHARSET "UTF-8";
+.jdt_box{
+	height:200px;
+	overflow: hidden;
+}
+.jdt_left{
+	width:147px;
+	height:200px;
+	float:left;
+	background-image: url(../images/jdtleft.png);
+}
+.jdt_center{
+	width:180px;
+	height:200px;
+	float:left;
+	background-image: url(../images/jdtcenter.png);
+}
+.jdt_right{
+	width:147px;
+	height:200px;
+	float:left;
+	background-image: url(../images/jdtright.png);
+}
+
+    #CommentBubble {
+    	   
+     	height: 38px;
+		margin: 0px auto;
+		
+		background: #C9C8C4;
+		position: relative;
+		-moz-border-radius: 4px;
+		-webkit-border-radius: 4px;
+		border-radius: 4px;
+		color: #fff;
+		line-height: 38px;
+		padding: 0 10px;
+		width: 110px;
+		text-align: center;
+		margin-top: 80px;
+     }  
+     #CommentBubble:before {  
+       content: "";  
+       width: 0;  
+       height: 0;  
+       top: 100%;  
+       left: 50%;
+     	margin-left:-6px; 
+       position: absolute;  
+       border-left: 6px solid transparent;  
+       border-top: 12px solid #C9C8C4;  
+       border-right: 6px solid transparent;  
+     }  
+     
+     #CommentBubbleA {
+    	   
+     	height: 38px;
+		margin: 0px auto;
+		
+		background: #5BC0DE;
+		position: relative;
+		-moz-border-radius: 4px;
+		-webkit-border-radius: 4px;
+		border-radius: 4px;
+		color: #fff;
+		line-height: 38px;
+		padding: 0 10px;
+		width: 110px;
+		text-align: center;
+		margin-top: 80px;
+     }  
+     #CommentBubbleA:before {  
+       content: "";  
+       width: 0;  
+       height: 0;  
+       top: 100%;  
+       left: 50%;
+     	margin-left:-6px; 
+       position: absolute;  
+       border-left: 6px solid transparent;  
+       border-top: 12px solid #5BC0DE;  
+       border-right: 6px solid transparent;  
+     } 
+     
+     
+     #CommentBubbleB {
+    	   
+     	height: 38px;
+		margin: 0px auto;
+		
+		background: #ff6600;
+		position: relative;
+		-moz-border-radius: 4px;
+		-webkit-border-radius: 4px;
+		border-radius: 4px;
+		color: #fff;
+		line-height: 38px;
+		padding: 0 10px;
+		width: 110px;
+		text-align: center;
+		margin-top: 80px;
+     }  
+     #CommentBubbleB:before {  
+       content: "";  
+       width: 0;  
+       height: 0;  
+       top: 100%;  
+       left: 50%;
+     	margin-left:-6px; 
+       position: absolute;  
+       border-left: 6px solid transparent;  
+       border-top: 12px solid #ff6600;  
+       border-right: 6px solid transparent;  
+     } 
+     
+     
+     
+      #CommentBubbleLeft {
+    	   
+     	height: 38px;
+		
+		background: #C9C8C4;
+		position: relative;
+		-moz-border-radius: 4px;
+		-webkit-border-radius: 4px;
+		border-radius: 4px;
+		color: #fff;
+		line-height: 38px;
+		padding: 0 10px;
+		width: 80px;
+		text-align: center;
+		margin-top: 80px;
+      	margin-left: 9px;
+     }  
+     #CommentBubbleLeft:before {  
+       content: "";  
+       width: 0;  
+       height: 0;  
+       top: 100%;  
+       left: 50%;
+       position: absolute;  
+       border-left: 6px solid transparent;  
+       border-top: 12px solid #C9C8C4;  
+       border-right: 6px solid transparent;  
+     } 
+     
+     #CommentBubbleRight {
+    	   
+     	height: 38px;
+		
+		background: #C9C8C4;
+		position: relative;
+		-moz-border-radius: 4px;
+		-webkit-border-radius: 4px;
+		border-radius: 4px;
+		color: #fff;
+		line-height: 38px;
+		padding: 0 10px;
+		width: 80px;
+		text-align: center;
+		margin-top: 80px;
+      	margin-left: 42px;
+     }  
+     #CommentBubbleRight:before {  
+       content: "";  
+       width: 0;  
+       height: 0;  
+       top: 100%;  
+       left: 50%;
+       position: absolute;  
+       border-left: 6px solid transparent;  
+       border-top: 12px solid #C9C8C4;  
+       border-right: 6px solid transparent;  
+     } 
+     
+     
+     #CommentBubbleRightA {
+    	   
+     	height: 38px;
+		
+		background: #5BC0DE;
+		position: relative;
+		-moz-border-radius: 4px;
+		-webkit-border-radius: 4px;
+		border-radius: 4px;
+		color: #fff;
+		line-height: 38px;
+		padding: 0 10px;
+		width: 80px;
+		text-align: center;
+		margin-top: 80px;
+      	margin-left: 42px;
+     }  
+     #CommentBubbleRightA:before {  
+       content: "";  
+       width: 0;  
+       height: 0;  
+       top: 100%;  
+       left: 50%;
+       position: absolute;  
+       border-left: 6px solid transparent;  
+       border-top: 12px solid #5BC0DE;  
+       border-right: 6px solid transparent;  
+     }
+
+	 #commentTimeLeft{
+		 height:38px;
+		 position: relative;
+
+		 width: 135px;
+		 text-align: center;
+		 margin-top: 55px;
+		 margin-left:0px;
+	 }
+#commentTimeLeftCenter{
+	height:38px;
+	position: relative;
+
+	width: 180px;
+	text-align: center;
+	margin-top: 55px;
+	margin-left:0px;
+}

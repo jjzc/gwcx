@@ -1,0 +1,1989 @@
+[ 2018-12-13T08:43:28+08:00 ] ::1 /
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+
+[ 2018-12-13T08:43:28+08:00 ] ::1 /index.php/Home/User/login.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000000s ]
+SQL: SHOW COLUMNS FROM `ot_set` [ RunTime:0.0060s ]
+SQL: SELECT * FROM `ot_set` WHERE `id` = 1 LIMIT 1   [ RunTime:0.0000s ]
+INFO: [ view_parse ] --START--
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.017001s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.017001s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.001001s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001001s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.001000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.001000s ]
+
+[ 2018-12-13T09:18:17+08:00 ] ::1 /index.php/
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `ot_company` [ RunTime:0.0040s ]
+SQL: SELECT * FROM `ot_company` LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `ot_message` [ RunTime:0.0040s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `ot_message` WHERE `to_user_id` = 1 AND `is_read` = 0 ORDER BY creat_time desc LIMIT 1   [ RunTime:0.0040s ]
+INFO: [ view_parse ] --START--
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.009000s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.009000s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.001000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.001000s ]
+
+[ 2018-12-13T09:18:19+08:00 ] ::1 /index.php/Home/Travel/signTravel
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001001s ]
+SQL: SHOW COLUMNS FROM `ot_company` [ RunTime:0.0050s ]
+SQL: SELECT * FROM `ot_company` LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `ot_set` [ RunTime:0.0070s ]
+SQL: SELECT * FROM `ot_set` WHERE `id` = 1 LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `ot_travel_type` [ RunTime:0.0070s ]
+SQL: SELECT * FROM `ot_travel_type` WHERE ( is_del=0 )  [ RunTime:0.0000s ]
+SQL: SHOW COLUMNS FROM `ot_travel_nature` [ RunTime:0.0070s ]
+SQL: SELECT * FROM `ot_travel_nature`  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `ot_user` [ RunTime:0.0070s ]
+SQL: SELECT * FROM `ot_user` WHERE `user_company` = 264 AND `is_del` = 0  [ RunTime:0.0020s ]
+INFO: [ view_parse ] --START--
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.018001s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.018001s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.003001s ]
+INFO: [ app_end ] --END-- [ RunTime:0.003001s ]
+
+[ 2018-12-13T09:18:24+08:00 ] ::1 /index.php/Home/UserCenter/myMessage
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+INFO: [ view_parse ] --START--
+NOTIC: [2] filemtime(): stat failed for D:/xampp/htdocs/Runtime/Cache\7000168975b283caf8e3c7477f2ff4e9f728d1f9.file.myMessage.html.php D:\xampp\htdocs\ThinkPHP\Library\Vendor\Smarty\sysplugins\smarty_resource.php 第 683 行.
+NOTIC: [2] unlink(D:/xampp/htdocs/Runtime/Cache\7000168975b283caf8e3c7477f2ff4e9f728d1f9.file.myMessage.html.php): No such file or directory D:\xampp\htdocs\ThinkPHP\Library\Vendor\Smarty\sysplugins\smarty_internal_write_file.php 第 49 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.093006s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.093006s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.001000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.001000s ]
+
+[ 2018-12-13T09:18:24+08:00 ] ::1 /index.php/Home/UserCenter/getNoreadMessage
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001001s ]
+SQL: SHOW COLUMNS FROM `ot_message` [ RunTime:0.0070s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `ot_message` WHERE `to_user_id` = 1 AND `is_read` = 0 ORDER BY creat_time desc LIMIT 1   [ RunTime:0.0020s ]
+SQL: SELECT * FROM `ot_message` WHERE `to_user_id` = 1 AND `is_read` = 0 ORDER BY creat_time desc LIMIT 0,10   [ RunTime:0.0030s ]
+
+[ 2018-12-13T09:18:26+08:00 ] ::1 /index.php/Home/UserCenter/changeInfo
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `ot_user` [ RunTime:0.0070s ]
+SQL: SELECT * FROM `ot_user` WHERE `id` = 1 LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `ot_company` [ RunTime:0.0040s ]
+SQL: SELECT * FROM `ot_company` LIMIT 1   [ RunTime:0.0000s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined index: car D:\xampp\htdocs\Runtime\Cache\070bc33acece79ed50eeb5f8cf5ad8caacf106ee.file.changeInfo.html.php 第 147 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\070bc33acece79ed50eeb5f8cf5ad8caacf106ee.file.changeInfo.html.php 第 147 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.015001s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.015001s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.001000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.001000s ]
+
+[ 2018-12-13T09:18:28+08:00 ] ::1 /index.php/Home/User/loginOut
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+
+[ 2018-12-13T09:18:28+08:00 ] ::1 /index.php/Home/User/login.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000000s ]
+SQL: SHOW COLUMNS FROM `ot_set` [ RunTime:0.0060s ]
+SQL: SELECT * FROM `ot_set` WHERE `id` = 1 LIMIT 1   [ RunTime:0.0010s ]
+INFO: [ view_parse ] --START--
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.010001s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.010001s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.001000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.001000s ]
+
+[ 2018-12-13T09:18:34+08:00 ] ::1 /index.php/Home/User/login.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000000s ]
+SQL: SHOW COLUMNS FROM `ot_user` [ RunTime:0.0050s ]
+SQL: SELECT * FROM `ot_user` WHERE ( is_del=0 ) AND `user_phone` = '13142262045' LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-12-13T09:18:34+08:00 ] ::1 /index.php/Home/User/login/error/%E9%94%99%E8%AF%AF%EF%BC%9A%E8%B4%A6%E5%8F%B7%E4%B8%8D%E5%AD%98%E5%9C%A8%EF%BC%81.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `ot_set` [ RunTime:0.0050s ]
+SQL: SELECT * FROM `ot_set` WHERE `id` = 1 LIMIT 1   [ RunTime:0.0010s ]
+INFO: [ view_parse ] --START--
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.008000s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.008000s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.001001s ]
+INFO: [ app_end ] --END-- [ RunTime:0.001001s ]
+
+[ 2018-12-13T09:20:41+08:00 ] ::1 /index.php/Home/User/login/error/%E9%94%99%E8%AF%AF%EF%BC%9A%E8%B4%A6%E5%8F%B7%E4%B8%8D%E5%AD%98%E5%9C%A8%EF%BC%81.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `ot_user` [ RunTime:0.0040s ]
+SQL: SELECT * FROM `ot_user` WHERE ( is_del=0 ) AND `user_phone` = '13142262045' LIMIT 1   [ RunTime:0.0000s ]
+SQL: SHOW COLUMNS FROM `ot_company` [ RunTime:0.0040s ]
+SQL: SELECT * FROM `ot_company` WHERE `id` = 281 LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2018-12-13T09:20:41+08:00 ] ::1 /index.php/Home/Index/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000000s ]
+SQL: SHOW COLUMNS FROM `ot_company` [ RunTime:0.0040s ]
+SQL: SELECT * FROM `ot_company` WHERE `id` = 281 LIMIT 1   [ RunTime:0.0000s ]
+SQL: SHOW COLUMNS FROM `ot_message` [ RunTime:0.0030s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `ot_message` WHERE `to_user_id` = 498 AND `is_read` = 0 ORDER BY creat_time desc LIMIT 1   [ RunTime:0.0010s ]
+INFO: [ view_parse ] --START--
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.007000s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.007000s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000000s ]
+
+[ 2018-12-13T09:20:43+08:00 ] ::1 /index.php/Home/Travel/signTravel
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `ot_company` [ RunTime:0.0170s ]
+SQL: SELECT * FROM `ot_company` WHERE `id` = 281 LIMIT 1   [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `ot_set` [ RunTime:0.0170s ]
+SQL: SELECT * FROM `ot_set` WHERE `id` = 1 LIMIT 1   [ RunTime:0.0030s ]
+SQL: SHOW COLUMNS FROM `ot_travel_type` [ RunTime:0.0150s ]
+SQL: SELECT * FROM `ot_travel_type` WHERE ( is_del=0 )  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `ot_travel_nature` [ RunTime:0.0150s ]
+SQL: SELECT * FROM `ot_travel_nature`  [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `ot_user` [ RunTime:0.0190s ]
+SQL: SELECT * FROM `ot_user` WHERE `user_company` = 281 AND `is_del` = 0  [ RunTime:0.0030s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.041002s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.042002s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.002000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.002000s ]
+
+[ 2018-12-13T09:21:54+08:00 ] ::1 /index.php/Home/Index/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `ot_company` [ RunTime:0.0040s ]
+SQL: SELECT * FROM `ot_company` WHERE `id` = 281 LIMIT 1   [ RunTime:0.0000s ]
+SQL: SHOW COLUMNS FROM `ot_message` [ RunTime:0.0090s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `ot_message` WHERE `to_user_id` = 498 AND `is_read` = 0 ORDER BY creat_time desc LIMIT 1   [ RunTime:0.0020s ]
+INFO: [ view_parse ] --START--
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.009001s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.009001s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000000s ]
+
+[ 2018-12-13T09:21:55+08:00 ] ::1 /index.php/Home/Travel/signTravel
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `ot_company` [ RunTime:0.0140s ]
+SQL: SELECT * FROM `ot_company` WHERE `id` = 281 LIMIT 1   [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `ot_set` [ RunTime:0.0130s ]
+SQL: SELECT * FROM `ot_set` WHERE `id` = 1 LIMIT 1   [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `ot_travel_type` [ RunTime:0.0120s ]
+SQL: SELECT * FROM `ot_travel_type` WHERE ( is_del=0 )  [ RunTime:0.0030s ]
+SQL: SHOW COLUMNS FROM `ot_travel_nature` [ RunTime:0.0120s ]
+SQL: SELECT * FROM `ot_travel_nature`  [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `ot_user` [ RunTime:0.0170s ]
+SQL: SELECT * FROM `ot_user` WHERE `user_company` = 281 AND `is_del` = 0  [ RunTime:0.0030s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.015001s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.015001s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.003000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.001000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.001000s ]
+
+[ 2018-12-13T09:21:58+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.004000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.005000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:21:59+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.005000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:02+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:02+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:03+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:04+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:04+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.003000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:04+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:05+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:13+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:13+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003001s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:14+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.004000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.004000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:15+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:16+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:16+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:33+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002001s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:33+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.003000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:33+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:34+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:35+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003001s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:35+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.003000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.005001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.005001s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:36+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:36+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.004000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:37+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:37+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:37+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.003000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:38+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.005001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:40+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.003000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:40+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:40+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.003001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:41+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:41+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.003000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002001s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:42+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:42+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:22:42+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:23:04+08:00 ] ::1 /index.php/Home/Index/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.004000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003001s ]
+SQL: SHOW COLUMNS FROM `ot_company` [ RunTime:0.0180s ]
+SQL: SELECT * FROM `ot_company` WHERE `id` = 281 LIMIT 1   [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `ot_message` [ RunTime:0.0160s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `ot_message` WHERE `to_user_id` = 498 AND `is_read` = 0 ORDER BY creat_time desc LIMIT 1   [ RunTime:0.0030s ]
+INFO: [ view_parse ] --START--
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.013001s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.013001s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.005000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.005000s ]
+
+[ 2018-12-13T09:23:06+08:00 ] ::1 /index.php/Home/Travel/signTravel
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `ot_company` [ RunTime:0.0070s ]
+SQL: SELECT * FROM `ot_company` WHERE `id` = 281 LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `ot_set` [ RunTime:0.0060s ]
+SQL: SELECT * FROM `ot_set` WHERE `id` = 1 LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `ot_travel_type` [ RunTime:0.0210s ]
+SQL: SELECT * FROM `ot_travel_type` WHERE ( is_del=0 )  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `ot_travel_nature` [ RunTime:0.0120s ]
+SQL: SELECT * FROM `ot_travel_nature`  [ RunTime:0.0130s ]
+SQL: SHOW COLUMNS FROM `ot_user` [ RunTime:0.0160s ]
+SQL: SELECT * FROM `ot_user` WHERE `user_company` = 281 AND `is_del` = 0  [ RunTime:0.0020s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.018001s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.018001s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.001000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.001000s ]
+
+[ 2018-12-13T09:23:08+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:23:08+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.003000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001001s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:23:16+08:00 ] ::1 /index.php/Home/Index/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.003001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+
+[ 2018-12-13T09:23:16+08:00 ] ::1 /index.php/Home/User/login.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `ot_set` [ RunTime:0.0230s ]
+SQL: SELECT * FROM `ot_set` WHERE `id` = 1 LIMIT 1   [ RunTime:0.0030s ]
+INFO: [ view_parse ] --START--
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.047002s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.048002s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.002001s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.002001s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.004000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.005000s ]
+
+[ 2018-12-13T09:23:25+08:00 ] ::1 /index.php/Home/User/login.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `ot_user` [ RunTime:0.0110s ]
+SQL: SELECT * FROM `ot_user` WHERE ( is_del=0 ) AND `user_phone` = '13142262045' LIMIT 1   [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `ot_company` [ RunTime:0.0220s ]
+SQL: SELECT * FROM `ot_company` WHERE `id` = 281 LIMIT 1   [ RunTime:0.0020s ]
+
+[ 2018-12-13T09:23:25+08:00 ] ::1 /index.php/Home/Index/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `ot_company` [ RunTime:0.0170s ]
+SQL: SELECT * FROM `ot_company` WHERE `id` = 281 LIMIT 1   [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `ot_message` [ RunTime:0.0110s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `ot_message` WHERE `to_user_id` = 498 AND `is_read` = 0 ORDER BY creat_time desc LIMIT 1   [ RunTime:0.0020s ]
+INFO: [ view_parse ] --START--
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.030001s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.030001s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.001001s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001001s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.001000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.001000s ]
+
+[ 2018-12-13T09:23:27+08:00 ] ::1 /index.php/Home/Travel/signTravel
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `ot_company` [ RunTime:0.0180s ]
+SQL: SELECT * FROM `ot_company` WHERE `id` = 281 LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `ot_set` [ RunTime:0.0230s ]
+SQL: SELECT * FROM `ot_set` WHERE `id` = 1 LIMIT 1   [ RunTime:0.0040s ]
+SQL: SHOW COLUMNS FROM `ot_travel_type` [ RunTime:0.0140s ]
+SQL: SELECT * FROM `ot_travel_type` WHERE ( is_del=0 )  [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `ot_travel_nature` [ RunTime:0.0120s ]
+SQL: SELECT * FROM `ot_travel_nature`  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `ot_user` [ RunTime:0.0170s ]
+SQL: SELECT * FROM `ot_user` WHERE `user_company` = 281 AND `is_del` = 0  [ RunTime:0.0050s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.078005s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.079005s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.009000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.009000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.019001s ]
+INFO: [ app_end ] --END-- [ RunTime:0.020001s ]
+
+[ 2018-12-13T09:23:30+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.003001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.004000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.004000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:23:30+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:23:31+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:23:32+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.003000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:23:32+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.005001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.005001s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:23:33+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.003001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.004000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:23:33+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:23:35+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:23:35+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:23:37+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:23:37+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.004000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.005000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:23:37+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.004000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.005000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:23:44+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.004000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.004000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:23:45+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.003000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:23:46+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.003001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.004000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:23:56+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:23:57+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:23:57+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:23:58+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.004000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:23:58+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:23:59+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002001s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:23:59+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003001s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:23:59+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.017001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.017001s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:24:00+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.004000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.004000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:24:00+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.004000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.004000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:24:00+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.004001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.004001s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:24:00+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.006000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.004001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.004001s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:24:01+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:24:01+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.003000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003001s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:24:01+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.004000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.006000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:24:01+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.004000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.004000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:25:30+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:25:30+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.003000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:26:03+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.003000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+
+[ 2018-12-13T09:26:03+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.003000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+
+[ 2018-12-13T09:26:04+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+
+[ 2018-12-13T09:26:04+08:00 ] ::1 /index.php/Home/Index/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.008000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.009000s ]
+SQL: SHOW COLUMNS FROM `ot_company` [ RunTime:0.0260s ]
+SQL: SELECT * FROM `ot_company` WHERE `id` = 281 LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `ot_message` [ RunTime:0.0430s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `ot_message` WHERE `to_user_id` = 498 AND `is_read` = 0 ORDER BY creat_time desc LIMIT 1   [ RunTime:0.0050s ]
+INFO: [ view_parse ] --START--
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.030002s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.030002s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.002000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.002000s ]
+
+[ 2018-12-13T09:26:04+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.004000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.006000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.006000s ]
+
+[ 2018-12-13T09:26:06+08:00 ] ::1 /index.php/Home/Travel/signTravel
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `ot_company` [ RunTime:0.0210s ]
+SQL: SELECT * FROM `ot_company` WHERE `id` = 281 LIMIT 1   [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `ot_set` [ RunTime:0.0310s ]
+SQL: SELECT * FROM `ot_set` WHERE `id` = 1 LIMIT 1   [ RunTime:0.0030s ]
+SQL: SHOW COLUMNS FROM `ot_travel_type` [ RunTime:0.0240s ]
+SQL: SELECT * FROM `ot_travel_type` WHERE ( is_del=0 )  [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `ot_travel_nature` [ RunTime:0.0320s ]
+SQL: SELECT * FROM `ot_travel_nature`  [ RunTime:0.0030s ]
+SQL: SHOW COLUMNS FROM `ot_user` [ RunTime:0.0240s ]
+SQL: SELECT * FROM `ot_user` WHERE `user_company` = 281 AND `is_del` = 0  [ RunTime:0.0040s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.040002s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.040002s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.005000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.005000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.001000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.001000s ]
+
+[ 2018-12-13T09:26:09+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.004000s ]
+
+[ 2018-12-13T09:26:09+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+
+[ 2018-12-13T09:26:13+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+
+[ 2018-12-13T09:26:13+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.007000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+
+[ 2018-12-13T09:27:00+08:00 ] ::1 /index.php/Home/Index/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.016000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.016000s ]
+SQL: SHOW COLUMNS FROM `ot_company` [ RunTime:0.0160s ]
+SQL: SELECT * FROM `ot_company` WHERE `id` = 281 LIMIT 1   [ RunTime:0.0090s ]
+SQL: SHOW COLUMNS FROM `ot_message` [ RunTime:0.0150s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `ot_message` WHERE `to_user_id` = 498 AND `is_read` = 0 ORDER BY creat_time desc LIMIT 1   [ RunTime:0.0180s ]
+INFO: [ view_parse ] --START--
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.044002s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.044002s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.002000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.003001s ]
+
+[ 2018-12-13T09:27:02+08:00 ] ::1 /index.php/Home/Travel/signTravel
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `ot_company` [ RunTime:0.0210s ]
+SQL: SELECT * FROM `ot_company` WHERE `id` = 281 LIMIT 1   [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `ot_set` [ RunTime:0.0220s ]
+SQL: SELECT * FROM `ot_set` WHERE `id` = 1 LIMIT 1   [ RunTime:0.0030s ]
+SQL: SHOW COLUMNS FROM `ot_travel_type` [ RunTime:0.0260s ]
+SQL: SELECT * FROM `ot_travel_type` WHERE ( is_del=0 )  [ RunTime:0.0030s ]
+SQL: SHOW COLUMNS FROM `ot_travel_nature` [ RunTime:0.0160s ]
+SQL: SELECT * FROM `ot_travel_nature`  [ RunTime:0.0040s ]
+SQL: SHOW COLUMNS FROM `ot_user` [ RunTime:0.0240s ]
+SQL: SELECT * FROM `ot_user` WHERE `user_company` = 281 AND `is_del` = 0  [ RunTime:0.0020s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.037002s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.038002s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.003001s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.003001s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.006000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.006000s ]
+
+[ 2018-12-13T09:27:05+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:27:06+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:27:07+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.004000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:27:07+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.003001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:27:08+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:27:10+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+NOTIC: [8] Use of undefined constant CURLOPT_TIMEOUT - assumed 'CURLOPT_TIMEOUT' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 81 行.
+NOTIC: [8] Use of undefined constant CURLOPT_RETURNTRANSFER - assumed 'CURLOPT_RETURNTRANSFER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 82 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYPEER - assumed 'CURLOPT_SSL_VERIFYPEER' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 83 行.
+NOTIC: [8] Use of undefined constant CURLOPT_SSL_VERIFYHOST - assumed 'CURLOPT_SSL_VERIFYHOST' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 84 行.
+NOTIC: [8] Use of undefined constant CURLOPT_URL - assumed 'CURLOPT_URL' D:\xampp\htdocs\ThinkPHP\Library\Org\Sms\SmsBao.class.php 第 88 行.
+
+[ 2018-12-13T09:28:01+08:00 ] ::1 /index.php/Home/Index/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.008000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.009000s ]
+SQL: SHOW COLUMNS FROM `ot_company` [ RunTime:0.0330s ]
+SQL: SELECT * FROM `ot_company` WHERE `id` = 281 LIMIT 1   [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `ot_message` [ RunTime:0.0290s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `ot_message` WHERE `to_user_id` = 498 AND `is_read` = 0 ORDER BY creat_time desc LIMIT 1   [ RunTime:0.0070s ]
+INFO: [ view_parse ] --START--
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.040002s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.041002s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.002001s ]
+INFO: [ app_end ] --END-- [ RunTime:0.002001s ]
+
+[ 2018-12-13T09:28:03+08:00 ] ::1 /index.php/Home/Travel/signTravel
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000000s ]
+SQL: SHOW COLUMNS FROM `ot_company` [ RunTime:0.0210s ]
+SQL: SELECT * FROM `ot_company` WHERE `id` = 281 LIMIT 1   [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `ot_set` [ RunTime:0.0350s ]
+SQL: SELECT * FROM `ot_set` WHERE `id` = 1 LIMIT 1   [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `ot_travel_type` [ RunTime:0.0290s ]
+SQL: SELECT * FROM `ot_travel_type` WHERE ( is_del=0 )  [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `ot_travel_nature` [ RunTime:0.0230s ]
+SQL: SELECT * FROM `ot_travel_nature`  [ RunTime:0.0030s ]
+SQL: SHOW COLUMNS FROM `ot_user` [ RunTime:0.0290s ]
+SQL: SELECT * FROM `ot_user` WHERE `user_company` = 281 AND `is_del` = 0  [ RunTime:0.0020s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Undefined index: user D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+NOTIC: [8] Trying to get property of non-object D:\xampp\htdocs\Runtime\Cache\44e0f11f6609caf7845221f0dfe0aa30bb20c2fe.file.signTravel.html.php 第 248 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.056003s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.056003s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.004000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.004000s ]
+
+[ 2018-12-13T09:28:06+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.004000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.004000s ]
+
+[ 2018-12-13T09:28:07+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.003001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+
+[ 2018-12-13T09:28:11+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+
+[ 2018-12-13T09:28:12+08:00 ] ::1 /index.php/Home/Travel/getBaiduApi.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+
+[ 2018-12-13T09:28:35+08:00 ] ::1 /index.php/Home/Travel/signTravelDo
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.003001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `ot_set` [ RunTime:0.0180s ]
+SQL: SELECT * FROM `ot_set` WHERE `id` = 1 LIMIT 1   [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `ot_user` [ RunTime:0.0200s ]
+SQL: SELECT * FROM `ot_user` WHERE `id` = 498 LIMIT 1   [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `ot_travel_type` [ RunTime:0.0160s ]
+SQL: SELECT * FROM `ot_travel_type` WHERE `id` = 10 LIMIT 1   [ RunTime:0.0020s ]
+NOTIC: [8] Undefined index: is_dx D:\xampp\htdocs\Home\Controller\TravelController.class.php 第 95 行.
+SQL: SHOW COLUMNS FROM `ot_travel` [ RunTime:0.0270s ]
+SQL: INSERT INTO `ot_travel` (`use_user_id`,`people_num`,`route`,`travel_reason`,`departure_time`,`collecting_time`,`travel_nature`,`travel_type_id`,`travel_people`,`from_place`,`from_place_location`,`to_place`,`to_place_location`,`is_need_audit`,`state`,`serial_number`,`is_arrange_car`,`is_need_manage_review`,`is_need_center_review`,`is_need_receipt`,`is_need_evaluate`,`is_need_sendcar_review`,`is_need_settlement`,`user_id`,`sign_time`,`user_name`,`company_id`) VALUES ('434','3','A','1','1544664497','1544664499','会务出行','10','方友华, 田蔚','七色光文化艺术中心','113.15012,29.306274','雷诺表','113.113513,29.379317','0','0','201812130001','1','1','1','1','1','0','0','498','1544664515','丁佳泳','281') [ RunTime:0.0050s ]
+SQL: UPDATE `ot_set` SET `sms_account`='yxcar',`sms_pwd`='yxcar12345611',`is_lock_car`='1',`web_name`='云溪区公务出行审批管理系统   QQ群咨询536553532',`is_open_manual`='1',`service_id`='150558',`ak`='K1D52f2HvLi2UraSxKhKtCZHGCG9LcOS',`audit_start_time`='2017-09-04',`audit_end_time`='2017-09-04',`center_address`='岳阳市云溪区人民政府',`center_location`='113.278796,29.479891',`province`='湖南省',`city`='岳阳市',`is_use_gps`='0',`serial_number`='201812130002',`companyreviewvoice`='1',`centerreviewvoice`='1',`is_open_sms`='1',`jjaccount`='13112345678',`jjpwd`='666666',`is_open_push`='1',`franchisee_id`='9568cbe863ec11e8a86d70106fb1fc52' WHERE `id` = 1 [ RunTime:0.0040s ]
+
+[ 2018-12-13T09:28:37+08:00 ] ::1 /index.php/Home/Travel/myTravels
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002001s ]
+INFO: [ view_parse ] --START--
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.054003s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.054003s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.004000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.004000s ]
+
+[ 2018-12-13T09:28:38+08:00 ] ::1 /index.php/Home/Travel/getMyTravels
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `ot_user` [ RunTime:0.0160s ]
+SQL: SELECT * FROM `ot_user` WHERE `id` = 498 LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `ot_travel` [ RunTime:0.0280s ]
+SQL: SELECT * FROM `ot_travel` WHERE `is_del` = 0 AND `user_id` = 498 ORDER BY `serial_number` desc  [ RunTime:0.0090s ]
+SQL: SELECT * FROM `ot_travel` WHERE `is_del` = 0 AND `user_id` = 498 ORDER BY `serial_number` desc LIMIT 0,10   [ RunTime:0.0070s ]
+SQL: SHOW COLUMNS FROM `ot_travel_type` [ RunTime:0.0200s ]
+SQL: SELECT * FROM `ot_travel_type` WHERE `id` = 10 LIMIT 1   [ RunTime:0.0040s ]
+SQL: SELECT * FROM `ot_travel_type` WHERE `id` = 10 LIMIT 1   [ RunTime:0.0030s ]
+
+[ 2018-12-13T09:28:42+08:00 ] ::1 /index.php/Home/Company/reviewTravel
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000000s ]
+INFO: [ view_parse ] --START--
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.017001s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.017001s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.001001s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001001s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.001000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.001000s ]
+
+[ 2018-12-13T09:28:43+08:00 ] ::1 /index.php/Home/Company/getReviewTravel
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.009000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.006000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.006000s ]
+SQL: SHOW COLUMNS FROM `ot_travel` [ RunTime:0.0260s ]
+SQL: SELECT * FROM `ot_travel` WHERE `is_del` = 0 AND `company_id` = 281 AND `state` = 0 ORDER BY `serial_number` desc  [ RunTime:0.0170s ]
+SQL: SELECT * FROM `ot_travel` WHERE `is_del` = 0 AND `company_id` = 281 AND `state` = 0 ORDER BY `serial_number` desc LIMIT 0,10   [ RunTime:0.0090s ]
+SQL: SHOW COLUMNS FROM `ot_travel_type` [ RunTime:0.0160s ]
+SQL: SELECT * FROM `ot_travel_type` WHERE `id` = 10 LIMIT 1   [ RunTime:0.0020s ]
+
+[ 2018-12-13T09:28:48+08:00 ] ::1 /index.php/Home/Company/reviewTravelDo.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `ot_travel` [ RunTime:0.0110s ]
+SQL: SELECT * FROM `ot_travel` WHERE `id` = 2583 LIMIT 1   [ RunTime:0.0030s ]
+SQL: SHOW COLUMNS FROM `ot_travel` [ RunTime:0.0210s ]
+SQL: UPDATE `ot_travel` SET `serial_number`='201812130001',`dispatch_number`=NULL,`user_id`='498',`use_user_id`='434',`from_place_location`='113.15012,29.306274',`from_place`='七色光文化艺术中心',`to_place_location`='113.113513,29.379317',`to_place`='雷诺表',`departure_time`='1544664497',`people_num`='3',`travel_people`='方友华, 田蔚',`travel_reason`='1',`travel_nature`='会务出行',`travel_type_id`='10',`is_arrange_car`='1',`is_need_manage_review`='1',`is_need_center_review`='1',`is_need_receipt`='1',`is_need_evaluate`='1',`is_need_audit`='0',`arrange_type_id`=NULL,`car_id`=NULL,`driver_id`=NULL,`manage_res`='1',`manage_error_msg`=NULL,`manage_time`='1544664528',`center_res`=NULL,`center_error_msg`=NULL,`center_time`=NULL,`audit_res`=NULL,`audit_error_msg`=NULL,`audit_time`=NULL,`send_car_time`=NULL,`start_car_time`=NULL,`finish_time`=NULL,`sign_time`='1544664515',`cancel_reason`=NULL,`cancel_time`=NULL,`state`='1',`start_use_car_time`=NULL,`end_use_car_time`=NULL,`start_kilometers`=NULL,`end_kilometers`=NULL,`mileage`=NULL,`fees_num`=NULL,`fees_sum`=NULL,`parking_rate_num`=NULL,`parking_rate_sum`=NULL,`service_charge`=NULL,`driver_cost`=NULL,`over_time_cost`=NULL,`over_mileage_cost`=NULL,`else_cost`=NULL,`totle_rate`=NULL,`attitude`=NULL,`efficiency`=NULL,`evaluate`=NULL,`pay_type`=NULL,`credential`=NULL,`is_manual`='0',`route`='A',`is_law_travel`='0',`is_del`='0',`user_name`='丁佳泳',`company_id`='281',`boarding_time`=NULL,`alighting_time`=NULL,`total_mileage`=NULL,`old_state`=NULL,`cancel_res`=NULL,`collecting_time`='1544664499',`car_type_id`=NULL,`is_need_sendcar_review`='0',`sendcar_review_res`=NULL,`sendcar_review_time`=NULL,`sendcar_review_msg`=NULL,`is_need_settlement`='0',`is_settlemented`=NULL,`is_dx`='0',`jj_id`=NULL,`send_other_res`=NULL,`jj_driver_name`=NULL,`jj_driver_phone`=NULL,`jj_car_num`=NULL,`driver_bt_cost`=NULL,`driver_bt_type`=NULL,`driver_bt_ts`=NULL WHERE `id` = 2583 [ RunTime:0.0010s ]
+SQL: SELECT * FROM `ot_travel` WHERE `id` = 2583 LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `ot_message` [ RunTime:0.0060s ]
+SQL: INSERT INTO `ot_message` (`to_user_id`,`title`,`content`,`creat_time`,`is_read`) VALUES ('498','出行申请单位审核通过','恭喜您，您的出行申请单位管理员审核通过，通过时间为2018-12-13 09:28:48','1544664528','0') [ RunTime:0.0000s ]
+
+[ 2018-12-13T09:28:48+08:00 ] ::1 /index.php/Home/Company/reviewTravel
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.004000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+INFO: [ view_parse ] --START--
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.040002s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.040002s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.004000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.005000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.002000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.003000s ]
+
+[ 2018-12-13T09:28:48+08:00 ] ::1 /index.php/Home/Company/getReviewTravel
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.008001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.004000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.005000s ]
+SQL: SHOW COLUMNS FROM `ot_travel` [ RunTime:0.0180s ]
+SQL: SELECT * FROM `ot_travel` WHERE `is_del` = 0 AND `company_id` = 281 AND `state` = 0 ORDER BY `serial_number` desc  [ RunTime:0.0140s ]
+SQL: SELECT * FROM `ot_travel` WHERE `is_del` = 0 AND `company_id` = 281 AND `state` = 0 ORDER BY `serial_number` desc LIMIT 0,10   [ RunTime:0.0110s ]
+SQL: SHOW COLUMNS FROM `ot_travel_type` [ RunTime:0.0100s ]
+
+[ 2018-12-13T19:47:58+08:00 ] ::1 /
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `ot_company` [ RunTime:0.0060s ]
+SQL: SELECT * FROM `ot_company` WHERE `id` = 281 LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `ot_message` [ RunTime:0.0070s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `ot_message` WHERE `to_user_id` = 1 AND `is_read` = 0 ORDER BY creat_time desc LIMIT 1   [ RunTime:0.0010s ]
+INFO: [ view_parse ] --START--
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.009000s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.009000s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000000s ]
+
+[ 2018-12-13T19:48:07+08:00 ] ::1 /
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `ot_company` [ RunTime:0.0050s ]
+SQL: SELECT * FROM `ot_company` WHERE `id` = 281 LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `ot_message` [ RunTime:0.0040s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `ot_message` WHERE `to_user_id` = 1 AND `is_read` = 0 ORDER BY creat_time desc LIMIT 1   [ RunTime:0.0010s ]
+INFO: [ view_parse ] --START--
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.008000s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.008000s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.001000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.001000s ]
+
+[ 2018-12-13T19:48:10+08:00 ] ::1 /index.php/Home/User/loginOut
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+
+[ 2018-12-13T19:48:10+08:00 ] ::1 /index.php/Home/User/login.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `ot_set` [ RunTime:0.0070s ]
+SQL: SELECT * FROM `ot_set` WHERE `id` = 1 LIMIT 1   [ RunTime:0.0010s ]
+INFO: [ view_parse ] --START--
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.009001s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.009001s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.001000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.001000s ]
+

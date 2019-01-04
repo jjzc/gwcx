@@ -1,0 +1,125 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+body{
+	min-height: 400px;
+	min-width: 800px;
+	background-image: url(../img/login_bg.jpg);
+	background-size: 100% 100%;
+	height: 100%;
+	background-repeat: no-repeat;	
+}
+
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { /* WebKit*/  
+    color:    #767c8b;
+    font-size: 18px;  
+}  
+input:-moz-placeholder, textarea:-moz-placeholder { /* Mozilla Firefox 4 to 18 */  
+    color:    #767c8b;  
+    font-size: 18px;
+}  
+input::-moz-placeholder, textarea::-moz-placeholder { /* Mozilla Firefox 19+ */  
+    color:    #767c8b;  
+    font-size: 18px;
+}  
+input:-ms-input-placeholder, textarea:-ms-input-placeholder { /* IE 10+ */  
+    color:    #767c8b;  
+    font-size: 18px;  
+}
+
+
+
+.login_box{
+	width: 1000px;
+	height: 400px;
+	margin: 0px auto;
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+.top_row{height: 80px; width: 100%; text-align: center;}
+.top_con{height: 80px; width: auto; margin-left: 160px;}
+.top_con img{ display: inline-block; height: 80px; padding: 0; margin: 0;float: left;}
+.top_con dd{ display: inline-block; height: 80px;padding: 0; margin: 0; float: left;}
+.top_con h1{
+	font-family: "宋体"; color: #FFFFFF; font-size: 32px;position: relative;	height: 45px; line-height: 45px;
+			
+}
+.top_con h1:before{
+	content: attr(text);  
+    position: absolute;                  
+    z-index: 2;                
+    color: #CBE1FF;  
+    -webkit-mask:linear-gradient(to bottom, #FF0000,transparent);                
+}
+.top_con h2{font-family: "微软雅黑";color: #FFFFFF; font-size: 12px; position: relative;	height: 35px; line-height: 35px;}
+.top_con h2:before{
+	content: attr(text);  
+    position: absolute;                  
+    z-index: 3;
+    font-size: 12px;
+    color: #CBE1FF;  
+    -webkit-mask:linear-gradient(to bottom, #FF0000,transparent);                
+}
+
+.input_box{
+	width: 773px;
+	height: 150px;
+	margin: 0px auto;
+	margin-top: 35px;
+	padding: 0 50px 50px 50px;
+	background-image: url(../img/input_bg.png);
+	background-repeat: no-repeat;
+}
+.input_box h4{
+	margin-top: 5px;
+}
+
+.boxtitle{
+	font-family: "黑体";
+	height: 60px;
+	font-size: 30px;
+	color: #FFFFFF;
+	line-height: 60px;
+	font-weight: bold;
+	text-align: left;
+	padding-left: 30px;
+}
+.input_row{
+	
+}
+.input_row input{
+	height: 48px;
+	width: 220px;
+	padding-left: 60px;
+	border: solid 2px #3387be;
+	background-image: url(../img/input_left.png);
+	background-repeat: no-repeat;
+	font-size: 18px;
+	margin-right: 15px;
+}
+
+.input_row button{
+	background: #3387BE;
+	border-radius: 3px;
+	color: #FFFFFF;
+	border: none;
+	padding: 0;
+	margin: 0;
+	font-size: 18px;
+	padding: 0 15px;
+	height: 50px;
+}
+
+.buttom_info{
+	width: 100%;
+}
+.buttom_info p{
+	font-family: "微软雅黑";
+	color: #FFFFFF;
+	text-align: center;
+	height: 40px;
+	line-height: 40px;
+	font-size: 14px;
+}
