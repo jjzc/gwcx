@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>手工补单</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="Preview page of Metronic Admin Theme #1 for statistics, charts, recent events and reports" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/morris/morris.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/jqvmap/jqvmap/jqvmap.css" rel="stylesheet" type="text/css" />
+
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
+    <!-- END PAGE LEVEL PLUGINS -->
+
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
+    <!-- END THEME GLOBAL STYLES -->
+    <!-- BEGIN THEME LAYOUT STYLES -->
+    <link href="{$smarty.const.PUBLIC_URL}/assets/layouts/layout/css/layout.min.css" rel="stylesheet" type="text/css" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/layouts/layout/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color" />
+    <link href="{$smarty.const.PUBLIC_URL}/assets/layouts/layout/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <!-- END THEME LAYOUT STYLES -->
+    <link rel="shortcut icon" href="favicon.ico" /> </head>
+<!-- END HEAD -->
+
+<body class="page-sidebar-closed-hide-logo page-content-white">
+<div class="page-wrapper">
+
+    <div class="page-container">
+        <!-- BEGIN SIDEBAR -->
+        <div class="page-sidebar-wrapper">
+            <div class="page-sidebar navbar-collapse collapse">
+
+                <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
+
+                    <li class="sidebar-toggler-wrapper hide">
+                        <div class="sidebar-toggler">
+                            <span></span>
+                        </div>
+                    </li>
+
+
+                    <li class="nav-item start active open">
+                        <a href="javascript:;" class="nav-link nav-toggle">
+                            <i class="icon-home"></i>
+                            <span class="title">出行管理</span>
+                            <span class="selected"></span>
+                            <span class="arrow open"></span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li class="nav-item start">
+                                <a href="/index.php/Admin/Travel/backlogTravels" class="nav-link ">
+                                    <i class="icon-bulb"></i>
+                                    <span class="title">工作台</span>
+                                    <span class="selected"></span>
+                                </a>
+                            </li>
+                            <li class="nav-item start active open">
+                                <a href="/index.php/Admin/Travel/manualTravels" class="nav-link ">
+                                    <i class="icon-bulb"></i>
+                                    <span class="title">手工补单</span>
+                                    <!--<span class="badge badge-success">1</span>-->
+                                </a>
+                            </li>
+                            <li class="nav-item start">
+                                <a href="/index.php/Admin/Travel/allTravels" class="nav-link ">
+                                    <i class="icon-bulb"></i>
+                                    <span class="title">全部出行</span>
+                                    <!--<span class="badge badge-success">1</span>-->
+                                </a>
+                            </li>
+                            <li class="nav-item start">
+                                <a href="/index.php/Admin/Travel/recycleTravels" class="nav-link ">
+                                    <i class="icon-bulb"></i>
+                                    <span class="title">回收站</span>
+                                    <!--<span class="badge badge-danger">5</span>-->
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="page-content-wrapper">
+            <!-- BEGIN CONTENT BODY -->
+            <div class="page-content">
+
+
+
+
+                <!--表格开始-->
+                <!--全部出行表格-->
+                <div class="row" id="waitReviewRow">
+                    <div class="col-md-12">
+                        <div class="portlet light bordered">
+                            <div class="portlet-title">
+                                <div class="caption font-dark">
+                                    <i class="icon-settings font-dark"></i>
+                                    <span class="caption-subject bold uppercase">手工补单</span>
+                                </div>
+                                <div class="tools"></div>
+                            </div>
+
+                            <div class="portlet-body">
+
+                                <div class="col-md-12">
+                                    <div class="row col-md-6">
+                                        流水号:
+                                        <input type="text" name="serial_number" id="serial_number" class="form-control">
+                                    </div>
+                                    <table width="950" border="1" cellspacing="0" cellpadding="0" class="travelDetailTable">
+                                        <tr>
+                                            <td width="30" rowspan="9">出行申请数据</td>
+                                            <td width="150">用车单位</td>
+                                            <td width="155">
+                                                <!--此处需要用到插件-->
+                                                <!--<input id="companyTags" autocomplete="off">-->
+                                                <select class="form-control" name="company_id"  id="company_id">
+                                                    {foreach $companys as $k=>$v}
+                                                    <option value="{$v.id}" >{$v.company_name}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </td>
+                                            <td width="140">用车人</td>
+                                            <td width="155">
+                                                <!--<input id="userTags" autocomplete="off">-->
+                                                <select class="form-control" name="use_user_id"  id="use_user_id">
+                                                    {foreach $users as $k=>$v}
+                                                    <option value="{$v.id}" >{$v.user_name}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </td>
+                                            <td width="140">提交时间</td>
+                                            <td width="250">
+                                                <div class="input-group date form_datetime col-md-5" data-date="" data-date-format="yyyy-mm-dd hh:ii" data-link-field="dtp_input1">
+                                                    <input name="sign_time" id="sign_time" class="form-control" size="16" type="text" value="" readonly style="width: 150px">
+                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>出行方式</td>
+                                            <td>
+                                                <select class="form-control" name="travel_type_id" id="travel_type_id">
+                                                    <option value="0" >选择出行方式</option>
+                                                    {foreach $travel_types as $k=>$v}
+                                                    {if $v.is_del eq 0} <option value="{$v.id}">{$v.travel_name}</option>{/if}
+                                                    {/foreach}
+
+                                                </select>
+                                            </td>
+                                            <td>联系方式</td>
+                                            <td>
+                                                <!--<input type="text" class="form-control" name="user_phone" id="user_phone"  autocomplete="off"/>-->
+                                            </td>
+                                            <td>预约时间</td>
+                                            <td>
+                                                <div class="input-group date form_datetime col-md-5" data-date="" data-date-format="yyyy-mm-dd hh:ii" data-link-field="dtp_input1">
+                                                    <input name="departure_time" id="departure_time" class="form-control" size="16" type="text" value="" readonly style="width: 150px">
+                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>出车时间</td>
+                                            <td colspan="2">
+                                                <div class="input-group date form_datetime col-md-5" data-date="" data-date-format="yyyy-mm-dd hh:ii" data-link-field="dtp_input1">
+                                                    <input name="start_car_time" id="start_car_time" class="form-control" size="16" type="text"  value="" readonly style="width: 150px">
+                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                </div>
+                                            </td>
+                                            <td>结束用车时间</td>
+                                            <td colspan="2">
+                                                <div class="input-group date form_datetime col-md-5" data-date="" data-date-format="yyyy-mm-dd hh:ii" data-link-field="dtp_input1">
+                                                    <input name="end_use_car_time" id="end_use_car_time" class="form-control" size="16" type="text"  value="" readonly style="width: 150px">
+                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>行车路线</td>
+                                            <td colspan="3"><input type="text" name="from_place" class="form-control" id="from_place"  autocomplete="off"/>--<input type="text" name="to_place" id="to_place" class="form-control"  autocomplete="off"/></span></td>
+                                            <td>支付方式</td>
+                                            <td>
+                                                <select class="form-control" name="pay_type" id="pay_type" >
+                                                    <option value="0" >选择支付方式</option>
+                                                    {foreach $pay_types as $k=>$v}
+                                                    {if $v.is_del eq 0}<option value="{$v.pay_name}">{$v.pay_name}</option>{/if}
+                                                    {/foreach}
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>乘车人名单</td>
+                                            <td colspan="3">
+                                                <input type="text" class="form-control" id="travel_people" placeholder="乘车人">
+                                                <!--<select class="form-control" name="travel_people_id[]" multiple="multiple" id="select_user">-->
+                                                <!--{foreach $companys as $k=>$v}-->
+                                                <!--{foreach $v.users as $w=>$r}-->
+                                                <!--{if $r.user_name<>''}<option value="{$r.id}" >{$r.user_name}</option>{/if}-->
+                                                <!--{/foreach}-->
+                                                <!--{/foreach}-->
+                                                <!--</select>-->
+                                            </td>
+                                            <td>乘车人数</td>
+                                            <td>
+                                                <input type="text" class="form-control"  id="people_num"  name="people_num" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>出行性质</td>
+                                            <td>
+                                                <select class="form-control" name="travel_nature" id="travel_nature" style="width: 150px;">
+                                                    <option value="0" >选择出行性质</option>
+                                                    {foreach $travel_nature as $k=>$v}
+                                                    <option value="{$v.nature_name}">{$v.nature_name}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </td>
+                                            <td>出行事由</td>
+                                            <td colspan="3"><input type="text" name="travel_reason" id="travel_reason" class="form-control"  autocomplete="off"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td>驾驶员姓名</td>
+                                            <td>
+                                                <select class="form-control" name="driver_id"  id="driver_id">
+                                                    {foreach $drivers as $k=>$v}
+                                                    <option value="{$v.id}" >{$v.driver_name}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </td>
+                                            <td>联系方式</td>
+                                            <td></td>
+                                            <td>上车地点</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr nowrap="nowrap">
+                                            <td>车牌号</td>
+                                            <td>
+                                                <select class="form-control" name="car_id"  id="car_id">
+                                                    {foreach $cars as $k=>$v}
+                                                    <option value="{$v.id}" >{$v.car_num}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </td>
+                                            <td>车辆名称</td>
+                                            <td></td>
+                                            <td>座位数</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>行驶里程</td>
+                                            <td><input type="text" name="mileage"  id="mileage" class="form-control" placeholder="行驶里程"></td>
+                                            <td>开始公里数</td>
+                                            <td>
+                                                <input type="text" class="form-control"  id="start_kilometers"  name="start_kilometers" />
+                                            </td>
+                                            <td>结束公里数</td>
+                                            <td>
+                                                <input type="text" class="form-control"  id="end_kilometers"  name="end_kilometers" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td height="70">收费详情</td>
+                                            <style>
+                                                #fy input{ display: inline-block; padding: 0 4px; width: 40px; }
+                                            </style>
+                                            <td colspan="6" style="text-align: left" id="fy">
+                                                路桥费<input type="text" name="fees_sum" id="fees_sum"  class="form-control" placeholder="" style="width: 35px" >元，停车费<input type="text" name="parking_rate_sum" id="parking_rate_sum"  class="form-control" placeholder="" style="width: 35px">元，出行服务费<input type="text" name="service_charge" id="service_charge"  class="form-control" style="width: 35px">元，司机住宿补贴<input type="text" name="driver_cost" id="driver_cost"  class="form-control" style="width: 35px">元，超时费<input type="text" name="over_time_cost" id="over_time_cost" class="form-control" placeholder="" style="width: 35px">元，超公里费<input type="text" name="over_mileage_cost" id="over_mileage_cost" class="form-control" placeholder="" style="width: 35px">元，其他费用<input type="text" name="else_cost"  id="else_cost" class="form-control" placeholder="" style="width: 35px">元。
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="3">其他</td>
+                                            <td rowspan="2">对驾驶员服务评价</td>
+                                            <td colspan="5" style="text-align: left">
+                                                <label><input name="attitude" type="radio" value="1" />非常不满意 </label>
+                                                <label><input name="attitude" type="radio" value="2" />不满意 </label>
+                                                <label><input name="attitude" type="radio" value="3" />一般</label>
+                                                <label><input name="attitude" type="radio" value="4" />满意</label>
+                                                <label><input name="attitude" type="radio" value="5" />非常满意</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5" style="text-align: left">意见：<input type="text" name="evaluate" id="evaluate"  class="form-control" placeholder="评价"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="6" style="text-align: left">出行备注：</td>
+                                        </tr>
+                                    </table>
+
+
+                                    <div class="form-group" style="margin-top: 15px;">
+                                        <button type="button" class="btn btn-primary" onclick="addTravelPost()" id="btn">提交</button>
+                                        <!--<a class="btn btn-primary" onclick="addTravelPost()">提交</a>-->
+                                    </div>
+
+
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!--[if lt IE 9]>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/respond.min.js"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/excanvas.min.js"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/ie8.fix.min.js"></script>
+<![endif]-->
+<!-- BEGIN CORE PLUGINS -->
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+<!-- END CORE PLUGINS -->
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/moment.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/morris/morris.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/morris/raphael-min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/counterup/jquery.waypoints.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/counterup/jquery.counterup.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/amcharts/amcharts/amcharts.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/amcharts/amcharts/serial.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/amcharts/amcharts/pie.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/amcharts/amcharts/radar.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/amcharts/amcharts/themes/light.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/amcharts/amcharts/themes/patterns.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/amcharts/amcharts/themes/chalk.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/amcharts/ammap/ammap.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/amcharts/ammap/maps/js/worldLow.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/amcharts/amstockcharts/amstock.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/fullcalendar/fullcalendar.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/horizontal-timeline/horizontal-timeline.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/flot/jquery.flot.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/flot/jquery.flot.resize.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/flot/jquery.flot.categories.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/jquery-easypiechart/jquery.easypiechart.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/jqvmap/jqvmap/jquery.vmap.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.russia.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.world.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.europe.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.germany.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.usa.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/jqvmap/jqvmap/data/jquery.vmap.sampledata.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN THEME GLOBAL SCRIPTS -->
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/scripts/app.min.js" type="text/javascript"></script>
+<!-- END THEME GLOBAL SCRIPTS -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script src="{$smarty.const.PUBLIC_URL}/assets/pages/scripts/dashboard.min.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL SCRIPTS -->
+<!-- BEGIN THEME LAYOUT SCRIPTS -->
+<script src="{$smarty.const.PUBLIC_URL}/assets/layouts/layout/scripts/layout.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/layouts/layout/scripts/demo.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/layouts/global/scripts/quick-nav.min.js" type="text/javascript"></script>
+<!-- END THEME LAYOUT SCRIPTS -->
+
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/scripts/datatable.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/datatables/language.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/template.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+
+<script src="{$smarty.const.PUBLIC_URL}/plugin/layer/layer.js" type="text/javascript"></script>
+
+<!-- END PAGE LEVEL SCRIPTS -->
+
+
+<script>
+
+
+
+    jQuery(document).ready(function() {
+
+    });
+
+
+
+
+
+
+
+</script>
+
+
+
+</body>
+</html>
