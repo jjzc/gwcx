@@ -429,13 +429,13 @@ class TravelController extends CommonController {
         $map["is_del"]=array('eq',0);
 
         if(!empty($_POST["searchKey"])){
-            $model = new CompanyModel();
-            $company = $model->where(array("company_name"=>trim($_POST["searchKey"])))->find();
+            $key = trim($_POST["searchKey"]);
+            $search_sql = "serial_number like '%$key%' or from_place like '%$key%' or to_place like '%$key%'";
+            $company = M("company")->where(array("is_del"=>0,"company_name"=>array("like","%".$key."%")))->field("id")->select();
             if($company){
-                $map['company_id'] = array('eq',$company["id"]);
-            }else{
-                $map['serial_number|from_place|to_place'] = array('like','%'.trim($_POST["searchKey"]).'%');
+                $search_sql .=  " or company_id in (".implode(",",array_column($company,"id")).")";
             }
+            $map["_string"] = $search_sql;
         }
         if(!empty($_POST["startTime"])){
             $map['departure_time']  = array('gt',strtotime($_POST["startTime"]));
@@ -465,7 +465,6 @@ class TravelController extends CommonController {
 
         $res=M("Travel")->where($map)->order("id desc")->limit($_POST["start"],$_POST["length"])->select();
 
-        M("Travel")->getLastSql();
         //返回数据
         $travels=array();
         $travels["draw"]=$_POST["draw"];

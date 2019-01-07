@@ -7,8 +7,6 @@
  */
 
 namespace Admin\Controller;
-
-
 use Model\CarTypeModel;
 use Model\PayTypeModel;
 use Model\SetModel;
@@ -275,7 +273,111 @@ class UserCenterController extends CommonController
         $res=M("Log")->add($data);
     }
 
-    public function test(){
+    //菜单管理
+    public function menu(){
+
+        $menu=M("Url")->select();
+
+        $array = array();
+        // 构建生成树中所需的数据
+        foreach($menu as $k => $r) {
+            $r['submenu'] = $r['is_menu']==0 ? '<font color="#cccccc">添加子菜单</font>' : "<a href='javascript:void(0)' class='add-menu' data-id='".$r['id']."'>添加子菜单</a>";
+            $r['edit']    =  "<a href='javascript:void(0)' class='edit-menu' data-id='".$r['id']."'>修改</a>";
+            $r['del']     =  "<a href='javascript:void(0)' class='del-menu' data-id='".$r['id']."'>删除</a>";
+            switch ($r['is_menu']) {
+                case 0:
+                    $r['is_menu'] = '否';
+                    break;
+                case 1:
+                    $r['is_menu'] = '是';
+                    break;
+            }
+            $array[]      = $r;
+        }
+
+        $str  = "<tr class='tr'>
+				    <td style='text-align:left'>\$spacer \$title (\$name) \$uid</td> 
+				    <td align='center'>\$url</td> 
+				    <td align='center'>\$is_menu</td> 
+					<td align='center'>
+						\$submenu | \$edit | \$del
+					</td>
+				  </tr>";
+
+        $Tree = A("Tree");
+        $Tree->icon = array('&nbsp;&nbsp;&nbsp;│ ','&nbsp;&nbsp;&nbsp;├─ ','&nbsp;&nbsp;&nbsp;└─ ');
+        $Tree->nbsp = '&nbsp;&nbsp;&nbsp;';
+        $Tree->init($array);
+        $html_tree = $Tree->get_tree(0, $str);
+        $this->assign('html_tree',$html_tree);
+        $this->display();
+
+
+    }
+
+    public function menuForm(){
+        $id = I("id");
+
+        $menu = M("url")->where(array("id"=>$id))->find();
+        if(empty($menu)){
+            $pid = I("pid");
+            $this->assign('pid',$pid);
+        }
+
+        $this->assign('menu',$menu);
+        $this->display();
+    }
+
+    public function addMenuDo(){
+        $pid = I("pid");
+        $data['id'] = I("id");
+        $data['name'] = I("name");
+        $data['url'] = I("url");
+        $data['is_menu'] = I("is_menu");
+
+        $model = M("url");
+
+        if($data['id']){  //修改
+            $res = $model->save($data);
+            if($res !== false){
+                $this->ajaxReturn(array("code"=>1,"msg"=>"修改成功"));
+            }else{
+                $this->ajaxReturn(array("code"=>0,"msg"=>"修改失败"));
+            }
+        }
+        if($pid){  //添加子菜单
+            $pMenu = $model->where(array("id"=>$pid,"is_menu"=>1))->find();
+            if(empty($pMenu)){
+                $this->ajaxReturn(array("code"=>0,"msg"=>"添加子菜单失败"));
+            }
+            unset($data["id"]);
+            $data["pid"] = $pid;
+            $res = $model->add($data);
+            if($res){
+                $this->ajaxReturn(array("code"=>1,"msg"=>"添加子菜单成功"));
+
+            }else{
+                $this->ajaxReturn(array("code"=>0,"msg"=>"添加子菜单失败"));
+            }
+        }
+        $this->ajaxReturn(array("code"=>0,"msg"=>"参数有误!"));
+    }
+
+    public function delMenu(){
+        $id = I("id");
+
+        //TODO 有子菜单是否不允许删除？
+        if($check = M("url")->where(array("pid"=>$id))->find()){
+            $this->ajaxReturn(array("code"=>0,"msg"=>"有子菜单不允许删除，请先删除子菜单"));
+        }
+
+        $res = M("url")->where(array("id"=>$id))->delete();
+
+        if($res){
+            $this->ajaxReturn(array("code"=>1,"msg"=>"删除成功"));
+        }else{
+            $this->ajaxReturn(array("code"=>0,"msg"=>"删除失败"));
+        }
 
     }
 }

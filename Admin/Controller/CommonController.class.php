@@ -131,9 +131,9 @@ class CommonController extends Controller
             return $result;
         }
 
-        //$userUrl=session("userUrl");
-        //$this->assign("userUrl",$userUrl);
-        //$this->assign("userName",$userName);
+//        $userUrl=session("userUrl");
+//        $this->assign("userUrl",$userUrl);
+//        $this->assign("userName",$userName);
 
 
         //$this->assign("allCategory","Category/allCategory");//栏目管理菜单

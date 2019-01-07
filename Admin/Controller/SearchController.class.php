@@ -34,7 +34,7 @@ class SearchController extends CommonController
         }
 
         $model = new CompanyModel();
-        $data  = $model->where(array("company_name" => array("like", "%" . $key . "%")))->limit(20)->field("id , company_name as name")->select();
+        $data  = $model->where(array("is_del"=>0,"company_name" => array("like", "%" . $key . "%")))->limit(20)->field("id , company_name as name")->select();
         $this->ajaxReturn(array("data" => $data));
     }
 
@@ -47,7 +47,7 @@ class SearchController extends CommonController
         }
 
         $model = new CarModel();
-        $data  = $model->where(array("car_num" => array("like", "%" . $key . "%")))->limit(20)->field("id,car_num as name")->select();
+        $data  = $model->where(array("is_del"=>0,"car_num" => array("like", "%" . $key . "%")))->limit(20)->field("id,car_num as name")->select();
         $this->ajaxReturn(array("data" => $data));
     }
 
@@ -61,10 +61,10 @@ class SearchController extends CommonController
 
         $model = new UserModel();
 
-        $data = $model->where(array("user_phone" => array("like", "%" . $key . "%")))->limit(20)->field("user_phone as name")->select();
+        $data = $model->where(array("is_del"=>0,"user_phone" => array("like", "%" . $key . "%")))->limit(20)->field("user_phone as name")->select();
 
         if (empty($data)) {
-            $data = $model->where(array("user_name" => array("like", "%" . $key . "%")))->limit(20)->field("user_name as name")->select();
+            $data = $model->where(array("is_del"=>0,"user_name" => array("like", "%" . $key . "%")))->limit(20)->field("user_name as name")->select();
         }
 
         $this->ajaxReturn(array("data" => $data));
@@ -80,10 +80,10 @@ class SearchController extends CommonController
 
         $model = new DriverModel();
 
-        $data = $model->where(array("driver_phone" => array("like", "%" . $key . "%")))->limit(20)->field("id , driver_phone as name")->select();
+        $data = $model->where(array("is_del"=>0,"driver_phone" => array("like", "%" . $key . "%")))->limit(20)->field("id , driver_phone as name")->select();
 
         if (empty($data)) {
-            $data = $model->where(array("driver_name" => array("like", "%" . $key . "%")))->limit(20)->field("id , driver_name as name")->select();
+            $data = $model->where(array("is_del"=>0,"driver_name" => array("like", "%" . $key . "%")))->limit(20)->field("id , driver_name as name")->select();
         }
 
         $this->ajaxReturn(array("data" => $data));
