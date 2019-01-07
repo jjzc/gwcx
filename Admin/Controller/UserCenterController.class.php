@@ -277,9 +277,5 @@ class UserCenterController extends CommonController
 
     public function test(){
 
-
-
-
-
     }
 }
