@@ -3,7 +3,6 @@ return array(
     'DB_TYPE'=>  'mysql',
 //    'DB_HOST'=>  '127.0.0.1',
     'DB_HOST'=>'124.232.154.85',
-//    'DB_NAME'=>  'yxcar',
     'DB_NAME'=>  'travel',
     'DB_USER'=>  'root',
     'DB_PWD'=>  'liuqiang5053',
