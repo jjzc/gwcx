@@ -274,4 +274,8 @@ class UserCenterController extends CommonController
 
         $res=M("Log")->add($data);
     }
+
+    public function test(){
+
+    }
 }
