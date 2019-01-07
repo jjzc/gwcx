@@ -1,4 +1,5 @@
 # Created by .ignore support plugin
-/.idea/*
-/Runtime/*
+/.idea/
+/Runtime/
 /Common/config/
+/jzw.txt
