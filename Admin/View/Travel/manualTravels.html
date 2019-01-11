@@ -1,11 +1,7 @@
-{extends file='./template.html'}
+{extends file='../Public/template.html'}
 
 {block name=pageContent}
             <div class="page-content">
-
-
-
-
                 <!--表格开始-->
                 <!--全部出行表格-->
                 <div class="row" id="waitReviewRow">
@@ -120,13 +116,6 @@
                                             <td>乘车人名单</td>
                                             <td colspan="3">
                                                 <input type="text" class="form-control input-inline input-medium" id="travel_people" placeholder="乘车人">
-                                                <!--<select class="form-control" name="travel_people_id[]" multiple="multiple" id="select_user">-->
-                                                <!--{foreach $companys as $k=>$v}-->
-                                                <!--{foreach $v.users as $w=>$r}-->
-                                                <!--{if $r.user_name<>''}<option value="{$r.id}" >{$r.user_name}</option>{/if}-->
-                                                <!--{/foreach}-->
-                                                <!--{/foreach}-->
-                                                <!--</select>-->
                                             </td>
                                             <td>乘车人数</td>
                                             <td>
@@ -215,21 +204,13 @@
 
                                     <div class="form-group" style="margin-top: 15px;">
                                         <button type="button" class="btn btn-primary" onclick="addTravelPost()" id="btn">提交</button>
-                                        <!--<a class="btn btn-primary" onclick="addTravelPost()">提交</a>-->
                                     </div>
-
-
                                 </div>
-
-
-
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-
 {/block}
 
 
@@ -412,18 +393,9 @@
             toastr.warning('预约时间不得大于结束时间'); $("#departure_time").focus().select(); return false;
         }
 
-
-
-
-
         //获取出行方式
         var travel_type_id=$("#travel_type_id").val();
         if(travel_type_id==0){ toastr.warning('请选择出行方式'); $("#travel_type_id").focus().select(); return false; }
-
-
-
-
-
 
         //获取行车路线
         var from_place=$("#from_place").val();
@@ -552,11 +524,5 @@
 
     }
 
-
-
-
-
 </script>
-
-
 {/block}

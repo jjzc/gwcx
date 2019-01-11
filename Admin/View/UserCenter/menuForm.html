@@ -44,17 +44,17 @@
                 <div class="portlet-body form">
                 <form class="form-horizontal" role="form" action="/index.php/Admin/UserCenter/addMenuDo" method="post" id="addCarForm">
                     <input type="hidden" id="id" name="id" value="{$menu['id']}"/>
-                    <input type="hidden" id="pid" name="pid" value="{$pid}"/>
+                    <!--<input type="hidden" id="pid" name="pid" value="{$pid}"/>-->
                     <div class="form-body">
                         <div class="form-group col-md-6">
-                            <label class="col-md-4 control-label">名称</label>
+                            <label class="col-md-4 control-label">名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称</label>
                             <div class="col-md-8">
                                 <input type="text" class="form-control input-inline input-medium" placeholder="名称" name="name" id="name" value="{$menu['name']}">
                                 <span style="color: #FF0000;">*</span>
                             </div>
                         </div>
                         <div class="form-group col-md-6">
-                            <label class="col-md-4 control-label">路由</label>
+                            <label class="col-md-4 control-label">路&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由</label>
                             <div class="col-md-8">
                                 <input type="text" class="form-control input-inline input-medium" placeholder="路由" name="url" id="url" value="{$menu['url']}">
                                 <span style="color: #FF0000;">*</span>
@@ -70,14 +70,33 @@
                                 <span style="color: #FF0000;">*</span>
                             </div>
                         </div>
-                        <!--<div class="form-group col-md-6">-->
-                            <!--<label class="col-md-4 control-label">名称</label>-->
-                            <!--<div class="col-md-8">-->
-                                <!--<input type="text" class="form-control input-inline input-medium" placeholder="组别名称" name="group_name" id="group_name">-->
-                                <!--<input type="hidden" id="group_rule" name="group_rule" />-->
-                                <!--<span style="color: #FF0000;">*</span>-->
-                            <!--</div>-->
-                        <!--</div>-->
+                        {if $is_show_sup_menu eq 1 }
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">上级菜单</label>
+                            <div class="col-md-8">
+                                <select class="form-control input-inline input-medium" name="pid" id="pid">
+                                    {$select_categorys}
+                                </select>
+                                <span style="color: #FF0000;">*</span>
+                            </div>
+                        </div>
+                        {/if}
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">排&nbsp;&nbsp;序&nbsp;&nbsp;值</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control input-inline input-medium" placeholder="路由" name="sort" id="sort" value="{$menu['sort']}">
+                                <span style="color: #FF0000;">*</span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">图&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标</label>
+                            <div class="col-md-8">
+                                <input type="file" class="form-control input-inline input-medium"  name="icon" id="icon">
+                            </div>
+                        </div>
 
                     </div>
                     <div class="form-actions col-md-12">

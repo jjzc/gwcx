@@ -1,357 +1,256 @@
-<!DOCTYPE html>
+{extends file='../Public/template.html'}
+{block name=style}
 
-<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
-<!--[if !IE]><!-->
-<html lang="en">
-<!--<![endif]-->
-<!-- BEGIN HEAD -->
+<style>
+    .trrrrr td {
+        padding: 5px 2px;
+    }
 
-<head>
-    <meta charset="utf-8" />
-    <title>单位数据统计</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <meta content="Preview page of Metronic Admin Theme #1 for statistics, charts, recent events and reports" name="description" />
-    <meta content="" name="author" />
-    <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+    .autocomplete {
+        border: 1px solid #9ACCFB;
+        background-color: white;
+        text-align: left;
+    }
 
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
-    <!-- END GLOBAL MANDATORY STYLES -->
-    <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css" />
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/morris/morris.css" rel="stylesheet" type="text/css" />
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css" />
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/jqvmap/jqvmap/jqvmap.css" rel="stylesheet" type="text/css" />
+    .autocomplete li {
+        list-style-type: none;
+    }
 
-    <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
-    <!-- END PAGE LEVEL PLUGINS -->
+    .autocomplete .highlight {
+        background-color: #9ACCFB;
+    }
 
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css" />
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" />
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-toastr/toastr.min.css" rel="stylesheet" type="text/css" />
+    .autocomplete .clickable {
+        cursor: default;
+    }
+</style>
+{/block}
 
-    <!-- END PAGE LEVEL PLUGINS -->
-    <!-- BEGIN THEME GLOBAL STYLES -->
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
-    <!-- END THEME GLOBAL STYLES -->
-    <!-- BEGIN THEME LAYOUT STYLES -->
-    <link href="{$smarty.const.PUBLIC_URL}/assets/layouts/layout/css/layout.min.css" rel="stylesheet" type="text/css" />
-    <link href="{$smarty.const.PUBLIC_URL}/assets/layouts/layout/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color" />
-    <link href="{$smarty.const.PUBLIC_URL}/assets/layouts/layout/css/custom.min.css" rel="stylesheet" type="text/css" />
-    <!-- END THEME LAYOUT STYLES -->
-    <link rel="shortcut icon" href="favicon.ico" />
+{block name=pageContent}
+<!-- BEGIN CONTENT BODY -->
+<div class="page-content">
 
+    <!--表格开始-->
+    <!--全部出行表格-->
+    <div class="row" id="waitReviewRow">
 
-    <style>
-        .trrrrr td{
-            padding:5px 2px;
-        }
-        .autocomplete {
-            border: 1px solid #9ACCFB;
-            background-color: white;
-            text-align: left;
-        }
+        <div class="col-md-12">
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption font-dark">
+                        <i class="icon-settings font-dark"></i>
+                        <span class="caption-subject bold uppercase">单位数据报表</span>
+                    </div>
+                    <div class="tools">
 
-        .autocomplete li {
-            list-style-type: none;
-        }
-
-        .autocomplete .highlight {
-            background-color: #9ACCFB;
-        }
-
-        .autocomplete .clickable {
-            cursor: default;
-        }
-    </style>
-
-</head>
-<!-- END HEAD -->
-
-<body class="page-sidebar-closed-hide-logo page-content-white">
-<div class="page-wrapper">
-
-    <div class="page-container">
-        <!-- BEGIN SIDEBAR -->
-        <div class="page-sidebar-wrapper">
-            <div class="page-sidebar navbar-collapse collapse">
-
-                <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
-
-                    <li class="sidebar-toggler-wrapper hide">
-                        <div class="sidebar-toggler">
-                            <span></span>
-                        </div>
-                    </li>
-
-
-                    <li class="nav-item start active open">
-                        <a href="javascript:;" class="nav-link nav-toggle">
-                            <i class="icon-home"></i>
-                            <span class="title">数据报表</span>
-                            <span class="selected"></span>
-                            <span class="arrow open"></span>
-                        </a>
-                        <ul class="sub-menu">
-                            <li class="nav-item start  active open">
-                                <a href="/index.php/Admin/Report/byCompany" class="nav-link ">
-                                    <i class="icon-graph"></i>
-                                    <span class="title">单位数据报表</span>
-                                    <!--<span class="badge badge-success">1</span>-->
-                                </a>
-                            </li>
-                            <li class="nav-item start">
-                                <a href="/index.php/Admin/Report/byCar" class="nav-link ">
-                                    <i class="icon-graph"></i>
-                                    <span class="title">车辆数据报表</span>
-                                    <!--<span class="badge badge-danger">5</span>-->
-                                </a>
-                            </li>
-                            <li class="nav-item start ">
-                                <a href="/index.php/Admin/Report/byDriver" class="nav-link ">
-                                    <i class="icon-graph"></i>
-                                    <span class="title">司机数据报表</span>
-                                    <!--<span class="badge badge-danger">5</span>-->
-                                </a>
-                            </li>
-                            <li class="nav-item start ">
-                                <a href="/index.php/Admin/Report/byUser" class="nav-link ">
-                                    <i class="icon-graph"></i>
-                                    <span class="title">用户数据报表</span>
-                                    <!--<span class="badge badge-danger">5</span>-->
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="page-content-wrapper">
-            <!-- BEGIN CONTENT BODY -->
-            <div class="page-content">
-
-                <!--表格开始-->
-                <!--全部出行表格-->
-                <div class="row" id="waitReviewRow">
-
-                    <div class="col-md-12">
-                        <div class="portlet light bordered">
-                            <div class="portlet-title">
-                                <div class="caption font-dark">
-                                    <i class="icon-settings font-dark"></i>
-                                    <span class="caption-subject bold uppercase">单位数据报表</span>
-                                </div>
-                                <div class="tools">
-
-                                </div>
-                            </div>
-
-                            <div class="portlet-body">
-                                <form action="" method="post">
-                                    <div class="form-group" style="width: 190px; float: left;">
-                                        <div class="input-group date form_datetime col-md-5" id="startTimediv" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input1">
-                                            <input id="startTime" name="startTime" class="form-control jt" size="16" type="text" value="{$startTime}" placeholder="开始时间" readonly style="width: 100px">
-                                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group" style="width: 190px; float: left;">
-                                        <div class="input-group date form_datetime col-md-5" id="endTimediv" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input1">
-                                            <input id="endTime" name="endTime" class="form-control jt" size="16" type="text" value="{$endTime}" placeholder="结束时间" readonly style="width: 100px">
-                                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                                        </div>
-                                    </div>
-                                    <!--<div class="form-group" style="width: 160px; float: left; margin-right: 8px;">
-                                        <select name="company" class="form-control"  onchange="" id="company">
-                                            <option value="0">单位(不限)</option>
-                                            {foreach $companysall as $k=>$v}
-
-                                            <option value="{$v.id}" {if $v.id eq $companyname}selected{/if}>{$v.company_name}</option>
-                                            {/foreach}
-                                        </select>
-                                    </div>-->
-                                    <div class="form-group" style="width: 200px; float: left;margin-right:10px;">
-                                        <div id="search" style="float:left;height: 34px;text-align: center;position: relative;">
-                                            <input type="text" class="form-control input-inline jt" style="width: 200px" id="searchKey" name="searchKey" placeholder="请输入单位名称" value="{$companyname}"/>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group" style="width: 160px; float: left; margin-right: 8px;">
-                                        <select name="type" class="form-control"  id="type">
-                                            <option value="1" {if $type eq 1}selected{/if}>统计报表</option>
-                                            <option value="2" {if $type eq 2}selected{/if}>明细报表</option>
-                                        </select>
-                                    </div>
-
-                                    <button id="btn_add"  type="submit" class="btn btn-default">
-                                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>生成报表
-                                    </button>
-
-                                    {if $aa eq 1}
-                                    <button id="btn_addd"  type="button" class="btn btn-default" onClick="dy();">
-                                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>打印报表
-                                    </button>
-                                    {/if}
-                                </form>
-
-                            </div>
-                            {if $aa eq 1}
-                            <!--startprint1-->
-                            {if $type eq 1}
-                            <div class="portlet-body">
-                                <table width="100%" border="1" cellpadding="0" cellspacing="0" style="border-collapse:collapse; font-size:14px;">
-                                    <tr>
-                                        <td height="40" colspan="9" style="font-size:18px; text-align:center; line-height:40px;">公务用车平台单位用车统计报表</td>
-                                    </tr>
-                                    <tr>
-                                        <td height="30" colspan="9" style="font-size:16px; text-align:center; line-height:30px;">开起始时间：{$startTime}&nbsp;&nbsp;&nbsp;&nbsp;截至时间：{$endTime}&nbsp;&nbsp;&nbsp;&nbsp;金额单位：元</td>
-                                    </tr>
-                                    <tr style="text-align:center; height:30px; line-height:30px;">
-                                        <td rowspan="2" nowrap><div align="center">单位名称</div></td>
-                                        <td rowspan="2"><div align="center">出行次数</div></td>
-                                        <td rowspan="2"><div align="center">出行里程</div></td>
-                                        <td colspan="5"><div align="center">出行费用</div></td>
-                                        <td rowspan="2" nowrap><div align="center">备注</div></td>
-                                    </tr>
-                                    <tr style="text-align:center; height:30px; line-height:30px;">
-                                        <td><div align="center">路桥费</div></td>
-                                        <td><div align="center">出行服务费</div></td>
-                                        <td><div align="center">出差补助</div></td>
-                                        <td><div align="center">其他</div></td>
-                                        <td><div align="center">小计</div></td>
-                                    </tr>
-
-
-                                    {foreach $companys as $k=>$v}
-                                    {if $v.finishCount neq 0}
-                                    <tr class="trrrrr">
-                                        <td nowrap>{$v.company_name}</td>
-                                        <td>{$v.finishCount}</td>
-                                        <td>{$v.companyMileageCount}</td>
-                                        <td>{$v.luqiaoCount}</td>
-                                        <td>{$v.fuwufeiCount}</td>
-                                        <td>{$v.buzhuCount}</td>
-                                        <td>{$v.qitaCount}</td>
-                                        <td>{$v.heji}</td>
-                                        <td nowrap>&nbsp;</td>
-                                    </tr>
-                                    {/if}
-                                    {/foreach}
-
-                                    <tr class="trrrrr">
-                                        <td><div align="center">合计</div></td>
-                                        <td>{$hj.finishCount}</td>
-                                        <td>{$hj.companyMileageCount}</td>
-                                        <td>{$hj.luqiaoCount}</td>
-                                        <td>{$hj.fuwufeiCount}</td>
-                                        <td>{$hj.buzhuCount}</td>
-                                        <td>{$hj.qitaCount}</td>
-                                        <td>{$hj.heji}</td>
-                                        <td><div align="center"></div></td>
-                                    </tr>
-                              </table>
-                            </div>
-                            {/if}
-
-                            {if $type eq 2}
-                            <div class="portlet-body">
-                                <table width="100%" border="1" cellpadding="0" cellspacing="0" style="border-collapse:collapse; font-size:14px;">
-                                    <tr>
-                                        <td height="40" colspan="13" style="font-size:18px; text-align:center; line-height:40px;">公务用车平台单位用车明细报表</td>
-                                    </tr>
-                                    <tr>
-                                        <td height="30" colspan="13" style="font-size:16px; text-align:center; line-height:30px;">开起始时间：{$startTime}&nbsp;&nbsp;&nbsp;&nbsp;截至时间：{$endTime}&nbsp;&nbsp;&nbsp;&nbsp;金额单位：元</td>
-                                    </tr>
-                                    <tr style="text-align:center; height:30px; line-height:30px;">
-                                        <td rowspan="2" nowrap>单位名称</td>
-                                        <td rowspan="2">流水号</td>
-                                        <td rowspan="2" width="80px">用车人</td>
-                                        <td rowspan="2" width="125px">出车时间</td>
-                                        <td rowspan="2">用车事由</td>
-                                        <td rowspan="2">目的地</td>
-                                        <td rowspan="2">出行里程</td>
-                                        <td colspan="5">出行费用</td>
-                                        <td rowspan="2" nowrap>备注</td>
-                                    </tr>
-                                    <tr style="text-align:center; height:30px; line-height:30px;">
-                                        <td width="67px">路桥费</td>
-                                        <td width="82px">出行服务费</td>
-                                        <td width="67px">出差补助</td>
-                                        <td width="67px">其他</td>
-                                        <td width="67px">小计</td>
-                                    </tr>
-
-                                    {$mileagenum=0}
-                                    {$fees_sumnum=0}
-                                    {$service_chargenum=0}
-                                    {$costnum=0}
-                                    {$totle_ratenum=0}
-                                    {foreach $travels as $k=>$v}
-                                    <tr class="trrrrr">
-                                        <td nowrap>{$v.company_namee}</td>
-                                        <td>{$v.serial_number}</td>
-                                        <td>{$v.user_name}</td>
-                                        <td>{$v.start_car_time|date_format:'%Y-%m-%d %H:%M'}</td>
-                                        <td>{$v.travel_reason}</td>
-                                        <td>{$v.to_place}</td>
-                                        <td>{$v.mileage}{$mileagenum=$mileagenum+$v.mileage}</td>
-                                        <td>{$v.fees_sum}{$fees_sumnum=$fees_sumnum+$v.fees_sum}</td>
-                                        <td>{$v.service_charge}{$service_chargenum=$service_chargenum+$v.service_charge}</td>
-                                        <td>0</td>
-                                        <td>{$v.else_cost}{$costnum=$costnum+$v.else_cost}</td>
-                                        <td>{$v.totle_rate}{$totle_ratenum=$totle_ratenum+$v.totle_rate}</td>
-                                        <td nowrap></td>
-                                    </tr>
-                                    {/foreach}
-
-                                    <tr class="trrrrr">
-                                        <td nowrap>合计</td>
-                                        <td nowrap></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td>{$mileagenum}</td>
-                                        <td>{$fees_sumnum}</td>
-                                        <td>{$service_chargenum}</td>
-                                        <td>0</td>
-                                        <td>{$costnum}</td>
-                                        <td>{$totle_ratenum}</td>
-                                        <td nowrap>&nbsp;</td>
-                                    </tr>
-
-
-
-                              </table>
-                            </div>
-                            {/if}
-                            <!--endprint1-->
-                            {/if}
-                        </div>
                     </div>
                 </div>
+
+                <div class="portlet-body">
+                    <form action="" method="post">
+                        <div class="form-group" style="width: 190px; float: left;">
+                            <div class="input-group date form_datetime col-md-5" id="startTimediv" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input1">
+                                <input id="startTime" name="startTime" class="form-control jt" size="16" type="text" value="{$startTime}" placeholder="开始时间" readonly style="width: 100px">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                        </div>
+                        <div class="form-group" style="width: 190px; float: left;">
+                            <div class="input-group date form_datetime col-md-5" id="endTimediv" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input1">
+                                <input id="endTime" name="endTime" class="form-control jt" size="16" type="text" value="{$endTime}" placeholder="结束时间" readonly style="width: 100px">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="width: 200px; float: left;margin-right:10px;">
+                            <div id="search" style="float:left;height: 34px;text-align: center;position: relative;">
+                                <input type="text" class="form-control input-inline jt" style="width: 200px" id="searchKey" name="searchKey" placeholder="请输入单位名称" value="{$companyname}"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="width: 160px; float: left; margin-right: 8px;">
+                            <select name="type" class="form-control" id="type">
+                                <option value="1" {if $type eq 1}selected{/if}>统计报表</option>
+                                <option value="2" {if $type eq 2}selected{/if}>明细报表</option>
+                            </select>
+                        </div>
+
+                        <button id="btn_add" type="submit" class="btn btn-default">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>生成报表
+                        </button>
+
+                        {if $aa eq 1}
+                        <button id="btn_addd" type="button" class="btn btn-default" onClick="dy();">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>打印报表
+                        </button>
+                        {/if}
+                    </form>
+
+                </div>
+                {if $aa eq 1}
+                <!--startprint1-->
+                {if $type eq 1}
+                <div class="portlet-body">
+                    <table width="100%" border="1" cellpadding="0" cellspacing="0" style="border-collapse:collapse; font-size:14px;">
+                        <tr>
+                            <td height="40" colspan="9" style="font-size:18px; text-align:center; line-height:40px;">公务用车平台单位用车统计报表</td>
+                        </tr>
+                        <tr>
+                            <td height="30" colspan="9" style="font-size:16px; text-align:center; line-height:30px;">开起始时间：{$startTime}&nbsp;&nbsp;&nbsp;&nbsp;截至时间：{$endTime}&nbsp;&nbsp;&nbsp;&nbsp;金额单位：元</td>
+                        </tr>
+                        <tr style="text-align:center; height:30px; line-height:30px;">
+                            <td rowspan="2" nowrap>
+                                <div align="center">单位名称</div>
+                            </td>
+                            <td rowspan="2">
+                                <div align="center">出行次数</div>
+                            </td>
+                            <td rowspan="2">
+                                <div align="center">出行里程</div>
+                            </td>
+                            <td colspan="5">
+                                <div align="center">出行费用</div>
+                            </td>
+                            <td rowspan="2" nowrap>
+                                <div align="center">备注</div>
+                            </td>
+                        </tr>
+                        <tr style="text-align:center; height:30px; line-height:30px;">
+                            <td>
+                                <div align="center">路桥费</div>
+                            </td>
+                            <td>
+                                <div align="center">出行服务费</div>
+                            </td>
+                            <td>
+                                <div align="center">出差补助</div>
+                            </td>
+                            <td>
+                                <div align="center">其他</div>
+                            </td>
+                            <td>
+                                <div align="center">小计</div>
+                            </td>
+                        </tr>
+
+
+                        {foreach $companys as $k=>$v}
+                        {if $v.finishCount neq 0}
+                        <tr class="trrrrr">
+                            <td nowrap>{$v.company_name}</td>
+                            <td>{$v.finishCount}</td>
+                            <td>{$v.companyMileageCount}</td>
+                            <td>{$v.luqiaoCount}</td>
+                            <td>{$v.fuwufeiCount}</td>
+                            <td>{$v.buzhuCount}</td>
+                            <td>{$v.qitaCount}</td>
+                            <td>{$v.heji}</td>
+                            <td nowrap>&nbsp;</td>
+                        </tr>
+                        {/if}
+                        {/foreach}
+
+                        <tr class="trrrrr">
+                            <td>
+                                <div align="center">合计</div>
+                            </td>
+                            <td>{$hj.finishCount}</td>
+                            <td>{$hj.companyMileageCount}</td>
+                            <td>{$hj.luqiaoCount}</td>
+                            <td>{$hj.fuwufeiCount}</td>
+                            <td>{$hj.buzhuCount}</td>
+                            <td>{$hj.qitaCount}</td>
+                            <td>{$hj.heji}</td>
+                            <td>
+                                <div align="center"></div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                {/if}
+
+                {if $type eq 2}
+                <div class="portlet-body">
+                    <table width="100%" border="1" cellpadding="0" cellspacing="0" style="border-collapse:collapse; font-size:14px;">
+                        <tr>
+                            <td height="40" colspan="13" style="font-size:18px; text-align:center; line-height:40px;">公务用车平台单位用车明细报表</td>
+                        </tr>
+                        <tr>
+                            <td height="30" colspan="13" style="font-size:16px; text-align:center; line-height:30px;">开起始时间：{$startTime}&nbsp;&nbsp;&nbsp;&nbsp;截至时间：{$endTime}&nbsp;&nbsp;&nbsp;&nbsp;金额单位：元</td>
+                        </tr>
+                        <tr style="text-align:center; height:30px; line-height:30px;">
+                            <td rowspan="2" nowrap>单位名称</td>
+                            <td rowspan="2">流水号</td>
+                            <td rowspan="2" width="80px">用车人</td>
+                            <td rowspan="2" width="125px">出车时间</td>
+                            <td rowspan="2">用车事由</td>
+                            <td rowspan="2">目的地</td>
+                            <td rowspan="2">出行里程</td>
+                            <td colspan="5">出行费用</td>
+                            <td rowspan="2" nowrap>备注</td>
+                        </tr>
+                        <tr style="text-align:center; height:30px; line-height:30px;">
+                            <td width="67px">路桥费</td>
+                            <td width="82px">出行服务费</td>
+                            <td width="67px">出差补助</td>
+                            <td width="67px">其他</td>
+                            <td width="67px">小计</td>
+                        </tr>
+
+                        {$mileagenum=0}
+                        {$fees_sumnum=0}
+                        {$service_chargenum=0}
+                        {$costnum=0}
+                        {$totle_ratenum=0}
+                        {foreach $travels as $k=>$v}
+                        <tr class="trrrrr">
+                            <td nowrap>{$v.company_namee}</td>
+                            <td>{$v.serial_number}</td>
+                            <td>{$v.user_name}</td>
+                            <td>{$v.start_car_time|date_format:'%Y-%m-%d %H:%M'}</td>
+                            <td>{$v.travel_reason}</td>
+                            <td>{$v.to_place}</td>
+                            <td>{$v.mileage}{$mileagenum=$mileagenum+$v.mileage}</td>
+                            <td>{$v.fees_sum}{$fees_sumnum=$fees_sumnum+$v.fees_sum}</td>
+                            <td>{$v.service_charge}{$service_chargenum=$service_chargenum+$v.service_charge}</td>
+                            <td>0</td>
+                            <td>{$v.else_cost}{$costnum=$costnum+$v.else_cost}</td>
+                            <td>{$v.totle_rate}{$totle_ratenum=$totle_ratenum+$v.totle_rate}</td>
+                            <td nowrap></td>
+                        </tr>
+                        {/foreach}
+
+                        <tr class="trrrrr">
+                            <td nowrap>合计</td>
+                            <td nowrap></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>{$mileagenum}</td>
+                            <td>{$fees_sumnum}</td>
+                            <td>{$service_chargenum}</td>
+                            <td>0</td>
+                            <td>{$costnum}</td>
+                            <td>{$totle_ratenum}</td>
+                            <td nowrap>&nbsp;</td>
+                        </tr>
+
+
+                    </table>
+                </div>
+                {/if}
+                <!--endprint1-->
+                {/if}
             </div>
         </div>
     </div>
 </div>
+{/block}
 
 
-
-
-
-
+{block name=script}
 <!--[if lt IE 9]>
 <script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/respond.min.js"></script>
 <script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/excanvas.min.js"></script>
@@ -408,17 +307,12 @@
 <script src="{$smarty.const.PUBLIC_URL}/assets/layouts/layout/scripts/demo.min.js" type="text/javascript"></script>
 <script src="{$smarty.const.PUBLIC_URL}/assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
 <script src="{$smarty.const.PUBLIC_URL}/assets/layouts/global/scripts/quick-nav.min.js" type="text/javascript"></script>
-
 <script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
 <script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
 <script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
-
 <script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
-
-
 <!-- END THEME LAYOUT SCRIPTS -->
-
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="{$smarty.const.PUBLIC_URL}/assets/global/scripts/datatable.js" type="text/javascript"></script>
 <script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/datatables/language.js" type="text/javascript"></script>
@@ -427,59 +321,51 @@
 <script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/template.js" type="text/javascript"></script>
 <script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
 <script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
-
 <script src="{$smarty.const.PUBLIC_URL}/plugin/layer/layer.js" type="text/javascript"></script>
 <script src="{$smarty.const.PUBLIC_URL}/js/js.js" type="text/javascript"></script>
-
 <!-- END PAGE LEVEL SCRIPTS -->
-
 
 <script>
     function dy() {
         preview(1);
     }
 
-    function preview(oper)
-    {
-        if (oper < 10)
-        {
-            bdhtml=window.document.body.innerHTML;//获取当前页的html代码
-            sprnstr="<!--startprint"+oper+"-->";//设置打印开始区域
-            eprnstr="<!--endprint"+oper+"-->";//设置打印结束区域
-            prnhtml=bdhtml.substring(bdhtml.indexOf(sprnstr)+18); //从开始代码向后取html
+    function preview(oper) {
+        if (oper < 10) {
+            bdhtml = window.document.body.innerHTML;//获取当前页的html代码
+            sprnstr = "<!--startprint" + oper + "-->";//设置打印开始区域
+            eprnstr = "<!--endprint" + oper + "-->";//设置打印结束区域
+            prnhtml = bdhtml.substring(bdhtml.indexOf(sprnstr) + 18); //从开始代码向后取html
 
-            prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr));//从结束代码向前取html
-            window.document.body.innerHTML=prnhtml;
+            prnhtml = prnhtml.substring(0, prnhtml.indexOf(eprnstr));//从结束代码向前取html
+            window.document.body.innerHTML = prnhtml;
             window.print();
-            window.document.body.innerHTML=bdhtml;
+            window.document.body.innerHTML = bdhtml;
         } else {
             window.print();
         }
     }
 
-    jQuery(document).ready(function() {
+    jQuery(document).ready(function () {
         //TableDatatablesResponsive.init();//待审核出行表格初始化
         //SweetAlert.init();
 
         $('.form_datetime').datetimepicker({
-            language:  'zh-CN',
+            language: 'zh-CN',
             weekStart: 1,
-            todayBtn:  1,
+            todayBtn: 1,
             autoclose: 1,
             todayHighlight: 1,
             startView: 2,
             forceParse: 0,
             minView: 2,
             showMeridian: 1
-        }).on('changeDate', function(ev){
+        }).on('changeDate', function (ev) {
             //fiflt();
         });
-
-
     });
 
 </script>
-
 
 <script>
     $(function () {
@@ -648,7 +534,6 @@
     });
 </script>
 
-
 <!--审核出行操作tools-->
 <script id="viewTools" type="text/html">
     <div class="btn-group pull-right">
@@ -662,9 +547,4 @@
         </ul>
     </div>
 </script>
-
-
-
-</body>
-
-</html>
+{/block}

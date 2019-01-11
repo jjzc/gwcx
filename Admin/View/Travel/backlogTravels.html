@@ -1,4 +1,4 @@
-{extends file='./template.html'}
+{extends file='../Public/template.html'}
 
 
 {block name=pageContent}
@@ -1177,7 +1177,6 @@
 
         }
 
-
         //高度设置
         var heightInit=function () {
             var height=$(".leftBox").height()>$(".rightBox").height()?$(".leftBox").height():$(".rightBox").height();
@@ -1200,8 +1199,6 @@
         };
     }();
 
-
-
     //从服务器获取数据,并且处理数据
     function getData() {
         $.post("{U('Admin/Travel/getNum')}",
@@ -1218,16 +1215,11 @@
         );
     }
 
-
     jQuery(document).ready(function() {
         TableDatatablesResponsive.init();//待审核出行表格初始化
-        //SweetAlert.init();
-
 
         getData();//获取数据
         timer=setInterval(getData,30*1000);//每隔30秒，获取一次数据
-
-
 
         //查看出行
         $('#waitReview tbody').on('click', 'td.details-control', function () {
@@ -1244,7 +1236,6 @@
                 tr.addClass('shown');
             }
         });
-
 
         //核算费用
         $('tbody').on( 'click', 'td .chargingTravel', function () {
@@ -1397,7 +1388,6 @@
             });
         });
 
-
         //注册派遣第三方车辆点击事件
         $('#waitSendCar tbody').on( 'click', 'td .sendCarToOther', function (){
             var TravelId=$(this).attr("data-id");
@@ -1411,7 +1401,6 @@
             });
 
         });
-
 
         //注册改派点击事件reassignment
         $('tbody').on( 'click', 'td .reassignment', function (){
@@ -1427,9 +1416,6 @@
                 content: '/index.php/Admin/Travel/reassignment/id/'+TravelId
             });
         });
-
-
-
 
         //注册出车点击事件
         $('#waitStartCar tbody').on( 'click', 'td .startCar', function () {
@@ -1803,21 +1789,12 @@
                             }
                         });
 
-
-
-
                     } else {
                         swal("取消操作", "", "error");
                     }
                 });
         })
     });
-
-
-
-
-
-
 
 </script>
 
@@ -1985,7 +1962,6 @@
         </ul>
     </div>
 </script>
-
 
 
 <!--当日已经完成-->

@@ -1,78 +1,43 @@
-{extends file='./template.html'}
+{extends file='../Public/template.html'}
 
 {block name=pageContent}
-            <div class="page-content">
-                <!--<div class="page-bar">-->
-                <!--<ul class="page-breadcrumb">-->
-                <!--<li>-->
-                <!--<a href="">首页</a>-->
-                <!--<i class="fa fa-circle"></i>-->
-                <!--</li>-->
-                <!--<li>-->
-                <!--<span>车辆管理</span>-->
-                <!--</li>-->
-                <!--</ul>-->
-
-                <!--</div>-->
-                <!--<h1 class="page-title"> 全部车辆</h1>-->
-
-
-
-                <!--表格开始-->
-                <!--全部出行表格-->
-                <div class="row" id="waitReviewRow">
-
-                    <div class="col-md-12">
-                        <div class="portlet light bordered">
-                            <div class="portlet-title">
-                                <div class="caption font-dark">
-                                    <i class="icon-settings font-dark"></i>
-                                    <span class="caption-subject bold uppercase">回收站</span>
-                                </div>
-                                <div class="tools"></div>
-                            </div>
-
-                            <div class="portlet-body">
-                                <!--<div class="table-toolbar">-->
-                                    <!--<div class="row">-->
-                                        <!--<div class="col-md-6">-->
-                                            <!--<div class="btn-group">-->
-                                                <!--<button id="sample_editable_1_new" class="btn sbold green" onclick="openAddDriver()"> 新增单位-->
-                                                    <!--<i class="fa fa-plus"></i>-->
-                                                <!--</button>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-
-                                    <!--</div>-->
-                                <!--</div>-->
-                                <table class="table table-striped table-bordered table-hover dt-responsive" width="100%" id="allCompanys">
-                                    <thead>
-                                    <tr>
-                                        <th class="all">单位名称</th>
-                                        <th class="all">单位地址</th>
-                                        <th class="all">单位电话</th>
-                                        <th class="all">管理员手机</th>
-                                        <th class="all">管理员姓名</th>
-                                        <th class="all">单位所属机构</th>
-                                        <th class="all" width="40">操作</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+<div class="page-content">
+    <!--表格开始-->
+    <!--全部出行表格-->
+    <div class="row" id="waitReviewRow">
+        <div class="col-md-12">
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption font-dark">
+                        <i class="icon-settings font-dark"></i>
+                        <span class="caption-subject bold uppercase">回收站</span>
                     </div>
+                    <div class="tools"></div>
+                </div>
+                <div class="portlet-body">
+                    <table class="table table-striped table-bordered table-hover dt-responsive" width="100%" id="allCompanys">
+                        <thead>
+                        <tr>
+                            <th class="all">单位名称</th>
+                            <th class="all">单位地址</th>
+                            <th class="all">单位电话</th>
+                            <th class="all">管理员手机</th>
+                            <th class="all">管理员姓名</th>
+                            <th class="all">单位所属机构</th>
+                            <th class="all" width="40">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
 {/block}
 
-
-
 {block name=script}
-
 <!--[if lt IE 9]>
 <script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/respond.min.js"></script>
 <script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/excanvas.min.js"></script>
@@ -157,11 +122,11 @@
                 "paging": true,//禁用分页
                 "processing": true,//显示加载进度条
                 "serverSide": true,//开启服务器端处理数据，分页，获取数据等等
-                "ajax":function (data, callback, settings) {
+                "ajax": function (data, callback, settings) {
                     $.ajax({
-                        "url":"getRecycleCompanys",
+                        "url": "getRecycleCompanys",
                         "type": "POST",
-                        "data":data,
+                        "data": data,
                         "success": function (resp) {
                             callback(resp);
                         }
@@ -169,17 +134,19 @@
                 },
                 "columns": [
 
-                    { "data": "company_name","defaultContent": "<i>暂无</i>" },
-                    { "data": "company_address","defaultContent": "<i>暂无</i>" },
-                    { "data": "company_phone","defaultContent": "<i>暂无</i>" },
-                    { "data": "manager_user_phone" ,"defaultContent": "<i>暂无</i>","orderable":false},
-                    { "data": "manager_user_name","defaultContent": "<i>暂无</i>","orderable":false },
-                    { "data": "company_superior","defaultContent": "<i>暂无</i>" },
+                    { "data": "company_name", "defaultContent": "<i>暂无</i>"},
+                    { "data": "company_address", "defaultContent": "<i>暂无</i>"},
+                    { "data": "company_phone", "defaultContent": "<i>暂无</i>"},
+                    { "data": "manager_user_phone", "defaultContent": "<i>暂无</i>", "orderable": false},
+                    { "data": "manager_user_name", "defaultContent": "<i>暂无</i>", "orderable": false},
+                    { "data": "company_superior", "defaultContent": "<i>暂无</i>"},
 
-                    { "data": "id","defaultContent": "<i>暂无</i>","orderable":false ,"render":function (data,type,full,meta) {
+                    {
+                        "data": "id", "defaultContent": "<i>暂无</i>", "orderable": false, "render": function (data, type, full, meta) {
                             var html = template(document.getElementById('driverTools').innerHTML, full);
                             return html;
-                        }}
+                        }
+                    }
                 ],
                 "columnDefs": [
                     // { "orderable": false, "targets": 0 }//禁用第一列排序功能
@@ -195,7 +162,7 @@
                 ],
                 "pageLength": 10,
                 "dom": "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>", // horizobtal scrollable datatable
-                "initComplete":function (settings, json) {
+                "initComplete": function (settings, json) {
 
                 }
             });
@@ -212,58 +179,44 @@
         };
     }();
 
-
-    function openAddDriver(){
-        layer.open({
-            type: 2,
-            title:"新增单位",
-            area: ['1000px', '450px'],
-            fixed: false, //不固定
-            maxmin: true,
-            content: '/index.php/Admin/Company/addCompany'
-        });
-    }
-
-
-
-    jQuery(document).ready(function() {
+    jQuery(document).ready(function () {
         TableDatatablesResponsive.init();//待审核出行表格初始化
 
         $('#allDrivers tbody').on('click', 'td.details-control', function () {
             var tr = $(this).closest('tr');
-            var row = table.row( tr );
-            if ( row.child.isShown() ) {
+            var row = table.row(tr);
+            if (row.child.isShown()) {
                 // This row is already open - close it
                 row.child.hide();
                 tr.removeClass('shown');
             }
             else {
                 // Open this row
-                row.child( format(row.data()) ).show();
+                row.child(format(row.data())).show();
                 tr.addClass('shown');
             }
         });
 
 
         //注册查看点击事件
-        $('tbody').on( 'click', 'td .viewDriver', function () {
-            var id=$(this).attr("data-id");
+        $('tbody').on('click', 'td .viewDriver', function () {
+            var id = $(this).attr("data-id");
             //加载模态框，直接模态框操作
             layer.open({
                 type: 2,
-                title:"查看单位",
+                title: "查看单位",
                 area: ['1000px', '550px'],
                 fixed: false, //不固定
                 maxmin: true,
-                content: '/index.php/Admin/Company/editCompany/id/'+id
+                content: '/index.php/Admin/Company/editCompany/id/' + id
             });
         })
 
 
         //注册删除车辆事件
-        $('#allCompanys tbody').on( 'click', 'td .delDriver', function () {
+        $('#allCompanys tbody').on('click', 'td .delDriver', function () {
             //alert($(this).attr("data-id"));
-            var driverid=$(this).attr("data-id");
+            var driverid = $(this).attr("data-id");
 
             swal({
                     title: "确定删除此单位吗？此操作同时将删除单位下的所有用户",
@@ -279,39 +232,30 @@
                     confirmButtonText: "确定",
                     cancelButtonText: "取消",
                 },
-                function(isConfirm){
-                    if (isConfirm){
+                function (isConfirm) {
+                    if (isConfirm) {
                         //此处进行审核操作AJAX
                         $.post("/index.php/Admin/Company/delCompany.html",
                             {
-                                id:driverid
+                                id: driverid
                             },
-                            function(data){
-                                if(data.code==1){
+                            function (data) {
+                                if (data.code == 1) {
                                     swal("操作成功", "", "success");
                                     document.location.reload();
-                                }else{
+                                } else {
                                     swal(data.error, "", "error");
                                 }
                             },
                             'json'
                         );
-                    }else {
+                    } else {
                         swal("取消操作", "", "error");
                     }
                 });
         })
 
-
-
-
     });
-
-
-
-
-
-
 
 </script>
 
@@ -322,16 +266,11 @@
             <i class="fa fa-angle-down"></i>
         </button>
         <ul class="dropdown-menu pull-right">
-            <li>
-                <a href="javascript:;" class="viewDriver" data-id="<%=id%>"><i class="fa fa-print"></i> 查看 / 修改 </a>
-            </li>
-            <li>
-                <a href="javascript:;" class="delDriver" data-id="<%=id%>"><i class="fa fa-file-pdf-o"></i> 删除单位 </a>
-            </li>
+            <li><a href="javascript:;" class="viewDriver" data-id="<%=id%>"><i class="fa fa-print"></i> 查看 / 修改 </a></li>
+            {if in_array("/index.php/Admin/Company/delRecycleCompanys", $smarty.session.allUrls)}
+            <li><a href="javascript:;" class="delDriver" data-id="<%=id%>"><i class="fa fa-file-pdf-o"></i> 删除单位 </a></li>
+            {/if}
         </ul>
     </div>
 </script>
-
-
-
 {/block}

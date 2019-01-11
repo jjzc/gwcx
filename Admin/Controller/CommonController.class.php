@@ -40,7 +40,7 @@ class CommonController extends Controller
 
                 //dump($roles);
                 $allUrls=array();
-                for($i=0;$i<count($roles)&& count($roles);$i++){
+                for($i=0,$count = count($roles);$i<$count&&$count;$i++){
                     array_push($allUrls,$roles[$i]["url"]);
                 }
 
@@ -65,45 +65,53 @@ class CommonController extends Controller
                     //没有访问权限，跳转到没有权限页面
                     //$this->redirect("/Admin/User/denied");
                 }
+                $tag = intval($_REQUEST["tag"]);
+                if($tag){
+                    $menuList=M("Url")->where(array("pid"=>$tag,"is_menu"=>1))->order(" sort desc , id")->select();
 
-                //获取出行管理左侧菜单
-                $rulemap["pid"]=1;
-                $travelLeft=M("Url")->where($rulemap)->select();
-                $this->assign("travelLeft",$travelLeft);
+                    foreach ($menuList as $key=>$item){
+                        $submenu = M("Url")->where(array("pid"=>$item["id"],"is_menu"=>1))->order(" sort desc , id")->select();
+                        $menuList[$key]["submenu"] = $submenu;
+                    }
+                    $this->assign("tag",$tag);
+                    $this->assign("menuList",$menuList);
+//                    echo "<Pre>";print_r($menuList);exit;
+                }
 
-                //获取单位管理左侧菜单
-                $rulemap["pid"]=22;
-                $companyLeft1=M("Url")->where($rulemap)->select();
-                $this->assign("companyLeft1",$companyLeft1);
-
-                $rulemap["pid"]=23;
-                $companyLeft2=M("Url")->where($rulemap)->select();
-                $this->assign("companyLeft2",$companyLeft2);
-
-                //车辆管理左侧菜单
-                $rulemap["pid"]=34;
-                $carLeft1=M("Url")->where($rulemap)->select();
-                $this->assign("carLeft1",$carLeft1);
-
-                $rulemap["pid"]=35;
-                $carLeft2=M("Url")->where($rulemap)->select();
-                $this->assign("carLeft2",$carLeft2);
-
-                $rulemap["pid"]=36;
-                $carLeft3=M("Url")->where($rulemap)->select();
-                $this->assign("carLeft3",$carLeft3);
-
-                //司机管理左侧菜单
-                $rulemap["pid"]=4;
-                $driverLeft=M("Url")->where($rulemap)->select();
-                $this->assign("driverLeft",$driverLeft);
-
-                //dump($carLeft1);
+//                //获取出行管理左侧菜单
+//                $rulemap["pid"]=1;
+//                $travelLeft=M("Url")->where($rulemap)->select();
+//                $this->assign("travelLeft",$travelLeft);
+//
+////                //获取单位管理左侧菜单
+//                $rulemap["pid"]=22;
+//                $companyLeft1=M("Url")->where($rulemap)->select();
+//                $this->assign("companyLeft1",$companyLeft1);
+//
+//                $rulemap["pid"]=23;
+//                $companyLeft2=M("Url")->where($rulemap)->select();
+//                $this->assign("companyLeft2",$companyLeft2);
+//
+////                车辆管理左侧菜单
+//                $rulemap["pid"]=34;
+//                $carLeft1=M("Url")->where($rulemap)->select();
+//                $this->assign("carLeft1",$carLeft1);
+//
+//                $rulemap["pid"]=35;
+//                $carLeft2=M("Url")->where($rulemap)->select();
+//                $this->assign("carLeft2",$carLeft2);
+//
+//                $rulemap["pid"]=36;
+//                $carLeft3=M("Url")->where($rulemap)->select();
+//                $this->assign("carLeft3",$carLeft3);
+//
+//                //司机管理左侧菜单
+//                $rulemap["pid"]=4;
+//                $driverLeft=M("Url")->where($rulemap)->select();
+//                $this->assign("driverLeft",$driverLeft);
 
             }
         }
-
-
 
 
         /**
@@ -131,13 +139,13 @@ class CommonController extends Controller
             return $result;
         }
 
-//        $userUrl=session("userUrl");
-//        $this->assign("userUrl",$userUrl);
-//        $this->assign("userName",$userName);
-
-
-        //$this->assign("allCategory","Category/allCategory");//栏目管理菜单
-        //$this->assign("addCategory","Category/addCategory");//栏目管理菜单
-
     }
+
+//    public function getMenu($pid){
+//        $data=M("Url")->where(array("pid"=>$pid,"is_menu"=>1))->select();
+////        foreach ($data as $key=>$item){
+////            $data[$key]["submenu"] = $this->getMenu($item["id"]);
+////        }
+//        return $data;
+//    }
 }

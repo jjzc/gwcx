@@ -1,218 +1,100 @@
-<!DOCTYPE html>
+{extends file='../Public/template.html'}
 
-<!--[if IE 8]>
-<html lang="en" class="ie8 no-js"> <![endif]-->
-<!--[if IE 9]>
-<html lang="en" class="ie9 no-js"> <![endif]-->
-<!--[if !IE]><!-->
-<html lang="en">
-<!--<![endif]-->
-<!-- BEGIN HEAD -->
+{block name=style}
+<style>
+    .autocomplete {
+        border: 1px solid #9ACCFB;
+        background-color: white;
+        text-align: left;
+    }
 
-<head>
-    <meta charset="utf-8"/>
-    <title>用户数据统计</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta content="width=device-width, initial-scale=1" name="viewport"/>
-    <meta content="Preview page of Metronic Admin Theme #1 for statistics, charts, recent events and reports"
-          name="description"/>
-    <meta content="" name="author"/>
-    <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet"
-          type="text/css"/>
+    .autocomplete li {
+        list-style-type: none;
+    }
 
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet"
-          type="text/css"/>
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
-          type="text/css"/>
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/simple-line-icons/simple-line-icons.min.css"
-          rel="stylesheet" type="text/css"/>
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"
-          type="text/css"/>
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
-          rel="stylesheet" type="text/css"/>
-    <!-- END GLOBAL MANDATORY STYLES -->
-    <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css"
-          rel="stylesheet" type="text/css"/>
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/morris/morris.css" rel="stylesheet" type="text/css"/>
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet"
-          type="text/css"/>
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/jqvmap/jqvmap/jqvmap.css" rel="stylesheet"
-          type="text/css"/>
+    .autocomplete .highlight {
+        background-color: #9ACCFB;
+    }
 
-    <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/datatables/datatables.min.css" rel="stylesheet"
-          type="text/css"/>
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css"
-          rel="stylesheet" type="text/css"/>
-    <!-- END PAGE LEVEL PLUGINS -->
+    .autocomplete .clickable {
+        cursor: default;
+    }
+</style>
+{/block}
 
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css"
-          rel="stylesheet" type="text/css"/>
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css"
-          rel="stylesheet" type="text/css"/>
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css"
-          rel="stylesheet" type="text/css"/>
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
-          rel="stylesheet" type="text/css"/>
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-toastr/toastr.min.css" rel="stylesheet"
-          type="text/css"/>
 
-    <!-- END PAGE LEVEL PLUGINS -->
-    <!-- BEGIN THEME GLOBAL STYLES -->
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/css/components.min.css" rel="stylesheet" id="style_components"
-          type="text/css"/>
-    <link href="{$smarty.const.PUBLIC_URL}/assets/global/css/plugins.min.css" rel="stylesheet" type="text/css"/>
-    <!-- END THEME GLOBAL STYLES -->
-    <!-- BEGIN THEME LAYOUT STYLES -->
-    <link href="{$smarty.const.PUBLIC_URL}/assets/layouts/layout/css/layout.min.css" rel="stylesheet" type="text/css"/>
-    <link href="{$smarty.const.PUBLIC_URL}/assets/layouts/layout/css/themes/darkblue.min.css" rel="stylesheet"
-          type="text/css" id="style_color"/>
-    <link href="{$smarty.const.PUBLIC_URL}/assets/layouts/layout/css/custom.min.css" rel="stylesheet" type="text/css"/>
-    <!-- END THEME LAYOUT STYLES -->
-    <link rel="shortcut icon" href="favicon.ico"/>
-    <style>
-        .autocomplete{
-            border: 1px solid #9ACCFB;
-            background-color: white;
-            text-align: left;
-        }
-        .autocomplete li{
-            list-style-type: none;
-        }
-        .autocomplete .highlight{
-            background-color:#9ACCFB;
-        }
-        .autocomplete .clickable{
-            cursor:default;
-        }
-    </style>
-</head>
-<!-- END HEAD -->
+{block name=pageContent}
+<!-- BEGIN CONTENT BODY -->
+<div class="page-content">
 
-<body class="page-sidebar-closed-hide-logo page-content-white">
-<div class="page-wrapper">
+    <!--表格开始-->
+    <!--全部出行表格-->
+    <div class="row" id="waitReviewRow">
 
-    <div class="page-container">
-        <!-- BEGIN SIDEBAR -->
-        <div class="page-sidebar-wrapper">
-            <div class="page-sidebar navbar-collapse collapse">
+        <div class="col-md-12">
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption font-dark">
+                        <i class="icon-settings font-dark"></i>
+                        <span class="caption-subject bold uppercase">用户数据统计</span>
+                    </div>
+                    <div class="tools">
+                    </div>
+                </div>
 
-                <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
-                    <li class="sidebar-toggler-wrapper hide">
-                        <div class="sidebar-toggler"><span></span></div>
-                    </li>
-                    <li class="nav-item start active open">
-                        <a href="javascript:;" class="nav-link nav-toggle">
-                            <i class="icon-home"></i>
-                            <span class="title">数据统计</span>
-                            <span class="selected"></span>
-                            <span class="arrow open"></span>
-                        </a>
-                        <ul class="sub-menu">
-
-                            <li class="nav-item start">
-                                <a href="/index.php/Admin/Statistics/byCompany" class="nav-link ">
-                                    <i class="icon-graph"></i>
-                                    <span class="title">单位数据统计</span>
-                                </a>
-                            </li>
-                            <li class="nav-item start ">
-                                <a href="/index.php/Admin/Statistics/byCar" class="nav-link ">
-                                    <i class="icon-graph"></i>
-                                    <span class="title">车辆数据统计</span>
-                                </a>
-                            </li>
-                            <li class="nav-item start">
-                                <a href="/index.php/Admin/Statistics/byDriver" class="nav-link ">
-                                    <i class="icon-graph"></i>
-                                    <span class="title">司机数据统计</span>
-                                </a>
-                            </li>
-                            <li class="nav-item start active open">
-                                <a href="/index.php/Admin/Statistics/byUser" class="nav-link ">
-                                    <i class="icon-graph"></i>
-                                    <span class="title">用户数据统计</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="page-content-wrapper">
-            <!-- BEGIN CONTENT BODY -->
-            <div class="page-content">
-
-                <!--表格开始-->
-                <!--全部出行表格-->
-                <div class="row" id="waitReviewRow">
-
-                    <div class="col-md-12">
-                        <div class="portlet light bordered">
-                            <div class="portlet-title">
-                                <div class="caption font-dark">
-                                    <i class="icon-settings font-dark"></i>
-                                    <span class="caption-subject bold uppercase">用户数据统计</span>
-                                </div>
-                                <div class="tools">
-                                </div>
-                            </div>
-
-                            <div class="portlet-body">
-                                <form action="/index.php/Admin/Statistics/byUserToExcel" method="post" target="_blank">
-                                    <div class="form-group" style="width: 190px; float: left;">
-                                        <div class="input-group date form_datetime col-md-5" id="startTimediv" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input1">
-                                            <input id="startTime" name="startTime" class="form-control jt" size="16" type="text" value="" placeholder="开始时间" readonly style="width: 100px">
-                                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group" style="width: 190px; float: left;">
-                                        <div class="input-group date form_datetime col-md-5" id="endTimediv" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input1">
-                                            <input id="endTime" name="endTime" class="form-control jt" size="16" type="text" value="" placeholder="结束时间" readonly style="width: 100px">
-                                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group" style="width: 200px; float: left;margin-right:10px;">
-                                        <div id="search" style="float:left;height: 34px;text-align: center;position: relative;">
-                                            <input type="hidden" name="car" id="car"/>
-                                            <input type="text" class="form-control input-inline jt" style="width: 200px" id="searchKey" name="searchKey" placeholder="请输入姓名或者手机号" onchange="fiflt()"/>
-                                        </div>
-                                    </div>
-
-                                    <button id="btn_add" type="submit" class="btn btn-default">
-                                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>导出结果
-                                    </button>
-                                </form>
-                            </div>
-
-                            <div class="portlet-body">
-                                <table class="table table-striped table-bordered table-hover dt-responsive" width="100%" id="allCars">
-                                    <thead>
-                                    <tr>
-                                        <th class="all">用户姓名</th>
-                                        <th class="all">手机号</th>
-                                        <th class="all">身份证号码</th>
-                                        <th class="all">性别</th>
-                                        <th class="all">出行次数</th>
-                                        <th class="all">查看</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
+                <div class="portlet-body">
+                    <form action="/index.php/Admin/Statistics/byUserToExcel" method="post" target="_blank">
+                        <div class="form-group" style="width: 190px; float: left;">
+                            <div class="input-group date form_datetime col-md-5" id="startTimediv" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input1">
+                                <input id="startTime" name="startTime" class="form-control jt" size="16" type="text" value="" placeholder="开始时间" readonly style="width: 100px">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                             </div>
                         </div>
-                    </div>
+                        <div class="form-group" style="width: 190px; float: left;">
+                            <div class="input-group date form_datetime col-md-5" id="endTimediv" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input1">
+                                <input id="endTime" name="endTime" class="form-control jt" size="16" type="text" value="" placeholder="结束时间" readonly style="width: 100px">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="width: 200px; float: left;margin-right:10px;">
+                            <div id="search" style="float:left;height: 34px;text-align: center;position: relative;">
+                                <input type="hidden" name="car" id="car"/>
+                                <input type="text" class="form-control input-inline jt" style="width: 200px" id="searchKey" name="searchKey" placeholder="请输入姓名或者手机号" onchange="fiflt()"/>
+                            </div>
+                        </div>
+
+                        <button id="btn_add" type="submit" class="btn btn-default">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>导出结果
+                        </button>
+                    </form>
+                </div>
+
+                <div class="portlet-body">
+                    <table class="table table-striped table-bordered table-hover dt-responsive" width="100%" id="allCars">
+                        <thead>
+                        <tr>
+                            <th class="all">用户姓名</th>
+                            <th class="all">手机号</th>
+                            <th class="all">身份证号码</th>
+                            <th class="all">性别</th>
+                            <th class="all">出行次数</th>
+                            <th class="all">查看</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
+{/block}
+
+{block name=script}
 
 <!--[if lt IE 9]>
 <script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/respond.min.js"></script>
@@ -517,24 +399,24 @@
                         $.each(data, function (index, term) {
                             //创建li标签,添加到下拉列表中
                             $('<li></li>').text(term.name).appendTo($autocomplete).addClass('clickable').hover(function () {
-                                    //下拉列表每一项的事件，鼠标移进去的操作
-                                    $(this).siblings().removeClass('highlight');
-                                    $(this).addClass('highlight');
-                                    selectedItem = index;
-                                }, function () {
-                                    //下拉列表每一项的事件，鼠标离开的操作
-                                    $(this).removeClass('highlight');
-                                    //当鼠标离开时索引置-1，当作标记
-                                    selectedItem = -1;
-                                }).click(function () {
-                                    //鼠标单击下拉列表的这一项的话，就将这一项的值添加到输入框中
+                                //下拉列表每一项的事件，鼠标移进去的操作
+                                $(this).siblings().removeClass('highlight');
+                                $(this).addClass('highlight');
+                                selectedItem = index;
+                            }, function () {
+                                //下拉列表每一项的事件，鼠标离开的操作
+                                $(this).removeClass('highlight');
+                                //当鼠标离开时索引置-1，当作标记
+                                selectedItem = -1;
+                            }).click(function () {
+                                //鼠标单击下拉列表的这一项的话，就将这一项的值添加到输入框中
 
-                                    $searchInput.val(term.name);
+                                $searchInput.val(term.name);
 
-                                    //清空并隐藏下拉列表
-                                    $autocomplete.empty().hide();
-                                    fiflt();
-                                });
+                                //清空并隐藏下拉列表
+                                $autocomplete.empty().hide();
+                                fiflt();
+                            });
                         }); //事件注册完毕
                         //设置下拉列表的位置，然后显示下拉列表
                         // var ypos = $searchInput.position().top;
@@ -623,5 +505,4 @@
     });
 </script>
 
-</body>
-</html>
+{/block}
