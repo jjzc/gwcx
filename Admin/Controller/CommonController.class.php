@@ -75,77 +75,36 @@ class CommonController extends Controller
                     }
                     $this->assign("tag",$tag);
                     $this->assign("menuList",$menuList);
-//                    echo "<Pre>";print_r($menuList);exit;
                 }
-
-//                //获取出行管理左侧菜单
-//                $rulemap["pid"]=1;
-//                $travelLeft=M("Url")->where($rulemap)->select();
-//                $this->assign("travelLeft",$travelLeft);
-//
-////                //获取单位管理左侧菜单
-//                $rulemap["pid"]=22;
-//                $companyLeft1=M("Url")->where($rulemap)->select();
-//                $this->assign("companyLeft1",$companyLeft1);
-//
-//                $rulemap["pid"]=23;
-//                $companyLeft2=M("Url")->where($rulemap)->select();
-//                $this->assign("companyLeft2",$companyLeft2);
-//
-////                车辆管理左侧菜单
-//                $rulemap["pid"]=34;
-//                $carLeft1=M("Url")->where($rulemap)->select();
-//                $this->assign("carLeft1",$carLeft1);
-//
-//                $rulemap["pid"]=35;
-//                $carLeft2=M("Url")->where($rulemap)->select();
-//                $this->assign("carLeft2",$carLeft2);
-//
-//                $rulemap["pid"]=36;
-//                $carLeft3=M("Url")->where($rulemap)->select();
-//                $this->assign("carLeft3",$carLeft3);
-//
-//                //司机管理左侧菜单
-//                $rulemap["pid"]=4;
-//                $driverLeft=M("Url")->where($rulemap)->select();
-//                $this->assign("driverLeft",$driverLeft);
 
             }
         }
-
-
-        /**
-         * array_column()不支持低于5.5以下的版本;
-         * 以下方法兼容PHP低版本
-         */
-        function array_column(array $array, $column_key, $index_key=null){
-            $result = [];
-            foreach($array as $arr) {
-                if(!is_array($arr)) continue;
-
-                if(is_null($column_key)){
-                    $value = $arr;
-                }else{
-                    $value = $arr[$column_key];
-                }
-
-                if(!is_null($index_key)){
-                    $key = $arr[$index_key];
-                    $result[$key] = $value;
-                }else{
-                    $result[] = $value;
-                }
-            }
-            return $result;
-        }
-
     }
 
-//    public function getMenu($pid){
-//        $data=M("Url")->where(array("pid"=>$pid,"is_menu"=>1))->select();
-////        foreach ($data as $key=>$item){
-////            $data[$key]["submenu"] = $this->getMenu($item["id"]);
-////        }
-//        return $data;
-//    }
+    /**
+     * array_column()不支持低于5.5以下的版本;
+     * 以下方法兼容PHP低版本
+     */
+    function array_column(array $array, $column_key, $index_key=null){
+        $result = [];
+        foreach($array as $arr) {
+            if(!is_array($arr)) continue;
+
+            if(is_null($column_key)){
+                $value = $arr;
+            }else{
+                $value = $arr[$column_key];
+            }
+
+            if(!is_null($index_key)){
+                $key = $arr[$index_key];
+                $result[$key] = $value;
+            }else{
+                $result[] = $value;
+            }
+        }
+        return $result;
+    }
+
+
 }

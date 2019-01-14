@@ -1782,8 +1782,7 @@ class TravelController extends CommonController
         $account = "account=" . $set["jjaccount"] . "&pwd=" . $set["jjpwd"];
         $res     = httpFF("http://api.99huaan.com/passenger/login", "", $account, "POST");
         $res     = json_decode($res, true);
-
-//        var_dump($res);exit;
+//        @file_put_contents($_SERVER["DOCUMENT_ROOT"]."/jzw.txt","\n\n res:".json_encode($res),FILE_APPEND);
 
         $token = $res["token"];
         $member_id     = $res["data"]["member_id"];
@@ -1813,7 +1812,6 @@ class TravelController extends CommonController
 
         $res = httpFF("http://api.99huaan.com/passenger/order/common/createByPassenger", "", $sendData, "POST");
         $res = json_decode($res, true);
-//        @file_put_contents($_SERVER["DOCUMENT_ROOT"]."/jzw.txt","\n\n res:".json_encode($res),FILE_APPEND);
 
         if ($res["result"] == "1") {
             $travel["jj_id"]           = $res["data"]["order_id"];

@@ -84,6 +84,9 @@
                         <button id="btn_addd" type="button" class="btn btn-default" onClick="dy();">
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>打印报表
                         </button>
+                        <button id="" type="button" class="btn btn-default" onClick="import_csv();">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>导出报表
+                        </button>
                         {/if}
                     </form>
 
@@ -344,6 +347,15 @@
         } else {
             window.print();
         }
+    }
+
+    //报表导出
+    function import_csv(){
+        var startTime = $("#startTime").val();
+        var endTime = $("#endTime").val();
+        var searchKey = $("#searchKey").val();
+        var type = $("#type").val();
+        window.location.href = '{U("Admin/Report/company_import_to_csv")}?startTime='+startTime+'&endTime='+endTime+'&searchKey='+searchKey+'&type='+type;
     }
 
     jQuery(document).ready(function () {
