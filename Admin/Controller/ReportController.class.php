@@ -484,6 +484,117 @@ class ReportController extends CommonController
     //用户数据报表
     public function byUser()
     {
+        if (empty($_POST)) {
+            $this->assign("aa", "0");
+        } else {
+
+            $startTime    = trim($_REQUEST['startTime']);
+            $endTime      = trim($_REQUEST['endTime']);
+            $type         = intval($_REQUEST["type"]);
+            $searchKey    = trim($_REQUEST["searchKey"]);
+
+            $map             = array();
+            $map['t.is_del'] = 0;
+            $map['t.state']  = 9;
+
+            //获取开始时间
+            if (!empty($startTime) && empty($endTime)) {
+                $map['t.departure_time'] = array('gt', strtotime($startTime));
+            } elseif (!empty($endTime) && empty($startTime)) {
+                $map['t.departure_time'] = array('elt', strtotime($endTime) + 24 * 3600);
+            } elseif ((!empty($startTime)) && !empty($endTime)) {
+                $map['t.departure_time'] = array('between', array(strtotime($startTime), strtotime($endTime) + 24 * 3600));
+            }
+
+            $this->assign("username", $searchKey);
+            $this->assign("type", $type);
+            $this->assign("aa", "1");
+
+            if ($type == 1) {
+
+                if (!empty($searchKey)) {
+                    $map["c.user_phone|c.user_name"] = array("like", "%" . $searchKey . "%");
+
+                }
+
+                $count = M("User as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.use_user_id")->where($map)->group("t.use_user_id")->having('count(t.use_user_id)>=1')->field('use_user_id')->select();
+
+                $pageSize = 10;
+
+                $Page = new Page(count($count), $pageSize);
+
+                $Page->setConfig('header', '<li class="rows">共<b>%TOTAL_ROW%</b>条记录 第<b>%NOW_PAGE%</b>页/共<b>%TOTAL_PAGE%</b>页</li>');
+                $Page->setConfig('prev', '上一页');
+                $Page->setConfig('next', '下一页');
+                $Page->setConfig('last', '末页');
+                $Page->setConfig('first', '首页');
+                $Page->setConfig('theme', '%FIRST%%UP_PAGE%%LINK_PAGE%%DOWN_PAGE%%END%%HEADER%');
+                $Page->lastSuffix = false;
+
+                $field = 't.company_id,c.user_name,c.user_phone,count(t.use_user_id) AS finishCount,sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount,sum(t.parking_rate_sum) as t1,sum(t.driver_cost) as t2,sum(t.over_time_cost) as t3,sum(t.over_mileage_cost) as t4,sum(t.else_cost) as t5 ';
+
+                $users = M("User as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.use_user_id")->where($map)->group("t.use_user_id")->field($field)->limit($Page->firstRow . ',' . $Page->listRows)->having('finishCount>=1')->select();
+
+                foreach ($users as &$val) {
+                    $val["finishCount"]         = $val['finishcount'];
+                    $val["companyMileageCount"] = $val["companymileagecount"] ? $val["companymileagecount"] : 0;
+                    $val["luqiaoCount"]         = $val["luqiaocount"] ? $val["luqiaocount"] : 0;
+                    $val["fuwufeiCount"]        = $val["fuwufeicount"] ? $val["fuwufeicount"] : 0;
+                    $val["buzhuCount"]          = $val["buzhucount"] ? $val["buzhucount"] : 0;
+                    $val["qitaCount"]           = $val["t1"] + $val["t2"] + $val["t3"] + $val["t4"] + $val["t5"];
+                    $val["heji"]                = $val["luqiaoCount"] + $val["fuwufeiCount"] + $val["buzhuCount"] + $val["qitaCount"];
+                }
+                unset($val);
+
+                $this->assign("page",$Page->show());
+                $this->assign("users", $users);
+            }
+
+            if ($type == 2) {
+
+                if (!empty($searchKey)) {
+                    $company_ids = M("company")->where(array("company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配单位名称
+                    $user_ids    = M("user")->where(array("user_name|user_phone" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配用车人
+                    if ($company_ids) {
+                        $map["t.company_id"] = array("IN", $company_ids ? $this->_array_column($company_ids, "id") : array(0));
+                    } elseif ($user_ids) {
+                        $map["t.use_user_id"] = array("IN", $user_ids ? $this->_array_column($user_ids, "id") : array(0));
+                    }
+
+                }
+
+                $count = M("Travel as t")->join("left join " . C("DB_PREFIX") . "company as u on u.id =  t.company_id left join " . C("DB_PREFIX") . "user c on c.id = t.use_user_id")->where($map)->count();
+
+                $pageSize = 10;
+
+                $Page = new Page($count, $pageSize);
+                $Page->setConfig('header', '<li class="rows">共<b>%TOTAL_ROW%</b>条记录 第<b>%NOW_PAGE%</b>页/共<b>%TOTAL_PAGE%</b>页</li>');
+                $Page->setConfig('prev', '上一页');
+                $Page->setConfig('next', '下一页');
+                $Page->setConfig('last', '末页');
+                $Page->setConfig('first', '首页');
+                $Page->setConfig('theme', '%FIRST%%UP_PAGE%%LINK_PAGE%%DOWN_PAGE%%END%%HEADER%');
+                $Page->lastSuffix = false;
+
+                $travels = M("Travel as t")
+                    ->join("left join " . C("DB_PREFIX") . "company as u on u.id =  t.company_id left join " . C("DB_PREFIX") . "user c on c.id = t.use_user_id")
+                    ->where($map)
+                    ->limit($Page->firstRow . ',' . $Page->listRows)
+                    ->field("c.user_name,c.user_phone,u.company_name as company_namee,t.use_user_id,t.company_id,t.travel_nature,t.serial_number,t.start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,t.else_cost,t.totle_rate")
+                    ->select();
+
+                $this->assign("page", $Page->show());
+                $this->assign("travels", $travels);
+            }
+        }
+
+        $this->assign("startTime", $startTime ? $startTime : date('Y-m-01', strtotime(date("Y-m-d"))));
+        $this->assign("endTime", $endTime ? $endTime : date('Y-m-d', strtotime(date("Y-m-d"))));
+        $this->display();
+    }
+
+    public function byUser11()
+    {
 //        set_time_limit(0);
         $startTime = date('Y-m-01', strtotime(date("Y-m-d")));
         $endTime   = date('Y-m-d', strtotime(date("Y-m-d")));
@@ -735,9 +846,18 @@ class ReportController extends CommonController
 
             $map["state"] = 9;
             if (!empty($_REQUEST["searchKey"])) {
-                $ids                = M("user")->where(array("user_name|user_phone" => array("like", "%" . trim($_REQUEST["searchKey"]) . "%")))->field("id")->select();
-                $map["use_user_id"] = array("IN", $ids ? array_column($ids, "id") : array(0));
+                $searchKey = trim($_REQUEST["searchKey"]);
+                $company_ids = M("company")->where(array("company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配单位名称
+                $user_ids    = M("user")->where(array("user_name|user_phone" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配用车人
+                if ($company_ids) {
+                    $map["company_id"] = array("IN", $company_ids ? $this->_array_column($company_ids, "id") : array(0));
+                } elseif ($user_ids) {
+                    $map["use_user_id"] = array("IN", $user_ids ? $this->_array_column($user_ids, "id") : array(0));
+                }
+//                $ids                = M("user")->where(array("user_name|user_phone" => array("like", "%" . trim($_REQUEST["searchKey"]) . "%")))->field("id")->select();
+//                $map["use_user_id"] = array("IN", $ids ? array_column($ids, "id") : array(0));
             }
+
             $map["is_del"] = 0;
             $travels       = M("Travel")->where($map)->field('use_user_id,company_id,driver_id,serial_number,start_car_time,to_place,mileage,fees_sum,service_charge,else_cost,totle_rate,driver_bt_cost')->select();
 
@@ -1268,8 +1388,8 @@ class ReportController extends CommonController
 
             $searchKey = trim($_REQUEST["searchKey"]);
             if (!empty($searchKey)) {
-                $company_ids       = M("company")->where(array("company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配单位名称
-                $user_ids          = M("user")->where(array("user_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配用车人
+                $company_ids = M("company")->where(array("company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配单位名称
+                $user_ids    = M("user")->where(array("user_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配用车人
                 if ($company_ids) {
                     $map["company_id"] = array("IN", $company_ids ? $this->_array_column($company_ids, "id") : array(0));
                 } elseif ($user_ids) {
