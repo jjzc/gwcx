@@ -24,6 +24,51 @@
         cursor: default;
     }
 </style>
+
+<style>
+    .pages{
+        height: 20px;
+        line-height: 20px;
+        margin: 5px 0;
+    }
+    .pages a,
+    .pages span {
+        display: inline-block;
+        padding: 2px 5px;
+        margin: 0 1px;
+        border: 1px solid #f0f0f0;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+    }
+
+    .pages a,
+    .pages li {
+        display: inline-block;
+        list-style: none;
+        text-decoration: none;
+        color: #58A0D3;
+    }
+
+    .pages a.first,
+    .pages a.prev,
+    .pages a.next,
+    .pages a.end {
+        margin: 0;
+    }
+
+    .pages a:hover {
+        border-color: #50A8E6;
+    }
+
+    .pages span.current {
+        background: #50A8E6;
+        color: #FFF;
+        font-weight: 700;
+        border-color: #50A8E6;
+    }
+</style>
+
 {/block}
 
 {block name=pageContent}
@@ -68,9 +113,17 @@
                                 <input type="text" class="form-control input-inline jt" style="width: 200px" id="searchKey" name="searchKey" placeholder="请输入单位名称" value="{$companyname}"/>
                             </div>
                         </div>
+                        <div class="form-group travel-nature" style="width: 160px; float: left; margin-right: 8px;display: none">
+                            <select name="travelNature" class="form-control" id="travelNature">
+                                <option value="0">出行性质(不限)</option>
+                                {foreach $travelNature as $k=>$v}
+                                <option value="{$v.nature_name}" {if $v.nature_name eq $nature_name}selected{/if}>{$v.nature_name}</option>
+                                {/foreach}
+                            </select>
+                        </div>
 
                         <div class="form-group" style="width: 160px; float: left; margin-right: 8px;">
-                            <select name="type" class="form-control" id="type">
+                            <select name="type" class="form-control" id="type" onchange="show(this)">
                                 <option value="1" {if $type eq 1}selected{/if}>统计报表</option>
                                 <option value="2" {if $type eq 2}selected{/if}>明细报表</option>
                             </select>
@@ -102,6 +155,17 @@
                         <tr>
                             <td height="30" colspan="9" style="font-size:16px; text-align:center; line-height:30px;">开起始时间：{$startTime}&nbsp;&nbsp;&nbsp;&nbsp;截至时间：{$endTime}&nbsp;&nbsp;&nbsp;&nbsp;金额单位：元</td>
                         </tr>
+                        <!--<tr class="trrrrr">-->
+                            <!--<td><div align="center">合计</div></td>-->
+                            <!--<td>{$hj.finishCount}</td>-->
+                            <!--<td>{$hj.companyMileageCount}</td>-->
+                            <!--<td>{$hj.luqiaoCount}</td>-->
+                            <!--<td>{$hj.fuwufeiCount}</td>-->
+                            <!--<td>{$hj.buzhuCount}</td>-->
+                            <!--<td>{$hj.qitaCount}</td>-->
+                            <!--<td>{$hj.heji}</td>-->
+                            <!--<td><div align="center"></div></td>-->
+                        <!--</tr>-->
                         <tr style="text-align:center; height:30px; line-height:30px;">
                             <td rowspan="2" nowrap>
                                 <div align="center">单位名称</div>
@@ -137,9 +201,7 @@
                             </td>
                         </tr>
 
-
                         {foreach $companys as $k=>$v}
-                        {if $v.finishCount neq 0}
                         <tr class="trrrrr">
                             <td nowrap>{$v.company_name}</td>
                             <td>{$v.finishCount}</td>
@@ -151,24 +213,7 @@
                             <td>{$v.heji}</td>
                             <td nowrap>&nbsp;</td>
                         </tr>
-                        {/if}
                         {/foreach}
-
-                        <tr class="trrrrr">
-                            <td>
-                                <div align="center">合计</div>
-                            </td>
-                            <td>{$hj.finishCount}</td>
-                            <td>{$hj.companyMileageCount}</td>
-                            <td>{$hj.luqiaoCount}</td>
-                            <td>{$hj.fuwufeiCount}</td>
-                            <td>{$hj.buzhuCount}</td>
-                            <td>{$hj.qitaCount}</td>
-                            <td>{$hj.heji}</td>
-                            <td>
-                                <div align="center"></div>
-                            </td>
-                        </tr>
                     </table>
                 </div>
                 {/if}
@@ -187,7 +232,7 @@
                             <td rowspan="2">流水号</td>
                             <td rowspan="2" width="80px">用车人</td>
                             <td rowspan="2" width="125px">出车时间</td>
-                            <td rowspan="2">用车事由</td>
+                            <td rowspan="2">出行性质</td>
                             <td rowspan="2">目的地</td>
                             <td rowspan="2">出行里程</td>
                             <td colspan="5">出行费用</td>
@@ -212,7 +257,7 @@
                             <td>{$v.serial_number}</td>
                             <td>{$v.user_name}</td>
                             <td>{$v.start_car_time|date_format:'%Y-%m-%d %H:%M'}</td>
-                            <td>{$v.travel_reason}</td>
+                            <td>{$v.travel_nature}</td>
                             <td>{$v.to_place}</td>
                             <td>{$v.mileage}{$mileagenum=$mileagenum+$v.mileage}</td>
                             <td>{$v.fees_sum}{$fees_sumnum=$fees_sumnum+$v.fees_sum}</td>
@@ -239,12 +284,11 @@
                             <td>{$totle_ratenum}</td>
                             <td nowrap>&nbsp;</td>
                         </tr>
-
-
                     </table>
                 </div>
                 {/if}
                 <!--endprint1-->
+                <div class="pages" id="page" style="text-align: center">{$page}</div>
                 {/if}
             </div>
         </div>
@@ -329,6 +373,15 @@
 <!-- END PAGE LEVEL SCRIPTS -->
 
 <script>
+
+    $(function(){
+        show($("#type"));
+        $("#page a").click(function(event) {
+            event.preventDefault();
+            $("form").attr("action", $(this).attr("href")).submit();
+        });
+    });
+
     function dy() {
         preview(1);
     }
@@ -338,6 +391,9 @@
             bdhtml = window.document.body.innerHTML;//获取当前页的html代码
             sprnstr = "<!--startprint" + oper + "-->";//设置打印开始区域
             eprnstr = "<!--endprint" + oper + "-->";//设置打印结束区域
+            console.log(bdhtml);
+            console.log(sprnstr);
+            console.log(eprnstr);
             prnhtml = bdhtml.substring(bdhtml.indexOf(sprnstr) + 18); //从开始代码向后取html
 
             prnhtml = prnhtml.substring(0, prnhtml.indexOf(eprnstr));//从结束代码向前取html
@@ -355,7 +411,18 @@
         var endTime = $("#endTime").val();
         var searchKey = $("#searchKey").val();
         var type = $("#type").val();
-        window.location.href = '{U("Admin/Report/company_export_to_csv")}?startTime='+startTime+'&endTime='+endTime+'&searchKey='+searchKey+'&type='+type;
+        var travelNature = $("#travelNature").val();
+        window.location.href = '{U("Admin/Report/company_export_to_csv")}?startTime='+startTime+'&endTime='+endTime+'&searchKey='+searchKey+'&type='+type+"&travelNature="+travelNature;
+    }
+
+    function show(obj){
+        if($(obj).val() == 2){
+            $(".travel-nature").show();
+            $("#searchKey").attr("placeholder","请输入单位名称或者用车人");
+        }else{
+            $(".travel-nature").hide();
+            $("#searchKey").attr("placeholder","请输入单位名称");
+        }
     }
 
     jQuery(document).ready(function () {

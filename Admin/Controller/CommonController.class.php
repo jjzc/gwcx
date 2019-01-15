@@ -85,7 +85,7 @@ class CommonController extends Controller
      * array_column()不支持低于5.5以下的版本;
      * 以下方法兼容PHP低版本
      */
-    function array_column(array $array, $column_key, $index_key=null){
+    function _array_column(array $array, $column_key, $index_key=null){
         $result = [];
         foreach($array as $arr) {
             if(!is_array($arr)) continue;
@@ -106,5 +106,25 @@ class CommonController extends Controller
         return $result;
     }
 
+    function array_column(array $array, $column_key, $index_key=null){
+        $result = [];
+        foreach($array as $arr) {
+            if(!is_array($arr)) continue;
+
+            if(is_null($column_key)){
+                $value = $arr;
+            }else{
+                $value = $arr[$column_key];
+            }
+
+            if(!is_null($index_key)){
+                $key = $arr[$index_key];
+                $result[$key] = $value;
+            }else{
+                $result[] = $value;
+            }
+        }
+        return $result;
+    }
 
 }
