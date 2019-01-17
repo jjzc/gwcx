@@ -974,7 +974,7 @@ class FinanceController extends CommonController
         $limit = " limit " . (($page - 1) * 1000) . ",1000 ";
         $list = $Model->query($sql . $where . $sort . $limit);
         if ($list) {
-            register_shutdown_function(array(&$this, 'oilRecordToExcel'), $page + 1);
+            register_shutdown_function(array(&$this, 'insuranceRecordToExcel'), $page + 1);
 
             //缴费类型
             $type = array(1 => "交强险", 2 => "商业险", 3 => "年检", 4 => "车船税");

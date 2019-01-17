@@ -23,6 +23,49 @@
     .autocomplete .clickable {
         cursor: default;
     }
+
+    /*<分页样式>*/
+    .pages{
+        height: 20px;
+        line-height: 20px;
+        margin: 5px 0;
+    }
+    .pages a,
+    .pages span {
+        display: inline-block;
+        padding: 2px 5px;
+        margin: 0 1px;
+        border: 1px solid #f0f0f0;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+    }
+
+    .pages a,
+    .pages li {
+        display: inline-block;
+        list-style: none;
+        text-decoration: none;
+        color: #58A0D3;
+    }
+
+    .pages a.first,
+    .pages a.prev,
+    .pages a.next,
+    .pages a.end {
+        margin: 0;
+    }
+
+    .pages a:hover {
+        border-color: #50A8E6;
+    }
+
+    .pages span.current {
+        background: #50A8E6;
+        color: #FFF;
+        font-weight: 700;
+        border-color: #50A8E6;
+    }
 </style>
 {/block}
 
@@ -95,21 +138,27 @@
                 </div>
 
                 {if $aa eq 1}
+                <!--startprint1-->
 
                 {if $type eq 1}
                 <div class="portlet-body">
                     <table width="100%" border="1" cellpadding="0" cellspacing="0" style="border-collapse:collapse; font-size:14px;">
+                        <tr><td height="40" colspan="10" style="font-size:18px; text-align:center; line-height:40px;">公务用车平台车辆用车统计报表</td></tr>
+                        <tr><td height="30" colspan="10" style="font-size:16px; text-align:center; line-height:30px;">开起始时间：{$startTime}&nbsp;&nbsp;&nbsp;&nbsp;截至时间：{$endTime}&nbsp;&nbsp;&nbsp;&nbsp;金额单位：元</td></tr>
                         <tr>
-                            <td height="40" colspan="10" style="font-size:18px; text-align:center; line-height:40px;">公务用车平台车辆用车统计报表</td>
-                        </tr>
-                        <tr>
-                            <td height="30" colspan="10" style="font-size:16px; text-align:center; line-height:30px;">开起始时间：{$startTime}&nbsp;&nbsp;&nbsp;&nbsp;截至时间：{$endTime}&nbsp;&nbsp;&nbsp;&nbsp;金额单位：元</td>
+                            <td height="30" colspan="9" style="font-size:16px; text-align:center; line-height:30px;">
+                                <span style="margin: 0 25px">出行次数：<label style="color: #FF3F3F;">{$total.finishcount}</label></span>
+                                <span style="margin: 0 25px">出行里程：<label style="color: #FF3F3F;">{$total.companymileagecount}</label></span>
+                                <span style="margin: 0 25px">路桥费：<label style="color: #FF3F3F;">{$total.luqiaocount}</label></span>
+                                <span style="margin: 0 25px">出行服务费：<label style="color: #FF3F3F;">{$total.fuwufeicount}</label></span>
+                                <span style="margin: 0 25px">出差补助：<label style="color: #FF3F3F;">{$total.buzhucount}</label></span>
+                                <span style="margin: 0 25px">其他：<label style="color: #FF3F3F;">{$total.qitacount}</label></span>
+                                <span style="margin: 0 25px">小计：<label style="color: #FF3F3F;">{$total.xiaoji}</label></span>
+                            </td>
                         </tr>
                         <tr style="text-align:center; height:30px; line-height:30px;">
                             <td rowspan="2">司机姓名</td>
                             <td rowspan="2">联系电话</td>
-
-
                             <td rowspan="2">出行次数</td>
                             <td rowspan="2">出行里程</td>
                             <td colspan="5">出行费用</td>
@@ -122,7 +171,6 @@
                             <td>其他</td>
                             <td>小计</td>
                         </tr>
-
                         {foreach $drivers as $k=>$v}
                         {if $v.finishCount neq 0}
                         <tr class="trrrrr">
@@ -139,23 +187,6 @@
                         </tr>
                         {/if}
                         {/foreach}
-
-                        <tr class="trrrrr">
-                            <td>
-                                <div align="center">合计</div>
-                            </td>
-                            <td></td>
-                            <td>{$hj.finishCount}</td>
-                            <td>{$hj.companyMileageCount}</td>
-                            <td>{$hj.luqiaoCount}</td>
-                            <td>{$hj.fuwufeiCount}</td>
-                            <td>{$hj.buzhuCount}</td>
-                            <td>{$hj.qitaCount}</td>
-                            <td>{$hj.heji}</td>
-                            <td>
-                                <div align="center"></div>
-                            </td>
-                        </tr>
                     </table>
                 </div>
                 {/if}
@@ -168,6 +199,16 @@
                         </tr>
                         <tr>
                             <td height="30" colspan="13" style="font-size:16px; text-align:center; line-height:30px;">开起始时间：{$startTime}&nbsp;&nbsp;&nbsp;&nbsp;截至时间：{$endTime}&nbsp;&nbsp;&nbsp;&nbsp;金额单位：元</td>
+                        </tr>
+                        <tr>
+                            <td height="30" colspan="13" style="font-size:16px; text-align:center; line-height:30px;">
+                                <span style="margin: 0 25px">出行里程：<label style="color: #FF3F3F;">{$total.companymileagecount}</label></span>
+                                <span style="margin: 0 25px">路桥费：<label style="color: #FF3F3F;">{$total.luqiaocount}</label></span>
+                                <span style="margin: 0 25px">出行服务费：<label style="color: #FF3F3F;">{$total.fuwufeicount}</label></span>
+                                <span style="margin: 0 25px">出差补助：<label style="color: #FF3F3F;">{$total.buzhucount}</label></span>
+                                <span style="margin: 0 25px">其他：<label style="color: #FF3F3F;">{$total.qitacount}</label></span>
+                                <span style="margin: 0 25px">小计：<label style="color: #FF3F3F;">{$total.xiaoji}</label></span>
+                            </td>
                         </tr>
                         <tr style="text-align:center; height:30px; line-height:30px;">
                             <td rowspan="2">司机姓名</td>
@@ -187,11 +228,6 @@
                             <td>其他</td>
                             <td>小计</td>
                         </tr>
-                        {$mileagenum=0}
-                        {$fees_sumnum=0}
-                        {$service_chargenum=0}
-                        {$costnum=0}
-                        {$totle_ratenum=0}
                         {foreach $travels as $k=>$v}
                         <tr class="trrrrr">
                             <td nowrap>{$v.driver_name}</td>
@@ -200,12 +236,12 @@
                             <td>{$v.user_name}</td>
                             <td>{$v.start_car_time|date_format:'%Y-%m-%d %H:%M'}</td>
                             <td>{$v.to_place}</td>
-                            <td>{$v.mileage}{$mileagenum=$mileagenum+$v.mileage}</td>
-                            <td>{$v.fees_sum}{$fees_sumnum=$fees_sumnum+$v.fees_sum}</td>
-                            <td>{$v.service_charge}{$service_chargenum=$service_chargenum+$v.service_charge}</td>
+                            <td>{$v.mileage}</td>
+                            <td>{$v.fees_sum}</td>
+                            <td>{$v.service_charge}</td>
                             <td>0</td>
-                            <td>{$v.else_cost}{$costnum=$costnum+$v.else_cost}</td>
-                            <td>{$v.totle_rate}{$totle_ratenum=$totle_ratenum+$v.totle_rate}</td>
+                            <td>{$v.else_cost}</td>
+                            <td>{$v.totle_rate}</td>
                             <td nowrap></td>
                         </tr>
                         {/foreach}
@@ -227,6 +263,8 @@
                     </table>
                 </div>
                 {/if}
+                <!--endprint1-->
+                <div class="pages" id="page" style="text-align: center">{$page}</div>
                 {/if}
             </div>
         </div>
@@ -318,6 +356,13 @@
 
 
 <script>
+
+    $(function(){
+        $("#page a").click(function(event) {
+            event.preventDefault();
+            $("form").attr("action", $(this).attr("href")).submit();
+        });
+    });
 
     function dy() {
         preview(1);

@@ -21,17 +21,17 @@ class ReportController extends CommonController
             $searchKey    = trim($_REQUEST["searchKey"]);
             $travelNature = trim($_REQUEST["travelNature"]);
 
+            //查询条件
             $map             = array();
             $map['t.is_del'] = 0;
             $map['t.state']  = 9;
 
-            //获取开始时间
             if (!empty($startTime) && empty($endTime)) {
                 $map['t.departure_time'] = array('gt', strtotime($startTime));
             } elseif (!empty($endTime) && empty($startTime)) {
-                $map['t.departure_time'] = array('elt', strtotime($endTime) + 24 * 3600);
+                $map['t.departure_time'] = array('elt', strtotime($endTime) + 24 * 3600 - 1);
             } elseif ((!empty($startTime)) && !empty($endTime)) {
-                $map['t.departure_time'] = array('between', array(strtotime($startTime), strtotime($endTime) + 24 * 3600));
+                $map['t.departure_time'] = array('between', array(strtotime($startTime), strtotime($endTime) + 24 * 3600 - 1));
             }
 
             $this->assign("nature_name", $travelNature);
@@ -46,12 +46,12 @@ class ReportController extends CommonController
                     $map["c.company_name"] = array("like", "%" . $searchKey . "%");
                 }
 
-                $count = M("Company as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.company_id")->where($map)->group("t.company_id")->having('count(t.company_id)>=1')->field('company_id')->select();
-
+                //分页查询
+                $count    = M("Company as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.company_id")->where($map)->group("t.company_id")->having('count(t.company_id)>=1')->field('company_id')->select();
                 $pageSize = 10;
+                $Page     = new Page(count($count), $pageSize);
 
-                $Page = new Page(count($count), $pageSize);
-
+                //设置分页样式
                 $Page->setConfig('header', '<li class="rows">共<b>%TOTAL_ROW%</b>条记录 第<b>%NOW_PAGE%</b>页/共<b>%TOTAL_PAGE%</b>页</li>');
                 $Page->setConfig('prev', '上一页');
                 $Page->setConfig('next', '下一页');
@@ -60,24 +60,18 @@ class ReportController extends CommonController
                 $Page->setConfig('theme', '%FIRST%%UP_PAGE%%LINK_PAGE%%DOWN_PAGE%%END%%HEADER%');
                 $Page->lastSuffix = false;
 
-                $field = 't.company_id,c.company_name,count(t.company_id) AS finishCount,sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount,sum(t.parking_rate_sum) as t1,sum(t.driver_cost) as t2,sum(t.over_time_cost) as t3,sum(t.over_mileage_cost) as t4,sum(t.else_cost) as t5 ';
-
+                //数据查询
+                //其他 = 停车费单据总金额(parking_rate_sum) + 司机住宿等花费(driver_cost) + 超时费(over_time_cost) + 超公里费(over_mileage_cost) + 其他费用(else_cost)
+                $field    = 't.company_id,c.company_name,count(t.company_id) AS finishCount,sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount,sum(t.parking_rate_sum + t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as qitaCount ,sum(totle_rate) as heji';
                 $companys = M("Company as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.company_id")->where($map)->group("t.company_id")->field($field)->limit($Page->firstRow . ',' . $Page->listRows)->having('finishCount>=1')->select();
 
-                foreach ($companys as &$val) {
-                    $val["finishCount"]         = $val['finishcount'];
-                    $val["companyMileageCount"] = $val["companymileagecount"] ? $val["companymileagecount"] : 0;
-                    $val["luqiaoCount"]         = $val["luqiaocount"] ? $val["luqiaocount"] : 0;
-                    $val["fuwufeiCount"]        = $val["fuwufeicount"] ? $val["fuwufeicount"] : 0;
-                    $val["buzhuCount"]          = $val["buzhucount"] ? $val["buzhucount"] : 0;
-                    $val["qitaCount"]           = $val["t1"] + $val["t2"] + $val["t3"] + $val["t4"] + $val["t5"];
-                    $val["heji"]                = $val["luqiaoCount"] + $val["fuwufeiCount"] + $val["buzhuCount"] + $val["qitaCount"];
-                }
-                unset($val);
+                //汇总合计
+                $field = 'count(t.id) AS finishCount,sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount,sum(t.parking_rate_sum + t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as qitaCount ,sum(totle_rate) as heji';
+                $total = M("Company as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.company_id")->where($map)->field($field)->having('finishCount>=1')->select();
                 $this->assign("page", $Page->show());
                 $this->assign("companys", $companys);
+                $this->assign("total", $total[0]);
             } else {
-
                 if (!empty($searchKey)) {
                     $company_ids = M("company")->where(array("company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配单位名称
                     $user_ids    = M("user")->where(array("user_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配用车人
@@ -86,18 +80,16 @@ class ReportController extends CommonController
                     } elseif ($user_ids) {
                         $map["t.use_user_id"] = array("IN", $user_ids ? $this->_array_column($user_ids, "id") : array(0));
                     }
-
                 }
 
                 if ($travelNature) {
                     $map["t.travel_nature"] = $travelNature;
                 }
 
-                $count = M("Travel as t")->join("left join " . C("DB_PREFIX") . "company as c on c.id =  t.company_id left join " . C("DB_PREFIX") . "user u on u.id = t.use_user_id")->where($map)->count();
-
+                //分页
+                $count    = M("Travel as t")->join("left join " . C("DB_PREFIX") . "company as c on c.id =  t.company_id left join " . C("DB_PREFIX") . "user u on u.id = t.use_user_id")->where($map)->count();
                 $pageSize = 10;
-
-                $Page = new Page($count, $pageSize);
+                $Page     = new Page($count, $pageSize);
                 $Page->setConfig('header', '<li class="rows">共<b>%TOTAL_ROW%</b>条记录 第<b>%NOW_PAGE%</b>页/共<b>%TOTAL_PAGE%</b>页</li>');
                 $Page->setConfig('prev', '上一页');
                 $Page->setConfig('next', '下一页');
@@ -106,15 +98,21 @@ class ReportController extends CommonController
                 $Page->setConfig('theme', '%FIRST%%UP_PAGE%%LINK_PAGE%%DOWN_PAGE%%END%%HEADER%');
                 $Page->lastSuffix = false;
 
-                $travels = M("Travel as t")
-                    ->join("left join " . C("DB_PREFIX") . "company as c on c.id =  t.company_id left join " . C("DB_PREFIX") . "user u on u.id = t.use_user_id")
-                    ->where($map)
-                    ->limit($Page->firstRow . ',' . $Page->listRows)
-                    ->field("u.user_name,c.company_name as company_namee,t.use_user_id,t.company_id,t.travel_nature,t.serial_number,t.start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,t.else_cost,t.totle_rate")
-                    ->select();
+                //数据
+                $field   = 'u.user_name,c.company_name as company_namee,t.use_user_id,t.company_id,t.travel_nature,t.serial_number,t.start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,t.else_cost,t.totle_rate,t.parking_rate_sum,t.driver_cost,t.over_time_cost,t.over_mileage_cost';
+                $travels = M("Travel as t")->join("left join " . C("DB_PREFIX") . "company as c on c.id =  t.company_id left join " . C("DB_PREFIX") . "user u on u.id = t.use_user_id")->where($map)->limit($Page->firstRow . ',' . $Page->listRows)->field($field)->select();
+                foreach ($travels as &$val) {
+                    $val["qita"] = $val["parking_rate_sum"] + $val["driver_cost"] + $val["over_time_cost"] + $val["over_mileage_cost"] + $val["else_cost"];
+                }
+                unset($val);
+
+                //合计汇总
+                $field = 'sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount,sum(t.parking_rate_sum + t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as qitaCount ,sum(totle_rate) as xiaoji ';
+                $total = M("Travel as t")->join("left join " . C("DB_PREFIX") . "company as c on c.id =  t.company_id left join " . C("DB_PREFIX") . "user u on u.id = t.use_user_id")->where($map)->field($field)->select();
 
                 $this->assign("page", $Page->show());
                 $this->assign("travels", $travels);
+                $this->assign("total", $total[0]);
             }
         }
 
@@ -130,335 +128,314 @@ class ReportController extends CommonController
     //车辆数据报表
     public function byCar()
     {
-        //获取当月1号时间
-        $startTime = date('Y-m-01', strtotime(date("Y-m-d")));
-        $endTime   = date('Y-m-d', strtotime(date("Y-m-d")));
-
-        //获取所有单位
-        $companysall = M("Company")->where("is_del=0")->select();
-        $this->assign("companysall", $companysall);
-
-        $carsall = M("Car")->where("is_del=0")->select();
-        $this->assign("carsall", $carsall);
 
         if (empty($_POST)) {
             $this->assign("aa", "0");
         } else {
-            //如果发送数据过来了
-            $this->assign("type", $_POST["type"]);
+
+            $startTime = trim($_REQUEST['startTime']);
+            $endTime   = trim($_REQUEST['endTime']);
+            $type = intval($_REQUEST['type']);
+            $searchKey = trim($_REQUEST['searchKey']);
+
+            $map             = array();
+            $map["t.is_del"] = 0;
+            $map["t.state"]  = 9;
 
             //获取开始时间
-            if (!empty($_POST["startTime"])) {
-                $startTime             = $_POST["startTime"];
-                $map['departure_time'] = array('gt', strtotime($_POST["startTime"]));
+            if (!empty($startTime) && empty($endTime)) {
+                $map['t.departure_time'] = array('gt', strtotime($startTime));
+            } elseif (!empty($endTime) && empty($startTime)) {
+                $map['t.departure_time'] = array('elt', strtotime($endTime) + 24 * 3600);
+            } elseif ((!empty($startTime)) && !empty($endTime)) {
+                $map['t.departure_time'] = array('between', array(strtotime($startTime), strtotime($endTime) + 24 * 3600 - 1));
             }
 
-            if (!empty($_POST["endTime"])) {
-                $endTime               = $_POST["endTime"];
-                $map['departure_time'] = array('elt', strtotime($_POST["endTime"]) + 24 * 3600);
-            }
-            if ((!empty($_POST["startTime"])) && !empty($_POST["endTime"])) {
-
-                $startTime = $_POST["startTime"];
-                $endTime   = $_POST["endTime"];
-
-                $map['departure_time'] = array('between', array(strtotime($_POST["startTime"]), strtotime($_POST["endTime"]) + 24 * 3600 - 1));
-            }
-            if ($_POST["car"] != 0) {
-                $mapc["id"] = $_POST["car"];
-                $this->assign("carname", $_POST["car"]);
-            }
-
-            $mapc["is_del"] = 0;
-
+            $this->assign("type", $type);
+            $this->assign("searchKey", $searchKey);
             $this->assign("aa", "1");
 
-            if ($_POST["type"] == 1) {
-                if ($_POST["company"] != 0) {
-                    $map["company_id"] = $_POST["company"];
+            if ($type == 1) {
+                $map['c.is_del'] = 0;
+                if ($searchKey) {  //搜索车牌号或者单位名称
+                    $search_sql = " c.car_num like '%" . $searchKey . "%' ";
+                    $company    = M("company")->where(array("is_del"=>0,"company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+                    if ($company) {
+                        $search_sql .= "  or c.company_id in (" . implode(",", $this->_array_column($company, "id")) . ")";
+                    }
+                    $map["_string"] = $search_sql;
                 }
 
-                $cars = M("Car")->where($mapc)->select();
+                $count = M("car as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.car_id")->where($map)->group("t.car_id")->having('count(t.car_id)>=1')->field('car_id')->select();
 
-                $hj = array(
-                    "finishCount"         => 0,
-                    "companyMileageCount" => 0,
-                    "luqiaoCount"         => 0,
-                    "fuwufeiCount"        => 0,
-                    "buzhuCount"          => 0,
-                    "qitaCount"           => 0,
-                    "heji"                => 0,
-                    "xiche"               => 0,
-                    "weixiu"              => 0,
-                    "jiayou"              => 0,
-                    "nianjian"            => 0,
-                    "xiaoji"              => 0
-                );
+                $pageSize = 10;
 
-                for ($i = 0; $i < count($cars) && count($cars) != 0; $i++) {
-                    $map['car_id'] = array('eq', $cars[$i]["id"]);
-                    $map["is_del"] = 0;
-                    // $map1['company_id']  = array('eq',$companys[$i]["id"]);
+                $Page = new Page(count($count), $pageSize);
 
-                    $travelM                 = new TravelModel();
-                    $cars[$i]["finishCount"] = $travelM->where($map)->where(array("state" => "9"))->count();
+                $Page->setConfig('header', '<li class="rows">共<b>%TOTAL_ROW%</b>条记录 第<b>%NOW_PAGE%</b>页/共<b>%TOTAL_PAGE%</b>页</li>');
+                $Page->setConfig('prev', '上一页');
+                $Page->setConfig('next', '下一页');
+                $Page->setConfig('last', '末页');
+                $Page->setConfig('first', '首页');
+                $Page->setConfig('theme', '%FIRST%%UP_PAGE%%LINK_PAGE%%DOWN_PAGE%%END%%HEADER%');
+                $Page->lastSuffix = false;
 
-                    $cars[$i]["companyMileageCount"] = $travelM->where($map)->where(array("state" => "9"))->sum("mileage");//该单位所有出行费用之和
-                    if (empty($cars[$i]["companyMileageCount"])) {
-                        $cars[$i]["companyMileageCount"] = 0;
-                    }
+                $field = 'c.id,t.car_id,c.car_num,count(t.car_id) AS finishCount,sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount,sum(t.parking_rate_sum + t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as qitacount,sum(totle_rate) as heji ';
 
+                $cars = M("car as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.car_id")->where($map)->group("t.car_id")->field($field)->limit($Page->firstRow . ',' . $Page->listRows)->having('finishCount>=1')->select();
 
-                    $cars[$i]["luqiaoCount"] = $travelM->where($map)->where(array("state" => "9"))->sum("fees_sum");//该单位所有出行费用之和
-                    if (empty($cars[$i]["luqiaoCount"])) {
-                        $cars[$i]["luqiaoCount"] = 0;
-                    }
-
-                    $cars[$i]["fuwufeiCount"] = $travelM->where($map)->where(array("state" => "9"))->sum("service_charge");//该单位所有出行费用之和
-                    if (empty($cars[$i]["fuwufeiCount"])) {
-                        $cars[$i]["fuwufeiCount"] = 0;
-                    }
-
-                    $cars[$i]["buzhuCount"] = $travelM->where($map)->where(array("state" => "9"))->sum("driver_bt_cost");
-
-
-                    $cars[$i]["qitaCount"] = $travelM->where($map)->where(array("state" => "9"))->sum("parking_rate_sum") + $travelM->where($map)->where(array("state" => "9"))->sum("driver_cost") + $travelM->where($map)->where(array("state" => "9"))->sum("over_time_cost") + $travelM->where($map)->where(array("state" => "9"))->sum("over_mileage_cost") + $travelM->where($map)->where(array("state" => "9"))->sum("else_cost");//该单位所有出行费用之和
-
-                    $cars[$i]["heji"] = $cars[$i]["luqiaoCount"] + $cars[$i]["fuwufeiCount"] + $cars[$i]["buzhuCount"] + $cars[$i]["qitaCount"];
-
-
+                foreach ($cars as &$val) {
                     //计算维修保养费用
-                    $xiche['car_id']    = array('eq', $cars[$i]["id"]);
+                    $xiche['car_id']    = array('eq', $val["id"]);
                     $xiche["is_del"]    = array('eq', 0);
-                    $xiche["wash_time"] = $map['departure_time'];
+                    $xiche["wash_time"] = $map['t.departure_time'];
 
-                    $weixiu['car_id']     = array('eq', $cars[$i]["id"]);
+                    $weixiu['car_id']     = array('eq', $val["id"]);
                     $weixiu["is_del"]     = array('eq', 0);
-                    $weixiu["start_time"] = $map['departure_time'];
+                    $weixiu["start_time"] = $map['t.departure_time'];
 
-                    $jiayou['car_id']       = array('eq', $cars[$i]["id"]);
+                    $jiayou['car_id']       = array('eq', $val["id"]);
                     $jiayou["is_del"]       = array('eq', 0);
-                    $jiayou["trading_time"] = $map['departure_time'];
+                    $jiayou["trading_time"] = $map['t.departure_time'];
 
-                    $nianjian['car_id']   = array('eq', $cars[$i]["id"]);
+                    $nianjian['car_id']   = array('eq', $val["id"]);
                     $nianjian["is_del"]   = array('eq', 0);
-                    $nianjian["pay_time"] = $map['departure_time'];
+                    $nianjian["pay_time"] = $map['t.departure_time'];
 
-                    $cars[$i]["xiche"]    = M("CostWash")->where($xiche)->sum("cost");
-                    $cars[$i]["weixiu"]   = M("CostRepair")->where($weixiu)->sum("cost");
-                    $cars[$i]["jiayou"]   = M("CostOil")->where($jiayou)->sum("cost");
-                    $cars[$i]["nianjian"] = M("CostInsurance")->where($nianjian)->sum("cost");
-                    $cars[$i]["xiaoji"]   = $cars[$i]["xiche"] + $cars[$i]["weixiu"] + $cars[$i]["jiayou"] + $cars[$i]["nianjian"];
+                    $val["xiche"]    = M("CostWash")->where($xiche)->sum("cost");
+                    $val["weixiu"]   = M("CostRepair")->where($weixiu)->sum("cost");
+                    $val["jiayou"]   = M("CostOil")->where($jiayou)->sum("cost");
+                    $val["nianjian"] = M("CostInsurance")->where($nianjian)->sum("cost");
+                    $val["xiaoji"]   = $val["xiche"] + $val["weixiu"] + $val["jiayou"] + $val["nianjian"];
 
-
-                    $hj["finishCount"]         += $cars[$i]["finishCount"];
-                    $hj["companyMileageCount"] += $cars[$i]["companyMileageCount"];
-                    $hj["luqiaoCount"]         += $cars[$i]["luqiaoCount"];
-                    $hj["fuwufeiCount"]        += $cars[$i]["fuwufeiCount"];
-                    $hj["buzhuCount"]          += $cars[$i]["buzhuCount"];
-                    $hj["qitaCount"]           += $cars[$i]["qitaCount"];
-                    $hj["heji"]                += $cars[$i]["heji"];
-
-
-                    $hj["xiche"]    += $cars[$i]["xiche"];
-                    $hj["weixiu"]   += $cars[$i]["weixiu"];
-                    $hj["jiayou"]   += $cars[$i]["jiayou"];
-                    $hj["nianjian"] += $cars[$i]["nianjian"];
-                    $hj["xiaoji"]   += $cars[$i]["xiaoji"];
                 }
+                unset($val);
 
-                if ($_POST["company"] != 0) {
-                    $this->assign("companyname", $_POST["company"]);
-                    $companynameM = new CompanyModel();
-                    $companyname  = $companynameM->find($_POST["company"]);
-                    $this->assign("companyna", $companyname);
+                //汇总合计
+                $field = 't.id ,count(t.id) AS finishCount,sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount,sum(t.parking_rate_sum + t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as qitacount,sum(totle_rate) as xiaoji ';
+                $total = M("car as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.car_id")->where($map)->field($field)->having('finishCount>=1')->select();
+                foreach ($total as &$val) {
+                    //计算维修保养费用
+                    $xiche['car_id']    = array('eq', $val["id"]);
+                    $xiche["is_del"]    = array('eq', 0);
+                    $xiche["wash_time"] = $map['t.departure_time'];
+
+                    $weixiu['car_id']     = array('eq', $val["id"]);
+                    $weixiu["is_del"]     = array('eq', 0);
+                    $weixiu["start_time"] = $map['t.departure_time'];
+
+                    $jiayou['car_id']       = array('eq', $val["id"]);
+                    $jiayou["is_del"]       = array('eq', 0);
+                    $jiayou["trading_time"] = $map['t.departure_time'];
+
+                    $nianjian['car_id']   = array('eq', $val["id"]);
+                    $nianjian["is_del"]   = array('eq', 0);
+                    $nianjian["pay_time"] = $map['t.departure_time'];
+
+                    $val["xiche"]    = M("CostWash")->where($xiche)->sum("cost");
+                    $val["weixiu"]   = M("CostRepair")->where($weixiu)->sum("cost");
+                    $val["jiayou"]   = M("CostOil")->where($jiayou)->sum("cost");
+                    $val["nianjian"] = M("CostInsurance")->where($nianjian)->sum("cost");
+                    $val["xiaoji"]   = $val["xiche"] + $val["weixiu"] + $val["jiayou"] + $val["nianjian"];
                 }
-                $this->assign("hj", $hj);
+                unset($val);
+
+                $this->assign("total", $total[0]);
                 $this->assign("cars", $cars);
+                $this->assign("page", $Page->show());
             }
 
-
-            if ($_POST["type"] == 2) {
-
-                if ($_POST["company"] != 0) {
-                    $mapc["company_id"] = $_POST["company"];
-                    $this->assign("companyname", $_POST["company"]);
+            if ($type == 2) {
+                if ($searchKey) { // 搜索车牌号或者司机或者单位或者用车人
+                    $search_sql = "  ";
+                    $car        = M("car")->where(array("car_num" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+//                    echo M("car")->getLastSql();exit;
+                    if ($car) {
+                        $search_sql .= " t.car_id in (" . implode(",", $this->_array_column($car, "id")) . ")";
+                    }
+                    $driver = M("driver")->where(array("driver_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+                    if ($driver) {
+                        $has_or     = empty($car) ? " " : " or ";
+                        $search_sql .= $has_or . " t.driver_id in (" . implode(",", $this->_array_column($driver, "id")) . ")";
+                    }
+                    $company = M("company")->where(array("company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+                    if ($company) {
+                        $has_or     = empty($car) && empty($driver) ? " " : " or ";
+                        $search_sql .= $has_or . " t.company_id in (" . implode(",", $this->_array_column($company, "id")) . ")";
+                    }
+                    $user = M("user")->where(array("user_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+                    if ($user) {
+                        $has_or     = empty($car) && empty($driver) && empty($company) ? " " : " or ";
+                        $search_sql .= $has_or . " t.use_user_id in (" . implode(",", $this->_array_column($user, "id")) . ")";
+                    }
+                    $map["_string"] = $search_sql;
                 }
 
-                if ($_POST["car"] == 0) {
-                    $map["state"] = 9;
-                } else {
-                    $map["car_id"] = $_POST["car"];
-                    $map["state"]  = 9;
-                }
+                $count = M("Travel as t")->where($map)->count();
 
-                if ($_POST["company"] != 0) {
-                    $map["company_id"] = $_POST["company"];
+                $pageSize = 10;
 
-                }
+                $Page = new Page($count, $pageSize);
 
-                $travels = M("Travel")->where($map)->where("is_del=0")->select();
+                $Page->setConfig('header', '<li class="rows">共<b>%TOTAL_ROW%</b>条记录 第<b>%NOW_PAGE%</b>页/共<b>%TOTAL_PAGE%</b>页</li>');
+                $Page->setConfig('prev', '上一页');
+                $Page->setConfig('next', '下一页');
+                $Page->setConfig('last', '末页');
+                $Page->setConfig('first', '首页');
+                $Page->setConfig('theme', '%FIRST%%UP_PAGE%%LINK_PAGE%%DOWN_PAGE%%END%%HEADER%');
+                $Page->lastSuffix = false;
 
+                $travels = M("Travel t")->where($map)->limit($Page->firstRow . ',' . $Page->listRows)->select();
 
-                for ($i = 0; $i < count($travels) && count($travels) != 0; $i++) {
+//                echo M("Travel t")->getLastSql();exit;
+                foreach ($travels as &$val) {
                     //获取用车人信息
-                    $user                     = M("User")->find($travels[$i]["use_user_id"]);
-                    $travels[$i]["user_name"] = $user["user_name"];
+                    $user             = M("User")->find($val["use_user_id"]);
+                    $val["user_name"] = $user["user_name"];
 
                     //单位信息
-                    $companyyy                    = M("Company")->find($travels[$i]["company_id"]);
-                    $travels[$i]["company_namee"] = $companyyy["company_name"];
+                    $companyyy            = M("Company")->find($val["company_id"]);
+                    $val["company_namee"] = $companyyy["company_name"];
 
                     //车辆信息
-                    $car                    = M("Car")->find($travels[$i]["car_id"]);
-                    $travels[$i]["car_num"] = $car["car_num"];
+                    $car            = M("Car")->find($val["car_id"]);
+                    $val["car_num"] = $car["car_num"];
 
                     //司机信息
-                    $driver                     = M("Driver")->find($travels[$i]["driver_id"]);
-                    $travels[$i]["driver_name"] = $driver["driver_name"];
-
+                    $driver             = M("Driver")->find($val["driver_id"]);
+                    $val["driver_name"] = $driver["driver_name"];
                 }
 
+                //合计汇总
+                $field = 'sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount, sum(t.parking_rate_sum + t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as qitacount,sum(totle_rate) as xiaoji';
+                $total = M("Travel t")->where($map)->field($field)->select();
+                $this->assign("page", $Page->show());
                 $this->assign("travels", $travels);
+                $this->assign("total", $total[0]);
             }
-
         }
 
-        $this->assign("startTime", $startTime);
-        $this->assign("endTime", $endTime);
-
-
+        $this->assign("startTime", $startTime ? $startTime : date('Y-m-01', strtotime(date("Y-m-d"))));
+        $this->assign("endTime", $endTime ? $endTime : date('Y-m-d', strtotime(date("Y-m-d"))));
         $this->display();
     }
 
     //司机数据报表
     public function byDriver()
     {
-        $startTime = date('Y-m-01', strtotime(date("Y-m-d")));
-        $endTime   = date('Y-m-d', strtotime(date("Y-m-d")));
 
         if (empty($_POST)) {
             $this->assign("aa", "0");
         } else {
-            //如果发送数据过来了
-            $this->assign("type", $_POST["type"]);
+
+            $startTime = trim($_REQUEST['startTime']);
+            $endTime   = trim($_REQUEST['endTime']);
+            $type      = intval($_REQUEST["type"]);
+            $searchKey = trim($_REQUEST["searchKey"]);
+
+            $map             = array();
+            $map['t.is_del'] = 0;
+            $map['t.state']  = 9;
 
             //获取开始时间
-            if (!empty($_POST["startTime"])) {
-                $startTime             = $_POST["startTime"];
-                $map['departure_time'] = array('gt', strtotime($_POST["startTime"]));
+            if (!empty($startTime) && empty($endTime)) {
+                $map['t.departure_time'] = array('gt', strtotime($startTime));
+            } elseif (!empty($endTime) && empty($startTime)) {
+                $map['t.departure_time'] = array('elt', strtotime($endTime) + 24 * 3600);
+            } elseif ((!empty($startTime)) && !empty($endTime)) {
+                $map['t.departure_time'] = array('between', array(strtotime($startTime), strtotime($endTime) + 24 * 3600));
             }
 
-            if (!empty($_POST["endTime"])) {
-                $endTime               = $_POST["endTime"];
-                $map['departure_time'] = array('elt', strtotime($_POST["endTime"]) + 24 * 3600);
-            }
-            if ((!empty($_POST["startTime"])) && !empty($_POST["endTime"])) {
-
-                $startTime = $_POST["startTime"];
-                $endTime   = $_POST["endTime"];
-
-                $map['departure_time'] = array('between', array(strtotime($_POST["startTime"]), strtotime($_POST["endTime"]) + 24 * 3600));
-            }
-            if (!empty($_POST["searchKey"])) {
-                $mapc["driver_name|driver_phone"] = array("like", "%" . trim($_POST["searchKey"]) . "%");
-                $this->assign("driver_name", trim($_POST["searchKey"]));
-            }
-
-            $mapc["is_del"] = 0;
             $this->assign("aa", "1");
+            $this->assign("type", $type);
+            $this->assign("driver_name", $searchKey);
 
-            if ($_POST["type"] == 1) {
-                $drivers = M("Driver")->where($mapc)->select();
-                $hj      = array(
-                    "finishCount"         => 0,
-                    "companyMileageCount" => 0,
-                    "luqiaoCount"         => 0,
-                    "fuwufeiCount"        => 0,
-                    "buzhuCount"          => 0,
-                    "qitaCount"           => 0,
-                    "heji"                => 0
-                );
+            if ($type == 1) {
 
-//                for ($i = 0; $i < count($drivers) && count($drivers) != 0; $i++) {
-//                    $map['driver_id'] = array('eq', $drivers[$i]["id"]);
-//                    $map["is_del"]    = 0;
-//
-//                    $travelM                            = new TravelModel();
-//                    $drivers[$i]["finishCount"]         = $travelM->where($map)->where(array("state" => "9"))->count();
-//                    $drivers[$i]["companyMileageCount"] = $travelM->where($map)->where(array("state" => "9"))->sum("mileage");//该单位所有出行费用之和
-//                    if (empty($drivers[$i]["companyMileageCount"])) {
-//                        $drivers[$i]["companyMileageCount"] = 0;
-//                    }
-//
-//
-//                    $drivers[$i]["luqiaoCount"] = $travelM->where($map)->where(array("state" => "9"))->sum("fees_sum");//该单位所有出行费用之和
-//                    if (empty($drivers[$i]["luqiaoCount"])) {
-//                        $drivers[$i]["luqiaoCount"] = 0;
-//                    }
-//
-//                    $drivers[$i]["fuwufeiCount"] = $travelM->where($map)->where(array("state" => "9"))->sum("service_charge");//该单位所有出行费用之和
-//                    if (empty($drivers[$i]["fuwufeiCount"])) {
-//                        $drivers[$i]["fuwufeiCount"] = 0;
-//                    }
-//
-//                    $drivers[$i]["buzhuCount"] = $travelM->where($map)->where(array("state" => "9"))->sum("driver_bt_cost");
-//
-//
-//                    $drivers[$i]["qitaCount"] = $travelM->where($map)->where(array("state" => "9"))->sum("parking_rate_sum") + $travelM->where($map)->where(array("state" => "9"))->sum("driver_cost") + $travelM->where($map)->where(array("state" => "9"))->sum("over_time_cost") + $travelM->where($map)->where(array("state" => "9"))->sum("over_mileage_cost") + $travelM->where($map)->where(array("state" => "9"))->sum("else_cost");//该单位所有出行费用之和
-//
-//                    $drivers[$i]["heji"] = $drivers[$i]["luqiaoCount"] + $drivers[$i]["fuwufeiCount"] + $drivers[$i]["buzhuCount"] + $drivers[$i]["qitaCount"];
-//
-//
-//                    $hj["finishCount"]         += $drivers[$i]["finishCount"];
-//                    $hj["companyMileageCount"] += $drivers[$i]["companyMileageCount"];
-//                    $hj["luqiaoCount"]         += $drivers[$i]["luqiaoCount"];
-//                    $hj["fuwufeiCount"]        += $drivers[$i]["fuwufeiCount"];
-//                    $hj["buzhuCount"]          += $drivers[$i]["buzhuCount"];
-//                    $hj["qitaCount"]           += $drivers[$i]["qitaCount"];
-//                    $hj["heji"]                += $drivers[$i]["heji"];
-//                }
+                $map['c.is_del'] = 0;
+
+                if (!empty($searchKey)) {
+                    $map["c.driver_phone|c.driver_name"] = array("like", "%" . $searchKey . "%");
+                }
+
+                $count = M("Driver as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.driver_id")->where($map)->group("t.driver_id")->having('count(t.driver_id)>=1')->field('driver_id')->select();
+
+                $pageSize = 10;
+
+                $Page = new Page(count($count), $pageSize);
+
+                $Page->setConfig('header', '<li class="rows">共<b>%TOTAL_ROW%</b>条记录 第<b>%NOW_PAGE%</b>页/共<b>%TOTAL_PAGE%</b>页</li>');
+                $Page->setConfig('prev', '上一页');
+                $Page->setConfig('next', '下一页');
+                $Page->setConfig('last', '末页');
+                $Page->setConfig('first', '首页');
+                $Page->setConfig('theme', '%FIRST%%UP_PAGE%%LINK_PAGE%%DOWN_PAGE%%END%%HEADER%');
+                $Page->lastSuffix = false;
+
+                $field = 't.driver_id,c.driver_name,c.driver_phone,count(t.driver_id) AS finishCount,sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount,sum(t.parking_rate_sum) as t1,sum(t.driver_cost) as t2,sum(t.over_time_cost) as t3,sum(t.over_mileage_cost) as t4,sum(t.else_cost) as t5 ';
+
+                $drivers = M("Driver as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.driver_id")->where($map)->group("t.driver_id")->field($field)->limit($Page->firstRow . ',' . $Page->listRows)->having('finishCount>=1')->select();
 
                 foreach ($drivers as &$val) {
-                    $map['driver_id'] = array('eq', $val["id"]);
-                    $map["is_del"]    = 0;
-
-                    $travelM = new TravelModel();
-                    $field   = 'count(1) as finishCount ,sum(mileage) as companyMileageCount,sum(fees_sum) as luqiaoCount ,sum(service_charge) as fuwufeiCount ,sum(driver_bt_cost) as buzhuCount ,sum(parking_rate_sum) as t1 ,sum(driver_cost) as t2 ,sum(over_time_cost) as t3 ,sum(over_mileage_cost) as t4 ,sum(else_cost) as t5';
-                    $info    = $travelM->where($map)->where(array("state" => "9"))->field($field)->find();
-
-                    $val["finishCount"]         = $info['finishcount'];
-                    $val["companyMileageCount"] = $info["companymileagecount"] ? $info["companymileagecount"] : 0;
-                    $val["luqiaoCount"]         = $info["luqiaocount"] ? $info["luqiaocount"] : 0;
-                    $val["fuwufeiCount"]        = $info["fuwufeicount"] ? $info["fuwufeicount"] : 0;
-                    $val["buzhuCount"]          = $info["buzhucount"] ? $info["buzhucount"] : 0;
-                    $val["qitaCount"]           = $info["t1"] + $info["t2"] + $info["t3"] + $info["t4"] + $info["t5"];
+                    $val["finishCount"]         = $val['finishcount'];
+                    $val["companyMileageCount"] = $val["companymileagecount"] ? $val["companymileagecount"] : 0;
+                    $val["luqiaoCount"]         = $val["luqiaocount"] ? $val["luqiaocount"] : 0;
+                    $val["fuwufeiCount"]        = $val["fuwufeicount"] ? $val["fuwufeicount"] : 0;
+                    $val["buzhuCount"]          = $val["buzhucount"] ? $val["buzhucount"] : 0;
+                    $val["qitaCount"]           = $val["t1"] + $val["t2"] + $val["t3"] + $val["t4"] + $val["t5"];
                     $val["heji"]                = $val["luqiaoCount"] + $val["fuwufeiCount"] + $val["buzhuCount"] + $val["qitaCount"];
-
-                    //汇总合计
-                    $hj["finishCount"]         += $val["finishCount"];
-                    $hj["companyMileageCount"] += $val["companyMileageCount"];
-                    $hj["luqiaoCount"]         += $val["luqiaoCount"];
-                    $hj["fuwufeiCount"]        += $val["fuwufeiCount"];
-                    $hj["buzhuCount"]          += $val["buzhuCount"];
-                    $hj["qitaCount"]           += $val["qitaCount"];
-                    $hj["heji"]                += $val["heji"];
                 }
                 unset($val);
-                $this->assign("hj", $hj);
+
+                //汇总合计
+                $field = 'count(t.id) AS finishCount,sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount,sum(t.parking_rate_sum) as t1,sum(t.driver_cost) as t2,sum(t.over_time_cost) as t3,sum(t.over_mileage_cost) as t4,sum(t.else_cost) as t5 ';
+                $total = M("Driver as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.driver_id")->where($map)->field($field)->having('finishCount>=1')->select();
+                foreach ($total as &$val) {
+                    $val['qitacount'] = $val['t1'] + $val['t2'] + $val['t3'] + $val['t4'] + $val['t5'];
+                    $val['xiaoji']    = $val['luqiaocount'] + $val['fuwufeicount'] + $val['buzhucount'] + $val['qitacount'];
+                }
+                unset($val);
+
+                $this->assign("total", $total[0]);
                 $this->assign("drivers", $drivers);
+                $this->assign("page", $Page->show());
             }
 
-
-            if ($_POST["type"] == 2) {
-                $map["state"]  = 9;
-                $map["is_del"] = 0;
-                if (!empty($_POST["searchKey"])) {
-                    $driver_ids       = M("driver")->where(array("driver_name|driver_phone" => array("like", "%" . trim($_POST["searchKey"]) . "%")))->field("id")->select();
-                    $map["driver_id"] = array("IN", $driver_ids ? array_column($driver_ids, "id") : array(0));
-                    $map["state"]     = 9;
+            if ($type == 2) {
+                if ($searchKey) { // 搜索车牌号或者司机或者单位或者用车人
+                    $search_sql = "  ";
+                    $driver = M("driver")->where(array("is_del"=>0,"driver_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+                    if ($driver) {
+                        $search_sql .= " t.driver_id in (" . implode(",", $this->_array_column($driver, "id")) . ")";
+                    }
+                    $company = M("company")->where(array("is_del"=>0,"company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+                    if ($company) {
+                        $has_or     = empty($driver) ? " " : " or ";
+                        $search_sql .= $has_or . " t.company_id in (" . implode(",", $this->_array_column($company, "id")) . ")";
+                    }
+                    $user = M("user")->where(array("is_del"=>0,"user_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+                    if ($user) {
+                        $has_or     = empty($driver) && empty($company) ? " " : " or ";
+                        $search_sql .= $has_or . " t.use_user_id in (" . implode(",", $this->_array_column($user, "id")) . ")";
+                    }
+                    $map["_string"] = $search_sql;
                 }
-                $travels = M("Travel")->where($map)->field("use_user_id,company_id,driver_id,serial_number,start_car_time,to_place,mileage,fees_sum,service_charge,else_cost,totle_rate")->select();
+
+                $count = M("Travel as t")->where($map)->field("t.use_user_id,t.company_id,t.driver_id,t.serial_number,t.start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,t.else_cost,t.totle_rate")->count();
+
+                $pageSize = 10;
+
+                $Page = new Page($count, $pageSize);
+
+                $Page->setConfig('header', '<li class="rows">共<b>%TOTAL_ROW%</b>条记录 第<b>%NOW_PAGE%</b>页/共<b>%TOTAL_PAGE%</b>页</li>');
+                $Page->setConfig('prev', '上一页');
+                $Page->setConfig('next', '下一页');
+                $Page->setConfig('last', '末页');
+                $Page->setConfig('first', '首页');
+                $Page->setConfig('theme', '%FIRST%%UP_PAGE%%LINK_PAGE%%DOWN_PAGE%%END%%HEADER%');
+                $Page->lastSuffix = false;
+
+                $travels = M("Travel as t")->where($map)->field("t.use_user_id,t.company_id,t.driver_id,t.serial_number,t.start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,t.else_cost,t.totle_rate")->limit($Page->firstRow . ',' . $Page->listRows)->select();
 
                 foreach ($travels as &$val) {
                     //获取用车人信息
@@ -472,12 +449,25 @@ class ReportController extends CommonController
                     $val["driver_name"] = $driver["driver_name"];
                 }
                 unset($val);
+
+                //合计汇总
+                $field = 'sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount,sum(t.parking_rate_sum) as t1,sum(t.driver_cost) as t2,sum(t.over_time_cost) as t3,sum(t.over_mileage_cost) as t4,sum(t.else_cost) as t5 ';
+                $total = M("Travel as t")->where($map)->field($field)->select();
+
+                foreach ($total as &$val) {
+                    $val['qitacount'] = $val['t1'] + $val['t2'] + $val['t3'] + $val['t4'] + $val['t5'];
+                    $val['xiaoji']    = $val['luqiaocount'] + $val['fuwufeicount'] + $val['buzhucount'] + $val['qitacount'];
+                }
+                unset($val);
+
+                $this->assign("page", $Page->show());
                 $this->assign("travels", $travels);
+                $this->assign("total", $total[0]);
             }
         }
 
-        $this->assign("startTime", $startTime);
-        $this->assign("endTime", $endTime);
+        $this->assign("startTime", $startTime ? $startTime : date('Y-m-01', strtotime(date("Y-m-d"))));
+        $this->assign("endTime", $endTime ? $endTime : date('Y-m-d', strtotime(date("Y-m-d"))));
         $this->display();
     }
 
@@ -488,10 +478,10 @@ class ReportController extends CommonController
             $this->assign("aa", "0");
         } else {
 
-            $startTime    = trim($_REQUEST['startTime']);
-            $endTime      = trim($_REQUEST['endTime']);
-            $type         = intval($_REQUEST["type"]);
-            $searchKey    = trim($_REQUEST["searchKey"]);
+            $startTime = trim($_REQUEST['startTime']);
+            $endTime   = trim($_REQUEST['endTime']);
+            $type      = intval($_REQUEST["type"]);
+            $searchKey = trim($_REQUEST["searchKey"]);
 
             $map             = array();
             $map['t.is_del'] = 0;
@@ -546,7 +536,24 @@ class ReportController extends CommonController
                 }
                 unset($val);
 
-                $this->assign("page",$Page->show());
+                //汇总合计
+                $field = 'count(t.id) AS finishCount,sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount,sum(t.parking_rate_sum) as t1,sum(t.driver_cost) as t2,sum(t.over_time_cost) as t3,sum(t.over_mileage_cost) as t4,sum(t.else_cost) as t5 ';
+                $total = M("User as c")
+                    ->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.use_user_id")
+                    ->where($map)
+                    ->field($field)
+                    ->having('finishCount>=1')
+                    ->select();
+//                echo M("Company as c")->getLastSql();
+                foreach ($total as &$val) {
+                    $val['qitacount'] = $val['t1'] + $val['t2'] + $val['t3'] + $val['t4'] + $val['t5'];
+                    $val['xiaoji']    = $val['luqiaocount'] + $val['fuwufeicount'] + $val['buzhucount'] + $val['qitacount'];
+                }
+                unset($val);
+
+//                var_dump($total[0]);exit;
+                $this->assign("page", $Page->show());
+                $this->assign("total", $total[0]);
                 $this->assign("users", $users);
             }
 
@@ -560,7 +567,6 @@ class ReportController extends CommonController
                     } elseif ($user_ids) {
                         $map["t.use_user_id"] = array("IN", $user_ids ? $this->_array_column($user_ids, "id") : array(0));
                     }
-
                 }
 
                 $count = M("Travel as t")->join("left join " . C("DB_PREFIX") . "company as u on u.id =  t.company_id left join " . C("DB_PREFIX") . "user c on c.id = t.use_user_id")->where($map)->count();
@@ -583,8 +589,19 @@ class ReportController extends CommonController
                     ->field("c.user_name,c.user_phone,u.company_name as company_namee,t.use_user_id,t.company_id,t.travel_nature,t.serial_number,t.start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,t.else_cost,t.totle_rate")
                     ->select();
 
+                //合计汇总
+                $field = 'sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount,sum(t.parking_rate_sum) as t1,sum(t.driver_cost) as t2,sum(t.over_time_cost) as t3,sum(t.over_mileage_cost) as t4,sum(t.else_cost) as t5 ';
+                $total = M("Travel as t")->join("left join " . C("DB_PREFIX") . "company as c on c.id =  t.company_id left join " . C("DB_PREFIX") . "user u on u.id = t.use_user_id")->where($map)->field($field)->select();
+
+                foreach ($total as &$val) {
+                    $val['qitacount'] = $val['t1'] + $val['t2'] + $val['t3'] + $val['t4'] + $val['t5'];
+                    $val['xiaoji']    = $val['luqiaocount'] + $val['fuwufeicount'] + $val['buzhucount'] + $val['qitacount'];
+                }
+                unset($val);
+
                 $this->assign("page", $Page->show());
                 $this->assign("travels", $travels);
+                $this->assign("total", $total[0]);
             }
         }
 
@@ -593,164 +610,10 @@ class ReportController extends CommonController
         $this->display();
     }
 
-    public function byUser11()
-    {
-//        set_time_limit(0);
-        $startTime = date('Y-m-01', strtotime(date("Y-m-d")));
-        $endTime   = date('Y-m-d', strtotime(date("Y-m-d")));
-
-        if (empty($_POST)) {
-            $this->assign("aa", "0");
-        } else {
-            //如果发送数据过来了
-            $this->assign("type", $_POST["type"]);
-
-            //获取开始时间
-            if (!empty($_POST["startTime"])) {
-                $startTime             = $_POST["startTime"];
-                $map['departure_time'] = array('gt', strtotime($_POST["startTime"]));
-            }
-
-            if (!empty($_POST["endTime"])) {
-                $endTime               = $_POST["endTime"];
-                $map['departure_time'] = array('elt', strtotime($_POST["endTime"]) + 24 * 3600);
-            }
-            if ((!empty($_POST["startTime"])) && !empty($_POST["endTime"])) {
-
-                $startTime = $_POST["startTime"];
-                $endTime   = $_POST["endTime"];
-
-                $map['departure_time'] = array('between', array(strtotime($_POST["startTime"]), strtotime($_POST["endTime"]) + 24 * 3600));
-            }
-            if (!empty($_REQUEST["searchKey"])) {
-                $key                          = trim($_REQUEST["searchKey"]);
-                $mapc["user_phone|user_name"] = array("like", "%" . $key . "%");
-                $this->assign("username", $key);
-            }
-
-            $mapc["is_del"] = 0;
-            $this->assign("aa", "1");
-
-            if ($_POST["type"] == 1) {
-                $users = M("User")->where($mapc)->field('id,user_name,user_phone')->select();
-
-                $hj = array(
-                    "finishCount"         => 0,
-                    "companyMileageCount" => 0,
-                    "luqiaoCount"         => 0,
-                    "fuwufeiCount"        => 0,
-                    "buzhuCount"          => 0,
-                    "qitaCount"           => 0,
-                    "heji"                => 0
-                );
-
-//                for ($i = 0; $i < count($users) && count($users) != 0; $i++) {
-//                    $map['use_user_id'] = array('eq', $users[$i]["id"]);
-//                    $map["is_del"]      = 0;
-//
-//                    $travelM                          = new TravelModel();
-//                    $users[$i]["finishCount"]         = $travelM->where($map)->where(array("state" => "9"))->count();
-//                    $users[$i]["companyMileageCount"] = $travelM->where($map)->where(array("state" => "9"))->sum("mileage");//该单位所有出行费用之和
-//                    if (empty($users[$i]["companyMileageCount"])) {
-//                        $users[$i]["companyMileageCount"] = 0;
-//                    }
-//
-//
-//                    $users[$i]["luqiaoCount"] = $travelM->where($map)->where(array("state" => "9"))->sum("fees_sum");//该单位所有出行费用之和
-//                    if (empty($users[$i]["luqiaoCount"])) {
-//                        $users[$i]["luqiaoCount"] = 0;
-//                    }
-//
-//                    $users[$i]["fuwufeiCount"] = $travelM->where($map)->where(array("state" => "9"))->sum("service_charge");//该单位所有出行费用之和
-//                    if (empty($users[$i]["fuwufeiCount"])) {
-//                        $users[$i]["fuwufeiCount"] = 0;
-//                    }
-//
-//                    $users[$i]["buzhuCount"] = $travelM->where($map)->where(array("state" => "9"))->sum("driver_bt_cost");
-//
-//
-//                    $users[$i]["qitaCount"] = $travelM->where($map)->where(array("state" => "9"))->sum("parking_rate_sum") + $travelM->where($map)->where(array("state" => "9"))->sum("driver_cost") + $travelM->where($map)->where(array("state" => "9"))->sum("over_time_cost") + $travelM->where($map)->where(array("state" => "9"))->sum("over_mileage_cost") + $travelM->where($map)->where(array("state" => "9"))->sum("else_cost");//该单位所有出行费用之和
-//
-//                    $users[$i]["heji"] = $users[$i]["luqiaoCount"] + $users[$i]["fuwufeiCount"] + $users[$i]["buzhuCount"] + $users[$i]["qitaCount"];
-//
-//
-//                    $hj["finishCount"]         += $users[$i]["finishCount"];
-//                    $hj["companyMileageCount"] += $users[$i]["companyMileageCount"];
-//                    $hj["luqiaoCount"]         += $users[$i]["luqiaoCount"];
-//                    $hj["fuwufeiCount"]        += $users[$i]["fuwufeiCount"];
-//                    $hj["buzhuCount"]          += $users[$i]["buzhuCount"];
-//                    $hj["qitaCount"]           += $users[$i]["qitaCount"];
-//                    $hj["heji"]                += $users[$i]["heji"];
-//
-//                }
-
-                foreach ($users as &$val) {
-                    $map['use_user_id'] = array('eq', $val["id"]);
-                    $map["is_del"]      = 0;
-
-                    $travelM                    = new TravelModel();
-                    $field                      = 'count(1) as finishCount ,sum(mileage) as companyMileageCount,sum(fees_sum) as luqiaoCount ,sum(service_charge) as fuwufeiCount ,sum(driver_bt_cost) as buzhuCount ,sum(parking_rate_sum) as t1 ,sum(driver_cost) as t2 ,sum(over_time_cost) as t3 ,sum(over_mileage_cost) as t4 ,sum(else_cost) as t5';
-                    $info                       = $travelM->where($map)->where(array("state" => "9"))->field($field)->find();
-                    $val["finishCount"]         = $info['finishcount'];
-                    $val["companyMileageCount"] = $info["companymileagecount"] ? $info["companymileagecount"] : 0;
-                    $val["luqiaoCount"]         = $info["luqiaocount"] ? $info["luqiaocount"] : 0;
-                    $val["fuwufeiCount"]        = $info["fuwufeicount"] ? $info["fuwufeicount"] : 0;
-                    $val["buzhuCount"]          = $info["buzhucount"] ? $info["buzhucount"] : 0;
-                    $val["qitaCount"]           = $info["t1"] + $info["t2"] + $info["t3"] + $info["t4"] + $info["t5"];
-                    $val["heji"]                = $val["luqiaoCount"] + $val["fuwufeiCount"] + $val["buzhuCount"] + $val["qitaCount"];
-
-                    //汇总合计
-                    $hj["finishCount"]         += $val["finishCount"];
-                    $hj["companyMileageCount"] += $val["companyMileageCount"];
-                    $hj["luqiaoCount"]         += $val["luqiaoCount"];
-                    $hj["fuwufeiCount"]        += $val["fuwufeiCount"];
-                    $hj["buzhuCount"]          += $val["buzhuCount"];
-                    $hj["qitaCount"]           += $val["qitaCount"];
-                    $hj["heji"]                += $val["heji"];
-
-                }
-                unset($val);
-
-                $this->assign("hj", $hj);
-                $this->assign("users", $users);
-            }
-
-            if ($_POST["type"] == 2) {
-                $map["state"]  = 9;
-                $map["is_del"] = 0;
-
-                if (!empty($_POST["searchKey"])) {
-                    $ids                = M("user")->where(array("user_name|user_phone" => array("like", "%" . trim($_REQUEST["searchKey"]) . "%")))->field("id")->select();
-                    $map["use_user_id"] = array("IN", $ids ? array_column($ids, "id") : array(0));
-                }
-
-                $travels = M("Travel")->where($map)->field('use_user_id,company_id,driver_id,serial_number,start_car_time,to_place,mileage,fees_sum,service_charge,else_cost,totle_rate,driver_bt_cost')->select();
-
-                foreach ($travels as &$val) {
-                    //获取用车人信息
-                    $user              = M("User")->field('user_name,user_phone')->find($val["use_user_id"]);
-                    $val["user_name"]  = $user["user_name"];
-                    $val["user_phone"] = $user["user_phone"];
-                    //单位信息
-                    $companyyy            = M("Company")->field('company_name')->find($val["company_id"]);
-                    $val["company_namee"] = $companyyy["company_name"];
-                    //司机信息
-                    $driver             = M("Driver")->field('driver_name')->find($val["driver_id"]);
-                    $val["driver_name"] = $driver["driver_name"];
-                }
-                unset($val);
-                $this->assign("travels", $travels);
-            }
-        }
-
-        $this->assign("startTime", $startTime);
-        $this->assign("endTime", $endTime);
-        $this->display();
-    }
-
     //用户报表导出
     public function user_export_to_csv()
     {
+        set_time_limit(0);
         if (!empty($_REQUEST["startTime"])) {
             $map['departure_time'] = array('gt', strtotime($_REQUEST["startTime"]));
         }
@@ -846,7 +709,7 @@ class ReportController extends CommonController
 
             $map["state"] = 9;
             if (!empty($_REQUEST["searchKey"])) {
-                $searchKey = trim($_REQUEST["searchKey"]);
+                $searchKey   = trim($_REQUEST["searchKey"]);
                 $company_ids = M("company")->where(array("company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配单位名称
                 $user_ids    = M("user")->where(array("user_name|user_phone" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配用车人
                 if ($company_ids) {
@@ -854,12 +717,10 @@ class ReportController extends CommonController
                 } elseif ($user_ids) {
                     $map["use_user_id"] = array("IN", $user_ids ? $this->_array_column($user_ids, "id") : array(0));
                 }
-//                $ids                = M("user")->where(array("user_name|user_phone" => array("like", "%" . trim($_REQUEST["searchKey"]) . "%")))->field("id")->select();
-//                $map["use_user_id"] = array("IN", $ids ? array_column($ids, "id") : array(0));
             }
 
             $map["is_del"] = 0;
-            $travels       = M("Travel")->where($map)->field('use_user_id,company_id,driver_id,serial_number,start_car_time,to_place,mileage,fees_sum,service_charge,else_cost,totle_rate,driver_bt_cost')->select();
+            $travels       = M("Travel")->where($map)->field('use_user_id,company_id,driver_id,serial_number,start_car_time,to_place,mileage,fees_sum,service_charge,totle_rate,driver_bt_cost,parking_rate_sum,driver_cost ,over_time_cost,over_mileage_cost,else_cost')->select();
 
             $mileagenum        = 0;
             $fees_sumnum       = 0;
@@ -868,10 +729,11 @@ class ReportController extends CommonController
             $totle_ratenum     = 0;
             foreach ($travels as &$val) {
                 //汇总
+                $qita              = $val["parking_rate_sum"] + $val["driver_cost "] + $val["over_time_cost"] + $val["over_mileage_cost"] + $val["else_cost"];
                 $mileagenum        += $val['mileage'];
                 $fees_sumnum       += $val['fees_sum'];
                 $service_chargenum += $val['service_charge'];
-                $costnum           += $val['else_cost'];
+                $costnum           += $qita;
                 $totle_ratenum     += $val['totle_rate'];
                 //获取用车人信息
                 $user = M("User")->find($val["use_user_id"]);
@@ -888,7 +750,7 @@ class ReportController extends CommonController
                 $data[] = iconv("UTF-8", "GBK", $val['fees_sum']);
                 $data[] = iconv("UTF-8", "GBK", $val['service_charge']);
                 $data[] = iconv("UTF-8", "GBK", 0);
-                $data[] = iconv("UTF-8", "GBK", $val['else_cost']);
+                $data[] = iconv("UTF-8", "GBK", $qita);
                 $data[] = iconv("UTF-8", "GBK", $val['totle_rate']);
                 fputcsv($fp, $data);
             }
@@ -908,30 +770,38 @@ class ReportController extends CommonController
     //司机报表导出
     public function driver_export_to_csv()
     {
+        $startTime = trim($_REQUEST['startTime']);
+        $endTime   = trim($_REQUEST['endTime']);
+        $type      = intval($_REQUEST["type"]);
+        $searchKey = trim($_REQUEST["searchKey"]);
+
+        $map             = array();
+        $map['t.is_del'] = 0;
+        $map['t.state']  = 9;
 
         //获取开始时间
-        if (!empty($_REQUEST["startTime"])) {
-            $map['departure_time'] = array('gt', strtotime($_REQUEST["startTime"]));
+        if (!empty($startTime) && empty($endTime)) {
+            $map['t.departure_time'] = array('gt', strtotime($startTime));
+        } elseif (!empty($endTime) && empty($startTime)) {
+            $map['t.departure_time'] = array('elt', strtotime($endTime) + 24 * 3600);
+        } elseif ((!empty($startTime)) && !empty($endTime)) {
+            $map['t.departure_time'] = array('between', array(strtotime($startTime), strtotime($endTime) + 24 * 3600));
         }
-
-        if (!empty($_REQUEST["endTime"])) {
-            $map['departure_time'] = array('elt', strtotime($_REQUEST["endTime"]) + 24 * 3600);
-        }
-        if ((!empty($_REQUEST["startTime"])) && !empty($_REQUEST["endTime"])) {
-            $map['departure_time'] = array('between', array(strtotime($_REQUEST["startTime"]), strtotime($_REQUEST["endTime"]) + 24 * 3600));
-        }
-        if (!empty($_REQUEST["searchKey"])) {
-            $mapc["driver_name|driver_phone"] = array("like", "%" . trim($_REQUEST["searchKey"]) . "%");
-        }
-
-        $mapc["is_del"] = 0;
 
         header("Content-Type: text/html; charset=gbk");
         header("Content-type:application/vnd.ms-excel");
 
-        if ($_REQUEST["type"] == 1) {
-            $drivers = M("Driver")->where($mapc)->select();
-            $hj      = array(
+        if ($type == 1) {
+            if (!empty($searchKey)) {
+                $map["c.driver_phone|c.driver_name"] = array("like", "%" . $searchKey . "%");
+            }
+            $map['c.is_del'] = 0;
+
+            $field = 't.driver_id,c.driver_name,c.driver_phone,count(t.driver_id) AS finishCount,sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount,sum(t.parking_rate_sum) as t1,sum(t.driver_cost) as t2,sum(t.over_time_cost) as t3,sum(t.over_mileage_cost) as t4,sum(t.else_cost) as t5 ';
+
+            $drivers = M("Driver as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.driver_id")->where($map)->group("t.driver_id")->field($field)->having('finishCount>=1')->select();
+//                echo M("Driver as c")->getLastSql();exit;
+            $hj = array(
                 "finishCount"         => 0,
                 "companyMileageCount" => 0,
                 "luqiaoCount"         => 0,
@@ -951,45 +821,27 @@ class ReportController extends CommonController
             fputcsv($fp, $column_name);
 
             foreach ($drivers as &$val) {
-                $map['driver_id'] = array('eq', $val["id"]);
-                $map["is_del"]    = 0;
-
-                $travelM = new TravelModel();
-                $field   = 'count(1) as finishCount ,sum(mileage) as companyMileageCount,sum(fees_sum) as luqiaoCount ,sum(service_charge) as fuwufeiCount ,sum(driver_bt_cost) as buzhuCount ,sum(parking_rate_sum) as t1 ,sum(driver_cost) as t2 ,sum(over_time_cost) as t3 ,sum(over_mileage_cost) as t4 ,sum(else_cost) as t5';
-                $info    = $travelM->where($map)->where(array("state" => "9"))->field($field)->find();
-
-                $val["finishCount"]         = $info['finishcount'];
-                $val["companyMileageCount"] = $info["companymileagecount"] ? $info["companymileagecount"] : 0;
-                $val["luqiaoCount"]         = $info["luqiaocount"] ? $info["luqiaocount"] : 0;
-                $val["fuwufeiCount"]        = $info["fuwufeicount"] ? $info["fuwufeicount"] : 0;
-                $val["buzhuCount"]          = $info["buzhucount"] ? $info["buzhucount"] : 0;
-                $val["qitaCount"]           = $info["t1"] + $info["t2"] + $info["t3"] + $info["t4"] + $info["t5"];
-                $val["heji"]                = $val["luqiaoCount"] + $val["fuwufeiCount"] + $val["buzhuCount"] + $val["qitaCount"];
-
-                if ($info['finishcount']) {
-                    $data   = array();
-                    $data[] = iconv("UTF-8", "GBK", $val["driver_name"]);
-                    $data[] = iconv("UTF-8", "GBK", $val["driver_phone"]);
-                    $data[] = iconv("UTF-8", "GBK", $info['finishcount']);
-                    $data[] = iconv("UTF-8", "GBK", $info["companymileagecount"] ? $info["companymileagecount"] : 0);
-                    $data[] = iconv("UTF-8", "GBK", $info["luqiaocount"] ? $info["luqiaocount"] : 0);
-                    $data[] = iconv("UTF-8", "GBK", $info["fuwufeicount"] ? $info["fuwufeicount"] : 0);
-
-                    $data[] = iconv("UTF-8", "GBK", $info["buzhucount"] ? $info["buzhucount"] : 0);
-                    $data[] = iconv("UTF-8", "GBK", $info["t1"] + $info["t2"] + $info["t3"] + $info["t4"] + $info["t5"]);
-                    $data[] = iconv("UTF-8", "GBK", $info["luqiaocount"] + $info["fuwufeicount"] + $info["buzhucount"] + $info["qitacount"]);
-                    fputcsv($fp, $data);
-                }
-
                 //汇总合计
-                $hj["finishCount"]         += $info["finishcount"];
-                $hj["companyMileageCount"] += $info["companymileagecount"];
-                $hj["luqiaoCount"]         += $info["luqiaocount"];
-                $hj["fuwufeiCount"]        += $info["fuwufeicount"];
-                $hj["buzhuCount"]          += $info["buzhucount"];
-                $hj["qitaCount"]           += $info["t1"] + $info["t2"] + $info["t3"] + $info["t4"] + $info["t5"];
-                $hj["heji"]                += $info["luqiaocount"] + $info["fuwufeicount"] + $info["buzhucount"] + $info["t1"] + $info["t2"] + $info["t3"] + $info["t4"] + $info["t5"];
+                $hj["finishCount"]         += $val["finishcount"];
+                $hj["companyMileageCount"] += $val["companymileagecount"];
+                $hj["luqiaoCount"]         += $val["luqiaocount"];
+                $hj["fuwufeiCount"]        += $val["fuwufeicount"];
+                $hj["buzhuCount"]          += $val["buzhucount"];
+                $hj["qitaCount"]           += $val["t1"] + $val["t2"] + $val["t3"] + $val["t4"] + $val["t5"];
+                $hj["heji"]                += $val["luqiaocount"] + $val["fuwufeicount"] + $val["buzhucount"] + $val["t1"] + $val["t2"] + $val["t3"] + $val["t4"] + $val["t5"];
 
+                //输出数据
+                $data   = array();
+                $data[] = iconv("UTF-8", "GBK", $val["driver_name"]);
+                $data[] = iconv("UTF-8", "GBK", $val["driver_phone"]);
+                $data[] = iconv("UTF-8", "GBK", $val['finishcount']);
+                $data[] = iconv("UTF-8", "GBK", $val["companymileagecount"] ? $val["companymileagecount"] : 0);
+                $data[] = iconv("UTF-8", "GBK", $val["luqiaocount"] ? $val["luqiaocount"] : 0);
+                $data[] = iconv("UTF-8", "GBK", $val["fuwufeicount"] ? $val["fuwufeicount"] : 0);
+                $data[] = iconv("UTF-8", "GBK", $val["buzhucount"] ? $val["buzhucount"] : 0);
+                $data[] = iconv("UTF-8", "GBK", $val["t1"] + $val["t2"] + $val["t3"] + $val["t4"] + $val["t5"]);
+                $data[] = iconv("UTF-8", "GBK", $val["luqiaocount"] + $val["fuwufeicount"] + $val["buzhucount"] + $val["qitacount"]);
+                fputcsv($fp, $data);
             }
             unset($val);
             $sum = array("合计", "", $hj["finishCount"], $hj["companyMileageCount"], $hj["luqiaoCount"], $hj["fuwufeiCount"], $hj["buzhuCount"], $hj["qitaCount"], $hj["heji"]);
@@ -1000,14 +852,28 @@ class ReportController extends CommonController
         }
 
         if ($_REQUEST["type"] == 2) {
-            $map["is_del"] = 0;
-            $map["state"]  = 9;
-            if (!empty($_REQUEST["searchKey"])) {
-                $driver_ids       = M("driver")->where(array("driver_name|driver_phone" => array("like", "%" . trim($_REQUEST["searchKey"]) . "%")))->field("id")->select();
-                $map["driver_id"] = array("IN", $driver_ids ? array_column($driver_ids, "id") : array(0));
+//            $map["is_del"] = 0;
+//            $map["state"]  = 9;
+            if ($searchKey) { // 搜索车牌号或者司机或者单位或者用车人
+                $search_sql = "  ";
+                $driver = M("driver")->where(array("is_del"=>0,"driver_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+                if ($driver) {
+                    $search_sql .= " t.driver_id in (" . implode(",", $this->_array_column($driver, "id")) . ")";
+                }
+                $company = M("company")->where(array("is_del"=>0,"company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+                if ($company) {
+                    $has_or     = empty($driver) ? " " : " or ";
+                    $search_sql .= $has_or . " t.company_id in (" . implode(",", $this->_array_column($company, "id")) . ")";
+                }
+                $user = M("user")->where(array("is_del"=>0,"user_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+                if ($user) {
+                    $has_or     = empty($driver) && empty($company) ? " " : " or ";
+                    $search_sql .= $has_or . " t.use_user_id in (" . implode(",", $this->_array_column($user, "id")) . ")";
+                }
+                $map["_string"] = $search_sql;
             }
 
-            $travels = M("Travel")->where($map)->field("use_user_id,company_id,driver_id,serial_number,start_car_time,to_place,mileage,fees_sum,service_charge,else_cost,totle_rate")->select();
+            $travels = M("Travel t")->where($map)->field("t.use_user_id,t.company_id,t.driver_id,t.serial_number,t.start_car_time,t.to_place,mileage,t.fees_sum,t.service_charge,t.else_cost,t.totle_rate")->select();
 
             $excel_name = $_REQUEST["startTime"] . "至" . $_REQUEST["endTime"] . "司机数据明细";
             header("Content-Disposition:filename=" . iconv("UTF-8", "GBK", $excel_name) . ".csv");
@@ -1068,110 +934,44 @@ class ReportController extends CommonController
     }
 
     //车辆报表导出
-    public function car_export_to_csv()
+    public function car_export_to_csv($page=1)
     {
 
         //获取开始时间
-        if (!empty($_REQUEST["startTime"])) {
-            $map['departure_time'] = array('gt', strtotime($_REQUEST["startTime"]));
+        $startTime = trim($_REQUEST['startTime']);
+        $endTime   = trim($_REQUEST['endTime']);
+        $type      = intval($_REQUEST['type']);
+//            $company      = intval($_REQUEST['company']);
+        $searchKey = trim($_REQUEST['searchKey']);
+
+        $map             = array();
+        $map["t.is_del"] = 0;
+        $map["t.state"]  = 9;
+
+        //获取开始时间
+        if (!empty($startTime) && empty($endTime)) {
+            $map['t.departure_time'] = array('gt', strtotime($startTime));
+        } elseif (!empty($endTime) && empty($startTime)) {
+            $map['t.departure_time'] = array('elt', strtotime($endTime) + 24 * 3600);
+        } elseif ((!empty($startTime)) && !empty($endTime)) {
+            $map['t.departure_time'] = array('between', array(strtotime($startTime), strtotime($endTime) + 24 * 3600 - 1));
         }
 
-        if (!empty($_REQUEST["endTime"])) {
-            $map['departure_time'] = array('elt', strtotime($_REQUEST["endTime"]) + 24 * 3600);
-        }
-        if ((!empty($_REQUEST["startTime"])) && !empty($_REQUEST["endTime"])) {
-            $map['departure_time'] = array('between', array(strtotime($_REQUEST["startTime"]), strtotime($_REQUEST["endTime"]) + 24 * 3600 - 1));
-        }
-        if ($_REQUEST["car"] != 0) {
-            $mapc["id"] = $_REQUEST["car"];
-        }
+        if ($type == 1) {
 
-        $mapc["is_del"] = 0;
-
-        if ($_REQUEST["type"] == 1) {
-            if ($_REQUEST["company"] != 0) {
-                $map["company_id"] = $_REQUEST["company"];
+            $map['c.is_del'] = 0;
+            if ($searchKey) {  //搜索车牌号或者单位名称
+                $search_sql = " c.car_num like '%" . $searchKey . "%' ";
+                $company    = M("company")->where(array("is_del"=>0,"company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+                if ($company) {
+                    $search_sql .= " or c.company_id in (" . implode(",", $this->_array_column($company, "id")) . ")";
+                }
+                $map["_string"] = $search_sql;
             }
 
-            $cars = M("Car")->where($mapc)->select();
+            $field = 'c.id,t.car_id,c.car_num,count(t.car_id) AS finishCount,sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount,sum(t.parking_rate_sum +t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as qitacount,sum(totle_rate) as heji ';
 
-            $hj = array(
-                "finishCount"         => 0,
-                "companyMileageCount" => 0,
-                "luqiaoCount"         => 0,
-                "fuwufeiCount"        => 0,
-                "buzhuCount"          => 0,
-                "qitaCount"           => 0,
-                "heji"                => 0,
-                "xiche"               => 0,
-                "weixiu"              => 0,
-                "jiayou"              => 0,
-                "nianjian"            => 0,
-                "xiaoji"              => 0
-            );
-
-            for ($i = 0, $count = count($cars); $i < $count && $count != 0; $i++) {
-                $map['car_id'] = array('eq', $cars[$i]["id"]);
-                $map["is_del"] = 0;
-
-                $travelM                 = new TravelModel();
-                $cars[$i]["finishCount"] = $travelM->where($map)->where(array("state" => "9"))->count();
-
-                $cars[$i]["companyMileageCount"] = $travelM->where($map)->where(array("state" => "9"))->sum("mileage");//该单位所有出行费用之和
-                if (empty($cars[$i]["companyMileageCount"])) {
-                    $cars[$i]["companyMileageCount"] = 0;
-                }
-
-                $cars[$i]["luqiaoCount"] = $travelM->where($map)->where(array("state" => "9"))->sum("fees_sum");//该单位所有出行费用之和
-                if (empty($cars[$i]["luqiaoCount"])) {
-                    $cars[$i]["luqiaoCount"] = 0;
-                }
-
-                $cars[$i]["fuwufeiCount"] = $travelM->where($map)->where(array("state" => "9"))->sum("service_charge");//该单位所有出行费用之和
-                if (empty($cars[$i]["fuwufeiCount"])) {
-                    $cars[$i]["fuwufeiCount"] = 0;
-                }
-
-                $cars[$i]["buzhuCount"] = $travelM->where($map)->where(array("state" => "9"))->sum("driver_bt_cost");
-                $cars[$i]["qitaCount"]  = $travelM->where($map)->where(array("state" => "9"))->sum("parking_rate_sum") + $travelM->where($map)->where(array("state" => "9"))->sum("driver_cost") + $travelM->where($map)->where(array("state" => "9"))->sum("over_time_cost") + $travelM->where($map)->where(array("state" => "9"))->sum("over_mileage_cost") + $travelM->where($map)->where(array("state" => "9"))->sum("else_cost");//该单位所有出行费用之和
-                $cars[$i]["heji"]       = $cars[$i]["luqiaoCount"] + $cars[$i]["fuwufeiCount"] + $cars[$i]["buzhuCount"] + $cars[$i]["qitaCount"];
-
-                //计算维修保养费用
-                $xiche['car_id']    = array('eq', $cars[$i]["id"]);
-                $xiche["is_del"]    = array('eq', 0);
-                $xiche["wash_time"] = $map['departure_time'];
-
-                $weixiu['car_id']     = array('eq', $cars[$i]["id"]);
-                $weixiu["is_del"]     = array('eq', 0);
-                $weixiu["start_time"] = $map['departure_time'];
-
-                $jiayou['car_id']       = array('eq', $cars[$i]["id"]);
-                $jiayou["is_del"]       = array('eq', 0);
-                $jiayou["trading_time"] = $map['departure_time'];
-
-                $nianjian['car_id']   = array('eq', $cars[$i]["id"]);
-                $nianjian["is_del"]   = array('eq', 0);
-                $nianjian["pay_time"] = $map['departure_time'];
-
-                $cars[$i]["xiche"]    = M("CostWash")->where($xiche)->sum("cost");
-                $cars[$i]["weixiu"]   = M("CostRepair")->where($weixiu)->sum("cost");
-                $cars[$i]["jiayou"]   = M("CostOil")->where($jiayou)->sum("cost");
-                $cars[$i]["nianjian"] = M("CostInsurance")->where($nianjian)->sum("cost");
-                $cars[$i]["xiaoji"]   = $cars[$i]["xiche"] + $cars[$i]["weixiu"] + $cars[$i]["jiayou"] + $cars[$i]["nianjian"];
-
-                $hj["finishCount"]         += $cars[$i]["finishCount"];
-                $hj["companyMileageCount"] += $cars[$i]["companyMileageCount"];
-                $hj["luqiaoCount"]         += $cars[$i]["luqiaoCount"];
-                $hj["fuwufeiCount"]        += $cars[$i]["fuwufeiCount"];
-                $hj["buzhuCount"]          += $cars[$i]["buzhuCount"];
-                $hj["qitaCount"]           += $cars[$i]["qitaCount"];
-                $hj["heji"]                += $cars[$i]["heji"];
-                $hj["xiche"]               += $cars[$i]["xiche"];
-                $hj["weixiu"]              += $cars[$i]["weixiu"];
-                $hj["jiayou"]              += $cars[$i]["jiayou"];
-                $hj["nianjian"]            += $cars[$i]["nianjian"];
-                $hj["xiaoji"]              += $cars[$i]["xiaoji"];
-            }
+            $cars = M("car as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.car_id")->where($map)->group("t.car_id")->field($field)->having('finishCount>=1')->select();
 
             //导出数据
             header("Content-Type: text/html; charset=gbk");
@@ -1186,50 +986,121 @@ class ReportController extends CommonController
             }
             fputcsv($fp, $column_name);
 
-            foreach ($cars as $k => $v) {
-                if ($v["finishCount"]) {
-                    $data   = array();
-                    $data[] = iconv('utf-8', 'GB18030', $v["car_num"]);
-                    $data[] = iconv('utf-8', 'GB18030', $v["finishCount"]);
-                    $data[] = iconv('utf-8', 'GB18030', $v["companyMileageCount"]);
-                    $data[] = iconv('utf-8', 'GB18030', $v["luqiaoCount"]);
-                    $data[] = iconv('utf-8', 'GB18030', $v["tingcheCount"]);
-                    $data[] = iconv('utf-8', 'GB18030', $v['zhushuCount']);
-                    $data[] = iconv('utf-8', 'GB18030', $v['fuwufeiCount']);
-                    $data[] = iconv('utf-8', 'GB18030', $v['buzhuCount']);
-                    $data[] = iconv('utf-8', 'GB18030', $v['qitaCount']);
-                    $data[] = iconv('utf-8', 'GB18030', $v['heji']);
-                    $data[] = iconv('utf-8', 'GB18030', $v["xiche"]);
-                    $data[] = iconv('utf-8', 'GB18030', $v["weixiu"]);
-                    $data[] = iconv('utf-8', 'GB18030', $v["jiayou"]);
-                    $data[] = iconv('utf-8', 'GB18030', $v['nianjian']);
-                    $data[] = iconv('utf-8', 'GB18030', $v['xiaoji']);
-                    fputcsv($fp, $data);
-                }
+
+            foreach ($cars as &$val) {
+                $val["finishCount"]         = $val['finishcount'];
+                $val["companyMileageCount"] = $val["companymileagecount"] ? $val["companymileagecount"] : 0;
+                $val["luqiaoCount"]         = $val["luqiaocount"] ? $val["luqiaocount"] : 0;
+                $val["fuwufeiCount"]        = $val["fuwufeicount"] ? $val["fuwufeicount"] : 0;
+                $val["buzhuCount"]          = $val["buzhucount"] ? $val["buzhucount"] : 0;
+                $val["qitaCount"]           = $val["qitacount"] ? $val["qitacount"] : 0;
+                $val["heji"]                = $val["heji"] ? $val["heji"] : 0;
+
+                //计算维修保养费用
+                $xiche['car_id']    = array('eq', $val["id"]);
+                $xiche["is_del"]    = array('eq', 0);
+                $xiche["wash_time"] = $map['t.departure_time'];
+
+                $weixiu['car_id']     = array('eq', $val["id"]);
+                $weixiu["is_del"]     = array('eq', 0);
+                $weixiu["start_time"] = $map['t.departure_time'];
+
+                $jiayou['car_id']       = array('eq', $val["id"]);
+                $jiayou["is_del"]       = array('eq', 0);
+                $jiayou["trading_time"] = $map['t.departure_time'];
+
+                $nianjian['car_id']   = array('eq', $val["id"]);
+                $nianjian["is_del"]   = array('eq', 0);
+                $nianjian["pay_time"] = $map['t.departure_time'];
+
+                $val["xiche"]    = M("CostWash")->where($xiche)->sum("cost");
+                $val["weixiu"]   = M("CostRepair")->where($weixiu)->sum("cost");
+                $val["jiayou"]   = M("CostOil")->where($jiayou)->sum("cost");
+                $val["nianjian"] = M("CostInsurance")->where($nianjian)->sum("cost");
+                $val["xiaoji"]   = $val["xiche"] + $val["weixiu"] + $val["jiayou"] + $val["nianjian"];
+
+                $data   = array();
+                $data[] = iconv('utf-8', 'GB18030', $val["car_num"]);
+                $data[] = iconv('utf-8', 'GB18030', $val["finishCount"]);
+                $data[] = iconv('utf-8', 'GB18030', $val["companyMileageCount"]);
+                $data[] = iconv('utf-8', 'GB18030', $val["luqiaoCount"]);
+                $data[] = iconv('utf-8', 'GB18030', $val["tingcheCount"]);
+                $data[] = iconv('utf-8', 'GB18030', $val['zhushuCount']);
+                $data[] = iconv('utf-8', 'GB18030', $val['fuwufeiCount']);
+                $data[] = iconv('utf-8', 'GB18030', $val['buzhuCount']);
+                $data[] = iconv('utf-8', 'GB18030', $val['qitaCount']);
+                $data[] = iconv('utf-8', 'GB18030', $val['heji']);
+                $data[] = iconv('utf-8', 'GB18030', $val["xiche"]);
+                $data[] = iconv('utf-8', 'GB18030', $val["weixiu"]);
+                $data[] = iconv('utf-8', 'GB18030', $val["jiayou"]);
+                $data[] = iconv('utf-8', 'GB18030', $val['nianjian']);
+                $data[] = iconv('utf-8', 'GB18030', $val['xiaoji']);
+                fputcsv($fp, $data);
             }
-            $sum = array("合计", $hj["finishCount"], $hj["companyMileageCount"], $hj["luqiaoCount"], $hj["tingcheCount"], $hj["zhushuCount"], $hj["fuwufeiCount"], $hj["buzhuCount"], $hj["qitaCount"], $hj["heji"], $hj["xiche"], $hj["weixiu"], $hj["jiayou"], $hj["nianjian"], $hj["xiaoji"],);
+            unset($val);
+
+            //汇总合计
+            $field = 't.id ,count(t.id) AS finishCount,sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount,sum(t.parking_rate_sum + t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as qitacount,sum(totle_rate) as heji ';
+            $total = M("car as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.car_id")->where($map)->field($field)->having('finishCount>=1')->select();
+            foreach ($total as &$val) {
+                //计算维修保养费用
+                $xiche['car_id']    = array('eq', $val["id"]);
+                $xiche["is_del"]    = array('eq', 0);
+                $xiche["wash_time"] = $map['t.departure_time'];
+
+                $weixiu['car_id']     = array('eq', $val["id"]);
+                $weixiu["is_del"]     = array('eq', 0);
+                $weixiu["start_time"] = $map['t.departure_time'];
+
+                $jiayou['car_id']       = array('eq', $val["id"]);
+                $jiayou["is_del"]       = array('eq', 0);
+                $jiayou["trading_time"] = $map['t.departure_time'];
+
+                $nianjian['car_id']   = array('eq', $val["id"]);
+                $nianjian["is_del"]   = array('eq', 0);
+                $nianjian["pay_time"] = $map['t.departure_time'];
+
+                $val["xiche"]    = M("CostWash")->where($xiche)->sum("cost");
+                $val["weixiu"]   = M("CostRepair")->where($weixiu)->sum("cost");
+                $val["jiayou"]   = M("CostOil")->where($jiayou)->sum("cost");
+                $val["nianjian"] = M("CostInsurance")->where($nianjian)->sum("cost");
+                $val["xiaoji"]   = $val["xiche"] + $val["weixiu"] + $val["jiayou"] + $val["nianjian"];
+            }
+            unset($val);
+            $sum = array("合计", $total[0]["finishcount"], $total[0]["companymileagecount"], $total[0]["luqiaocount"], $total[0]["tingchecount"], $total[0]["zhushucount"], $total[0]["fuwufeicount"], $total[0]["buzhucount"], $total[0]["qitacount"], $total[0]["heji"], $total[0]["xiche"], $total[0]["weixiu"], $total[0]["jiayou"], $total[0]["nianjian"], $total[0]["xiaoji"],);
             foreach ($sum as $i => $v) {
                 $sum[$i] = iconv('utf-8', 'GB18030', $v);
             }
             fputcsv($fp, $sum);
         }
 
-        if ($_REQUEST["type"] == 2) {
+        if ($type == 2) {
 
-            if ($_REQUEST["company"] != 0) {
-                $mapc["company_id"] = $_REQUEST["company"];
+            if ($searchKey) { // 搜索车牌号或者司机或者单位或者用车人
+                $search_sql = "  ";
+                $car        = M("car")->where(array("car_num" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+                if ($car) {
+                    $search_sql .= " t.car_id in (" . implode(",", $this->_array_column($car, "id")) . ")";
+                }
+                $driver = M("driver")->where(array("driver_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+                if ($driver) {
+                    $has_or     = empty($car) ? " " : " or ";
+                    $search_sql .= $has_or . " t.driver_id in (" . implode(",", $this->_array_column($driver, "id")) . ")";
+                }
+                $company = M("company")->where(array("company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+                if ($company) {
+                    $has_or     = empty($car) && empty($driver) ? " " : " or ";
+                    $search_sql .= $has_or . " t.company_id in (" . implode(",", $this->_array_column($company, "id")) . ")";
+                }
+                $user = M("user")->where(array("user_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+                if ($user) {
+                    $has_or     = empty($car) && empty($driver) && empty($company) ? " " : " or ";
+                    $search_sql .= $has_or . " t.use_user_id in (" . implode(",", $this->_array_column($user, "id")) . ")";
+                }
+                $map["_string"] = $search_sql;
             }
 
-            $map["state"] = 9;
-            if ($_REQUEST["car"]) {
-                $map["car_id"] = intval($_REQUEST["car"]);
-            }
-
-            if ($_REQUEST["company"] != 0) {
-                $map["company_id"] = $_REQUEST["company"];
-            }
-
-            $travels = M("Travel")->where($map)->where("is_del=0")->select();
+            $travels = M("Travel t")->where($map)->select();
 
             for ($i = 0; $i < count($travels) && count($travels) != 0; $i++) {
                 //获取用车人信息
@@ -1263,18 +1134,7 @@ class ReportController extends CommonController
             }
             fputcsv($fp, $column_name);
 
-            $mileagenum        = 0;
-            $fees_sumnum       = 0;
-            $service_chargenum = 0;
-            $costnum           = 0;
-            $totle_ratenum     = 0;
             foreach ($travels as $k => $v) {
-                $mileagenum        += $v['mileage'];
-                $fees_sumnum       += $v['fees_sum'];
-                $service_chargenum += $v['service_charge'];
-                $costnum           += $v['else_cost'];
-                $totle_ratenum     += $v['totle_rate'];
-
                 $data   = array();
                 $data[] = iconv('utf-8', 'GB18030', $v["car_num"]);
                 $data[] = iconv('utf-8', 'GB18030', $v["serial_number"]);
@@ -1291,7 +1151,11 @@ class ReportController extends CommonController
                 $data[] = iconv('utf-8', 'GB18030', $v["totle_rate"]);
                 fputcsv($fp, $data);
             }
-            $sum = array("合计", "", "", "", "", "", "", $mileagenum, $fees_sumnum, $service_chargenum, 0, $costnum, $totle_ratenum);
+
+            //合计汇总
+            $field = 'sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount, sum(t.parking_rate_sum + t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as qitacount,sum(totle_rate) as xiaoji';
+            $total = M("Travel t")->where($map)->field($field)->select();
+            $sum = array("合计", "", "", "", "", "", "", $total[0]['companymileagecount'], $total[0]['luqiaocount'], $total[0]['fuwufeicount'], $total[0]['buzhucount'], $total[0]['qitacount'], $total[0]['xiaoji']);
             foreach ($sum as $i => $v) {
                 $sum[$i] = iconv('utf-8', 'GB18030', $v);
             }
@@ -1303,36 +1167,39 @@ class ReportController extends CommonController
     }
 
     //单位报表导出
-    public function company_export_to_csv()
+    public function company_export_to_csv($page = 1)
     {
-        $map  = array();
-        $mapc = array();
+        set_time_limit(0);
+        $startTime = trim($_REQUEST['startTime']);
+        $endTime   = trim($_REQUEST['endTime']);
+        $searchKey = trim($_REQUEST["searchKey"]);
 
-        //获取开始时间
-        if (!empty($_REQUEST["startTime"])) {
-            $map['departure_time'] = array('gt', strtotime($_REQUEST["startTime"]));
-        } elseif (!empty($_REQUEST["endTime"])) {
-            $map['departure_time'] = array('elt', strtotime($_REQUEST["endTime"]) + 24 * 3600);
-        } elseif ((!empty($_REQUEST["startTime"])) && !empty($_REQUEST["endTime"])) {
-            $map['departure_time'] = array('between', array(strtotime($_REQUEST["startTime"]), strtotime($_REQUEST["endTime"]) + 24 * 3600));
+        //查询条件
+        $map             = array();
+        $map['t.is_del'] = 0;
+        $map['t.state']  = 9;
+
+        if (!empty($startTime) && empty($endTime)) {
+            $map['t.departure_time'] = array('gt', strtotime($startTime));
+        } elseif (!empty($endTime) && empty($startTime)) {
+            $map['t.departure_time'] = array('elt', strtotime($endTime) + 24 * 3600 - 1);
+        } elseif ((!empty($startTime)) && !empty($endTime)) {
+            $map['t.departure_time'] = array('between', array(strtotime($startTime), strtotime($endTime) + 24 * 3600 - 1));
         }
-        if (!empty($_REQUEST["searchKey"])) {
-            $mapc["company_name"] = array("like", "%" . trim($_REQUEST["searchKey"]) . "%");
-        }
 
-        $mapc["is_del"] = 0;
+        if ($_REQUEST["type"] == 1) {  //导出统计报表
+            $map['c.is_del'] = 0;
 
-        if ($_REQUEST["type"] == 1) {  //统计报表
-            $companys = M("Company")->where($mapc)->select();
-            $hj       = array(
-                "finishCount"         => 0,
-                "companyMileageCount" => 0,
-                "luqiaoCount"         => 0,
-                "fuwufeiCount"        => 0,
-                "buzhuCount"          => 0,
-                "qitaCount"           => 0,
-                "heji"                => 0
-            );
+            if (!empty($searchKey)) {
+                $map["c.company_name"] = array("like", "%" . $searchKey . "%");
+            }
+
+            //数据查询
+            $size  = 1000;
+            $limit = ($page - 1) * $size . ',' . $size;
+            //其他 = 停车费单据总金额(parking_rate_sum) + 司机住宿等花费(driver_cost) + 超时费(over_time_cost) + 超公里费(over_mileage_cost) + 其他费用(else_cost)
+            $field    = 't.company_id,c.company_name,count(t.company_id) AS finishCount,sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount,sum(t.parking_rate_sum + t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as qitaCount ,sum(totle_rate) as heji';
+            $companys = M("Company as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.company_id")->where($map)->group("t.company_id")->field($field)->limit($limit)->having('finishCount>=1')->select();
 
             //导出数据
             header("Content-Type: text/html; charset=gbk");
@@ -1341,75 +1208,64 @@ class ReportController extends CommonController
             header("Content-Disposition:filename=" . iconv("UTF-8", "GBK", $excel_name) . ".csv");
             $fp = fopen('php://output', 'a');
 
-            $column_name = array("单位名称", "出行次数", "出行里程", "路桥费", "出行服务费", "出差补助", "其他", "小计");
-            foreach ($column_name as $i => $v) {
-                $column_name[$i] = iconv('utf-8', 'GB18030', $v);
-            }
-            fputcsv($fp, $column_name);
+            if ($companys) {
+                register_shutdown_function(array(&$this, 'company_export_to_csv'), $page + 1);
 
-            foreach ($companys as &$val) {
-                $map['company_id'] = array('eq', $val["id"]);
-                $map["is_del"]     = 0;
-
-                $travelM = new TravelModel();
-                $field   = 'count(1) as finishCount ,sum(mileage) as companyMileageCount,sum(fees_sum) as luqiaoCount ,sum(service_charge) as fuwufeiCount ,sum(driver_bt_cost) as buzhuCount ,sum(parking_rate_sum) as t1 ,sum(driver_cost) as t2 ,sum(over_time_cost) as t3 ,sum(over_mileage_cost) as t4 ,sum(else_cost) as t5';
-                $info    = $travelM->where($map)->where(array("state" => "9"))->field($field)->find();
-                if ($info['finishcount']) {
-                    $data   = array();
-                    $data[] = iconv("UTF-8", "GBK", $val["company_name"]);
-                    $data[] = iconv("UTF-8", "GBK", $info['finishcount']);
-                    $data[] = iconv("UTF-8", "GBK", $info["companymileagecount"] ? $info["companymileagecount"] : 0);
-                    $data[] = iconv("UTF-8", "GBK", $info["luqiaocount"] ? $info["luqiaocount"] : 0);
-                    $data[] = iconv("UTF-8", "GBK", $info["fuwufeicount"] ? $info["fuwufeicount"] : 0);
-                    $data[] = iconv("UTF-8", "GBK", $info["buzhucount"] ? $info["buzhucount"] : 0);
-                    $data[] = iconv("UTF-8", "GBK", $info["t1"] + $info["t2"] + $info["t3"] + $info["t4"] + $info["t5"]);
-                    $data[] = iconv("UTF-8", "GBK", $info["luqiaocount"] + $info["fuwufeicount"] + $info["buzhucount"] + $info["qitacount"]);
-                    fputcsv($fp, $data);
+                if ($page == 1) {
+                    $column_name = array("单位名称", "出行次数", "出行里程", "路桥费", "出行服务费", "出差补助", "其他", "小计");
+                    foreach ($column_name as $i => $v) {
+                        $column_name[$i] = iconv('utf-8', 'GB18030', $v);
+                    }
+                    fputcsv($fp, $column_name);
                 }
 
-                //汇总合计
-                $hj["finishCount"]         += $info["finishcount"];
-                $hj["companyMileageCount"] += $info["companymileagecount"];
-                $hj["luqiaoCount"]         += $info["luqiaocount"];
-                $hj["fuwufeiCount"]        += $info["fuwufeicount"];
-                $hj["buzhuCount"]          += $info["buzhucount"];
-                $hj["qitaCount"]           += $info["t1"] + $info["t2"] + $info["t3"] + $info["t4"] + $info["t5"];
-                $hj["heji"]                += $info["luqiaocount"] + $info["fuwufeicount"] + $info["buzhucount"] + $info["t1"] + $info["t2"] + $info["t3"] + $info["t4"] + $info["t5"];
-            }
-            unset($val);
+                foreach ($companys as &$val) {
+                    $data   = array();
+                    $data[] = iconv("UTF-8", "GBK", $val["company_name"]);
+                    $data[] = iconv("UTF-8", "GBK", $val['finishcount']);
+                    $data[] = iconv("UTF-8", "GBK", $val["companymileagecount"] ? $val["companymileagecount"] : 0);
+                    $data[] = iconv("UTF-8", "GBK", $val["luqiaocount"] ? $val["luqiaocount"] : 0);
+                    $data[] = iconv("UTF-8", "GBK", $val["fuwufeicount"] ? $val["fuwufeicount"] : 0);
+                    $data[] = iconv("UTF-8", "GBK", $val["buzhucount"] ? $val["buzhucount"] : 0);
+                    $data[] = iconv("UTF-8", "GBK", $val["qitacount"] ? $val["qitacount"] : 0);
+                    $data[] = iconv("UTF-8", "GBK", $val["heji"] ? $val["heji"] : 0);
+                    fputcsv($fp, $data);
+                }
+                unset($val);
 
-            $sum = array("合计", $hj["finishCount"], $hj["companyMileageCount"], $hj["luqiaoCount"], $hj["fuwufeiCount"], $hj["buzhuCount"], $hj["qitaCount"], $hj["heji"],);
-            foreach ($sum as $i => $v) {
-                $sum[$i] = iconv('utf-8', 'GB18030', $v);
-            }
-            fputcsv($fp, $sum);
-        } elseif ($_REQUEST["type"] == 2) {  //明细报表
-            $map["state"] = 9;
+            } else {
+                //输出汇总合计
+                $field = 'count(t.id) AS finishCount,sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount,sum(t.parking_rate_sum + t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as qitaCount ,sum(totle_rate) as heji';
+                $total = M("Company as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.company_id")->where($map)->field($field)->having('finishCount>=1')->select();
 
-            $searchKey = trim($_REQUEST["searchKey"]);
+                $sum = array("合计", $total[0]["finishcount"], $total[0]["companymileagecount"], $total[0]["luqiaocount"], $total[0]["fuwufeicount"], $total[0]["buzhucount"], $total[0]["qitacount"], $total[0]["heji"],);
+                foreach ($sum as $i => $v) {
+                    $sum[$i] = iconv('utf-8', 'GB18030', $v);
+                }
+                fputcsv($fp, $sum);
+            }
+
+        } elseif ($_REQUEST["type"] == 2) {  //导出明细报表
+
             if (!empty($searchKey)) {
                 $company_ids = M("company")->where(array("company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配单位名称
                 $user_ids    = M("user")->where(array("user_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配用车人
                 if ($company_ids) {
-                    $map["company_id"] = array("IN", $company_ids ? $this->_array_column($company_ids, "id") : array(0));
+                    $map["t.company_id"] = array("IN", $company_ids ? $this->_array_column($company_ids, "id") : array(0));
                 } elseif ($user_ids) {
-                    $map["use_user_id"] = array("IN", $user_ids ? $this->_array_column($user_ids, "id") : array(0));
+                    $map["t.use_user_id"] = array("IN", $user_ids ? $this->_array_column($user_ids, "id") : array(0));
                 }
             }
 
             $travelNature = trim($_REQUEST['travelNature']);
             if ($travelNature) {
-                $map["travel_nature"] = $travelNature;
+                $map["t.travel_nature"] = $travelNature;
             }
 
-            $travels = M("Travel")->where($map)->where("is_del=0")->select();
-            for ($i = 0, $count = count($travels); $i < $count && $count != 0; $i++) {
-                //获取用车人信息
-                $user                         = M("User")->find($travels[$i]["use_user_id"]);
-                $travels[$i]["user_name"]     = $user["user_name"];
-                $companyyy                    = M("Company")->find($travels[$i]["company_id"]);
-                $travels[$i]["company_namee"] = $companyyy["company_name"];
-            }
+            $size    = 1000;
+            $limit   = ($page - 1) * $size . ',' . $size;
+            $field   = 'u.user_name,c.company_name,t.use_user_id,t.company_id,t.travel_nature,t.serial_number,t.start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,t.else_cost,t.totle_rate,t.parking_rate_sum,t.driver_cost,t.over_time_cost,t.over_mileage_cost';
+            $travels = M("Travel as t")->join("left join " . C("DB_PREFIX") . "company as c on c.id =  t.company_id left join " . C("DB_PREFIX") . "user u on u.id = t.use_user_id")->where($map)->limit($limit)->field($field)->select();
 
             //导出数据
             header("Content-Type: text/html; charset=gbk");
@@ -1418,48 +1274,52 @@ class ReportController extends CommonController
             header("Content-Disposition:filename=" . iconv("UTF-8", "GBK", $excel_name) . ".csv");
             $fp = fopen('php://output', 'a');
 
-            $column_name = array("单位名称", "流水号", "用车人", "用车时间", "出行性质", "目的地", "出行里程", "路桥费", "出行服务费", "出差补助", "其他", "小计");
-            foreach ($column_name as $i => $v) {
-                $column_name[$i] = iconv('utf-8', 'GB18030', $v);
-            }
-            fputcsv($fp, $column_name);
+            if ($travels) {
+                register_shutdown_function(array(&$this, 'company_export_to_csv'), $page + 1);
 
-            $mileagenum        = 0;
-            $fees_sumnum       = 0;
-            $service_chargenum = 0;
-            $costnum           = 0;
-            $totle_ratenum     = 0;
-            foreach ($travels as $k => $v) {
-                $mileagenum        += $v['mileage'];
-                $fees_sumnum       += $v['fees_sum'];
-                $service_chargenum += $v['service_charge'];
-                $costnum           += $v['else_cost'];
-                $totle_ratenum     += $v['totle_rate'];
+                if ($page == 1) {
+                    //输出表头
+                    $column_name = array("单位名称", "流水号", "用车人", "用车时间", "出行性质", "目的地", "出行里程", "路桥费", "出行服务费", "出差补助", "其他", "小计");
+                    foreach ($column_name as $i => $v) {
+                        $column_name[$i] = iconv('utf-8', 'GB18030', $v);
+                    }
+                    fputcsv($fp, $column_name);
+                }
 
-                $data   = array();
-                $data[] = iconv('utf-8', 'GB18030', $v["company_namee"]);
-                $data[] = iconv('utf-8', 'GB18030', $v["serial_number"]);
-                $data[] = iconv('utf-8', 'GB18030', $v["user_name"]);
-                $data[] = iconv('utf-8', 'GB18030', date("Y-m-d H:i:s", $v["start_car_time"]));
-                $data[] = iconv('utf-8', 'GB18030', $v["travel_nature"]);
-                $data[] = iconv('utf-8', 'GB18030', $v["to_place"]);
-                $data[] = iconv('utf-8', 'GB18030', $v["mileage"]);
-                $data[] = iconv('utf-8', 'GB18030', $v['fees_sum']);
-                $data[] = iconv('utf-8', 'GB18030', $v['service_charge']);
-                $data[] = iconv('utf-8', 'GB18030', 0);
-                $data[] = iconv('utf-8', 'GB18030', $v['else_cost']);
-                $data[] = iconv('utf-8', 'GB18030', $v['totle_rate']);
-                fputcsv($fp, $data);
+                foreach ($travels as &$v) {
+                    $qita = $v['parking_rate_sum'] + $v['driver_cost'] + $v['over_time_cost'] + $v['over_mileage_cost'] + $v['else_cost'];
+                    //输出数据
+                    $data   = array();
+                    $data[] = iconv('utf-8', 'GB18030', $v["company_name"]);
+                    $data[] = iconv('utf-8', 'GB18030', $v["serial_number"]);
+                    $data[] = iconv('utf-8', 'GB18030', $v["user_name"]);
+                    $data[] = iconv('utf-8', 'GB18030', date("Y-m-d H:i:s", $v["start_car_time"]));
+                    $data[] = iconv('utf-8', 'GB18030', $v["travel_nature"]);
+                    $data[] = iconv('utf-8', 'GB18030', $v["to_place"]);
+                    $data[] = iconv('utf-8', 'GB18030', $v["mileage"]);
+                    $data[] = iconv('utf-8', 'GB18030', $v['fees_sum']);
+                    $data[] = iconv('utf-8', 'GB18030', $v['service_charge']);
+                    $data[] = iconv('utf-8', 'GB18030', 0);
+                    $data[] = iconv('utf-8', 'GB18030', $qita);
+                    $data[] = iconv('utf-8', 'GB18030', $v['totle_rate']);
+                    fputcsv($fp, $data);
+                }
+                unset($v);
+            } else {
+                //输出汇总合计
+                $field = 'count(t.id) AS finishCount,sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount,sum(t.parking_rate_sum + t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as qitaCount ,sum(totle_rate) as heji';
+                $total = M("Company as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.company_id")->where($map)->field($field)->having('finishCount>=1')->select();
+                $sum   = array("合计", "", "", "", "", "", $total[0]['companymileagecount'], $total[0]['luqiaocount'], $total[0]['fuwufeicount'], $total[0]['buzhucount'], $total[0]['qitacount'], $total[0]['heji']);
+                foreach ($sum as $i => $v) {
+                    $sum[$i] = iconv('utf-8', 'GB18030', $v);
+                }
+                fputcsv($fp, $sum);
             }
-            $sum = array("合计", "", "", "", "", "", $mileagenum, $fees_sumnum, $service_chargenum, 0, $costnum, $totle_ratenum);
-            foreach ($sum as $i => $v) {
-                $sum[$i] = iconv('utf-8', 'GB18030', $v);
-            }
-            fputcsv($fp, $sum);
+
         }
         ob_flush();
         flush();
-        exit;
+//        exit;
     }
 
 }
