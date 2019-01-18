@@ -476,8 +476,9 @@ class AdminController extends Controller {
         $this->ajaxReturn($arrangeTypeM->select());
     }
 
+
     //派车，派给第三方出行单位
-    public function sendCarToOther(){
+    public function sendCarToOtherBak(){
 
         $travel=M("Travel")->find($_POST["id"]);
         $travelType=M("TravelType")->find($travel["travel_type_id"]);
@@ -542,6 +543,78 @@ class AdminController extends Controller {
 
 
 
+    }
+
+    //派遣第三方车辆具体操作
+    public function sendCarToOther()
+    {
+        $travel                        = M("Travel")->find($_POST["id"]);
+        $travelType                    = M("TravelType")->find($travel["travel_type_id"]);
+        $travel["from_place_location"] = '';
+        $state                         = 5;
+        //如果不需要派车之后的审核，则直接将状态设置为待出车
+        //如果派车之后需要审核，则直接将状态设置为待出车审核
+        if ($travelType["is_need_sendcar_review"] == 0) {
+            $state = 8;
+        }
+
+        $useUser = M("User")->find($travel["use_user_id"]);
+        $company = M("Company")->find($useUser["user_company"]);
+
+
+        $set     = M("set")->find(1);
+        $account = "account=" . $set["jjaccount"] . "&pwd=" . $set["jjpwd"];
+        $res     = httpFF("http://api.99huaan.com/passenger/login", "", $account, "POST");
+        $res     = json_decode($res, true);
+//        @file_put_contents($_SERVER["DOCUMENT_ROOT"]."/jzw.txt","\n\n res:".json_encode($res),FILE_APPEND);
+
+        $token = $res["token"];
+        $member_id     = $res["data"]["member_id"];
+        $franchisee_id = $res["data"]["franchisee_id"];
+
+        $sendData = "";
+        $sendData .= "token=" . $token . "&";
+        $sendData .= "member_id=" . $member_id . "&";
+        $sendData .= "user_name=" . $set["jj_push_name"] . "&";
+        $sendData .= "user_mobile=" . $useUser["user_phone"] . "&";
+        $sendData .= "passenger_name=" . $useUser["user_name"] . "&";
+        $sendData .= "passenger_mobile=" . $useUser["user_phone"] . "&";
+        $sendData .= "franchisee_id=" . $franchisee_id . "&";
+        $sendData .= "service_type_id=5&";
+        $sendData .= "vehicle_type_id=" . $_POST["car_type"] . "&";
+        $sendData .= "start_address=" . $travel["from_place"] . "&";
+        $sendData .= "start_address_latitude=" . explode(",", $travel["from_place_location"])[0] . "&";
+        $sendData .= "start_address_longitude=" . explode(",", $travel["from_place_location"])[1] . "&";
+        $sendData .= "end_address=" . $travel["to_place"] . "&";
+        $sendData .= "end_address_latitude=" . explode(",", $travel["to_place_location"])[0] . "&";
+        $sendData .= "end_address_longitude=" . explode(",", $travel["to_place_location"])[1] . "&";
+        $sendData .= "appointment_time=" . date('Y-m-d H:i', $travel["departure_time"]) . "&";
+        $sendData .= "order_memo=" . $company["company_name"] . $travel["travel_reason"] . "&";
+        $sendData .= "estimated_time=0&";
+        $sendData .= "mileage=0";
+
+
+        $res = httpFF("http://api.99huaan.com/passenger/order/common/createByPassenger", "", $sendData, "POST");
+        $res = json_decode($res, true);
+
+        if ($res["result"] == "1") {
+            $travel["jj_id"]           = $res["data"]["order_id"];
+            $travel["send_other_res"]  = $_POST["send_other_res"];
+            $travel["arrange_type_id"] = $_POST["arrange_id"];
+            $travel["state"]           = $state;
+            $travel["send_car_time"]   = time();
+            $travel["is_need_settlement"] = 0;//使用玖玖专车就不需要费用核算了，只有自有车辆出行才费用核算
+
+            $re = M("Travel")->save($travel);
+
+            if ($re) {
+                $this->ajaxReturn(array("code" => 1));
+            } else {
+                $this->ajaxReturn(array("code" => 0));
+            }
+        } else {
+            $this->ajaxReturn(array("code" => 0, "msg" => $res["err_message"]["content"]));
+        }
     }
 
     //获取所有车辆，根据state
