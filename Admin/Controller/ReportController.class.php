@@ -255,7 +255,7 @@ class ReportController extends CommonController
                     $data[] = iconv('utf-8', 'GB18030', $v["company_name"]);
                     $data[] = iconv('utf-8', 'GB18030', $v["serial_number"]);
                     $data[] = iconv('utf-8', 'GB18030', $v["user_name"]);
-                    $data[] = iconv('utf-8', 'GB18030', date("Y-m-d H:i:s", $v["start_car_time"]));
+                    $data[] = iconv('utf-8', 'GB18030', $v["start_car_time"] ? date("Y-m-d H:i:s", $v["start_car_time"]) : '');
                     $data[] = iconv('utf-8', 'GB18030', $v["travel_nature"]);
                     $data[] = iconv('utf-8', 'GB18030', $v["to_place"]);
                     $data[] = iconv('utf-8', 'GB18030', $v["mileage"]);
@@ -690,7 +690,7 @@ class ReportController extends CommonController
                     $data[] = iconv('utf-8', 'GB18030', $val["driver_name"]);
                     $data[] = iconv('utf-8', 'GB18030', $companyyy["company_name"]);
                     $data[] = iconv('utf-8', 'GB18030', $user["user_name"]);
-                    $data[] = iconv('utf-8', 'GB18030', date("Y-m-d H:i:s", $val['start_car_time']));
+                    $data[] = iconv('utf-8', 'GB18030', $val['start_car_time'] ? date("Y-m-d H:i:s", $val['start_car_time']) : '');
                     $data[] = iconv('utf-8', 'GB18030', $val['to_place']);
                     $data[] = iconv('utf-8', 'GB18030', $val['mileage']);
                     $data[] = iconv('utf-8', 'GB18030', $val['fees_sum']);
