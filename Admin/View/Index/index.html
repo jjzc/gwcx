@@ -28,44 +28,44 @@
 <div class="diskicon" style="display:inline-block; width:auto;">
     <ul>
         {if in_array("/index.php/Admin/Travel", $smarty.session.allUrls)}
-        <li text="出行管理" icon="{$smarty.const.PUBLIC_URL}/images/icon/travel.png" path="/index.php/Admin/Travel/backlogTravels?tag=1" data-property="{ title:'出行管理',minimize:'true',maximize:'false',target:'iframe',multiple:'false' }" data-style="[{ name:'left',value:'0px' },{ name:'top',value:'0px' }]" ><span class="icon"><span class="icon"><img src="{$smarty.const.PUBLIC_URL}/images/icon/travel.png" title="出行管理" ></span><span class="text">出行管理</span></li>
+        <li text="出行管理" icon="{$smarty.const.PUBLIC_URL}/images/icon/travel.png" path="/index.php/Admin/Travel/backlogTravels?mid=1" data-property="{ title:'出行管理',minimize:'true',maximize:'false',target:'iframe',multiple:'false' }" data-style="[{ name:'left',value:'0px' },{ name:'top',value:'0px' }]" ><span class="icon"><span class="icon"><img src="{$smarty.const.PUBLIC_URL}/images/icon/travel.png" title="出行管理" ></span><span class="text">出行管理</span></li>
         {/if}
 
         {if in_array("/index.php/Admin/Company", $smarty.session.allUrls)}
-        <li text="单位管理{$isHavaDwManage}" icon="{$smarty.const.PUBLIC_URL}/images/icon/company.png" path="/index.php/Admin/Company/allCompanys?tag=2" data-property="{ title:'单位管理',minimize:'true',maximize:'false',target:'iframe',multiple:'false' }" data-style="[{ name:'left',value:'0px' },{ name:'top',value:'0px' }]" ><span class="icon"><span class="icon"><img src="{$smarty.const.PUBLIC_URL}/images/icon/company.png" title="单位管理" ></span><span class="text">单位管理</span></li>
+        <li text="单位管理{$isHavaDwManage}" icon="{$smarty.const.PUBLIC_URL}/images/icon/company.png" path="/index.php/Admin/Company/allCompanys?mid=2" data-property="{ title:'单位管理',minimize:'true',maximize:'false',target:'iframe',multiple:'false' }" data-style="[{ name:'left',value:'0px' },{ name:'top',value:'0px' }]" ><span class="icon"><span class="icon"><img src="{$smarty.const.PUBLIC_URL}/images/icon/company.png" title="单位管理" ></span><span class="text">单位管理</span></li>
         {/if}
 
         {if in_array("/index.php/Admin/Car", $smarty.session.allUrls)}
-        <li text="车辆管理" icon="{$smarty.const.PUBLIC_URL}/images/icon/car.png" path="/index.php/Admin/Car/allCars?tag=3" data-property="{ title:'车辆管理',minimize:'true',maximize:'false',target:'iframe',multiple:'false' }" data-style="[{ name:'left',value:'0px' },{ name:'top',value:'0px' }]" ><span class="icon"><span class="icon"><img src="{$smarty.const.PUBLIC_URL}/images/icon/car.png" title="车辆管理" ></span><span class="text">车辆管理</span></li>
+        <li text="车辆管理" icon="{$smarty.const.PUBLIC_URL}/images/icon/car.png" path="/index.php/Admin/Car/allCars?mid=3" data-property="{ title:'车辆管理',minimize:'true',maximize:'false',target:'iframe',multiple:'false' }" data-style="[{ name:'left',value:'0px' },{ name:'top',value:'0px' }]" ><span class="icon"><span class="icon"><img src="{$smarty.const.PUBLIC_URL}/images/icon/car.png" title="车辆管理" ></span><span class="text">车辆管理</span></li>
         {/if}
 
         {if in_array("/index.php/Admin/Driver", $smarty.session.allUrls)}
-        <li text="司机管理" icon="{$smarty.const.PUBLIC_URL}/images/icon/driver.png" path="/index.php/Admin/Driver/allDrivers?tag=4" data-property="{ title:'司机管理',minimize:'true',maximize:'false',target:'iframe',multiple:'false' }" data-style="[{ name:'left',value:'0px' },{ name:'top',value:'0px' }]" ><span class="icon"><span class="icon"><img src="{$smarty.const.PUBLIC_URL}/images/icon/driver.png" title="司机管理" ></span><span class="text">司机管理</span></li>
+        <li text="司机管理" icon="{$smarty.const.PUBLIC_URL}/images/icon/driver.png" path="/index.php/Admin/Driver/allDrivers?mid=4" data-property="{ title:'司机管理',minimize:'true',maximize:'false',target:'iframe',multiple:'false' }" data-style="[{ name:'left',value:'0px' },{ name:'top',value:'0px' }]" ><span class="icon"><span class="icon"><img src="{$smarty.const.PUBLIC_URL}/images/icon/driver.png" title="司机管理" ></span><span class="text">司机管理</span></li>
         {/if}
 
         {if in_array("/index.php/Admin/Statistics", $smarty.session.allUrls)}
-        <li text="数据统计" icon="{$smarty.const.PUBLIC_URL}/images/icon/sjtj.png" path="/index.php/Admin/Statistics/byCompany?tag=5" data-property="{ title:'数据统计',minimize:'true',maximize:'false',target:'iframe',multiple:'false' }" data-style="[{ name:'left',value:'0px' },{ name:'top',value:'0px' }]" ><span class="icon"><span class="icon"><img src="{$smarty.const.PUBLIC_URL}/images/icon/sjtj.png" title="数据统计" ></span><span class="text">数据统计</span></li>
+        <li text="数据统计" icon="{$smarty.const.PUBLIC_URL}/images/icon/sjtj.png" path="/index.php/Admin/Statistics/byCompany?mid=5" data-property="{ title:'数据统计',minimize:'true',maximize:'false',target:'iframe',multiple:'false' }" data-style="[{ name:'left',value:'0px' },{ name:'top',value:'0px' }]" ><span class="icon"><span class="icon"><img src="{$smarty.const.PUBLIC_URL}/images/icon/sjtj.png" title="数据统计" ></span><span class="text">数据统计</span></li>
         {/if}
 
         {if in_array("/index.php/Admin/TravelSet", $smarty.session.allUrls)}
-        <li text="系统配置" icon="{$smarty.const.PUBLIC_URL}/images/icon/peizhi.png" path="/index.php/Admin/TravelSet/travelSet?tag=6" data-property="{ title:'系统配置',minimize:'true',maximize:'false',target:'iframe',multiple:'false' }" data-style="[{ name:'left',value:'0px' },{ name:'top',value:'0px' }]" ><span class="icon"><span class="icon"><img src="{$smarty.const.PUBLIC_URL}/images/icon/peizhi.png" title="系统配置" ></span><span class="text">系统配置</span></li>
+        <li text="系统配置" icon="{$smarty.const.PUBLIC_URL}/images/icon/peizhi.png" path="/index.php/Admin/TravelSet/travelSet?mid=6" data-property="{ title:'系统配置',minimize:'true',maximize:'false',target:'iframe',multiple:'false' }" data-style="[{ name:'left',value:'0px' },{ name:'top',value:'0px' }]" ><span class="icon"><span class="icon"><img src="{$smarty.const.PUBLIC_URL}/images/icon/peizhi.png" title="系统配置" ></span><span class="text">系统配置</span></li>
         {/if}
 
         {if in_array("/index.php/Admin/UserCenter", $smarty.session.allUrls)}
-        <li text="用户管理" icon="{$smarty.const.PUBLIC_URL}/images/icon/geren.png" path="/index.php/Admin/UserCenter/userList?tag=7" data-property="{ title:'用户管理',minimize:'true',maximize:'false',target:'iframe',multiple:'false' }" data-style="[{ name:'left',value:'0px' },{ name:'top',value:'0px' }]" ><span class="icon"><span class="icon"><img src="{$smarty.const.PUBLIC_URL}/images/icon/geren.png" title="用户管理" ></span><span class="text">用户管理</span></li>
+        <li text="用户管理" icon="{$smarty.const.PUBLIC_URL}/images/icon/geren.png" path="/index.php/Admin/UserCenter/userList?mid=7" data-property="{ title:'用户管理',minimize:'true',maximize:'false',target:'iframe',multiple:'false' }" data-style="[{ name:'left',value:'0px' },{ name:'top',value:'0px' }]" ><span class="icon"><span class="icon"><img src="{$smarty.const.PUBLIC_URL}/images/icon/geren.png" title="用户管理" ></span><span class="text">用户管理</span></li>
         {/if}
 
         {if in_array("/index.php/Admin/Report", $smarty.session.allUrls)}
-		<li text="数据报表" icon="{$smarty.const.PUBLIC_URL}/images/icon/sjbb.png" path="/index.php/Admin/Report/byCompany?tag=67" data-property="{ title:'数据统计',minimize:'true',maximize:'false',target:'iframe',multiple:'false' }" data-style="[{ name:'left',value:'0px' },{ name:'top',value:'0px' }]" ><span class="icon"><span class="icon"><img src="{$smarty.const.PUBLIC_URL}/images/icon/sjbb.png" title="数据报表" ></span><span class="text">数据报表</span></li>
+		<li text="数据报表" icon="{$smarty.const.PUBLIC_URL}/images/icon/sjbb.png" path="/index.php/Admin/Report/byCompany?mid=67" data-property="{ title:'数据统计',minimize:'true',maximize:'false',target:'iframe',multiple:'false' }" data-style="[{ name:'left',value:'0px' },{ name:'top',value:'0px' }]" ><span class="icon"><span class="icon"><img src="{$smarty.const.PUBLIC_URL}/images/icon/sjbb.png" title="数据报表" ></span><span class="text">数据报表</span></li>
         {/if}
 
 
         {if in_array("/index.php/Admin/Log", $smarty.session.allUrls)}
-        <li text="操作日志" icon="{$smarty.const.PUBLIC_URL}/images/icon/czrz.png" path="/index.php/Admin/Log/logList?tag=68" data-property="{ title:'操作日志',minimize:'true',maximize:'false',target:'iframe',multiple:'false' }" data-style="[{ name:'left',value:'0px' },{ name:'top',value:'0px' }]" ><span class="icon"><span class="icon"><img src="{$smarty.const.PUBLIC_URL}/images/icon/czrz.png" title="操作日志" ></span><span class="text">操作日志</span></li>
+        <li text="操作日志" icon="{$smarty.const.PUBLIC_URL}/images/icon/czrz.png" path="/index.php/Admin/Log/logList?mid=68" data-property="{ title:'操作日志',minimize:'true',maximize:'false',target:'iframe',multiple:'false' }" data-style="[{ name:'left',value:'0px' },{ name:'top',value:'0px' }]" ><span class="icon"><span class="icon"><img src="{$smarty.const.PUBLIC_URL}/images/icon/czrz.png" title="操作日志" ></span><span class="text">操作日志</span></li>
         {/if}
 
         {if in_array("/index.php/Admin/Finance", $smarty.session.allUrls)}
-        <li text="费用管理" icon="{$smarty.const.PUBLIC_URL}/images/icon/finance.png" path="/index.php/Admin/Finance/washRecord?tag=72" data-property="{ title:'费用管理',minimize:'true',maximize:'false',target:'iframe',multiple:'false' }" data-style="[{ name:'left',value:'0px' },{ name:'top',value:'0px' }]" ><span class="icon"><span class="icon"><img src="{$smarty.const.PUBLIC_URL}/images/icon/finance.png" title="费用管理" ></span><span class="text">费用管理</span></li>
+        <li text="费用管理" icon="{$smarty.const.PUBLIC_URL}/images/icon/finance.png" path="/index.php/Admin/Finance/washRecord?mid=72" data-property="{ title:'费用管理',minimize:'true',maximize:'false',target:'iframe',multiple:'false' }" data-style="[{ name:'left',value:'0px' },{ name:'top',value:'0px' }]" ><span class="icon"><span class="icon"><img src="{$smarty.const.PUBLIC_URL}/images/icon/finance.png" title="费用管理" ></span><span class="text">费用管理</span></li>
         {/if}
 
     </ul>

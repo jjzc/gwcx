@@ -151,7 +151,7 @@
                     { "data": "group_name", "defaultContent": "<i>暂无</i>"},
                     {
                         "data": "id", "defaultContent": "<i></i>", "orderable": false, "render": function (data, type, full, meta) {
-                            if (data > 1) {
+                            if (data > 0) {
                                 var html = template(document.getElementById('carTools').innerHTML, full);
                                 return html;
                             }

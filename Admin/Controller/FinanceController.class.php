@@ -726,11 +726,11 @@ class FinanceController extends CommonController
 
             //洗车商店
             $wash_shop = M("WashShop")->select();
-            $wash_shops = array_column($wash_shop, "shop_name", "id");
+            $wash_shops = $this->_array_column($wash_shop, "shop_name", "id");
 
             //车牌号列表
             $car = M("car")->where("is_del=0")->select();
-            $cars = array_column($car, "car_num", "id");
+            $cars = $this->_array_column($car, "car_num", "id");
 
             //导出数据
             header("Content-Type: text/html; charset=gbk");
@@ -806,15 +806,15 @@ class FinanceController extends CommonController
 
             //维修地点
             $repair_shop = M("RepairShop")->select();
-            $repair_shops = array_column($repair_shop, "shop_name", "id");
+            $repair_shops = $this->_array_column($repair_shop, "shop_name", "id");
 
             //维修类型
             $repair_type = M("RepairType")->select();
-            $repair_types = array_column($repair_type, "repair_type_name", "id");
+            $repair_types = $this->_array_column($repair_type, "repair_type_name", "id");
 
             //车牌号列表
             $car = M("car")->where("is_del=0")->select();
-            $cars = array_column($car, "car_num", "id");
+            $cars = $this->_array_column($car, "car_num", "id");
 
             //导出数据
             header("Content-Type: text/html; charset=gbk");
@@ -903,11 +903,11 @@ class FinanceController extends CommonController
 
             //加油站
             $oil_shop = M("OilShop")->select();
-            $oil_shops = array_column($oil_shop, "oil_name", "id");
+            $oil_shops = $this->_array_column($oil_shop, "oil_name", "id");
 
             //车牌号列表
             $car = M("car")->where("is_del=0")->select();
-            $cars = array_column($car, "car_num", "id");
+            $cars = $this->_array_column($car, "car_num", "id");
 
             //导出数据
             header("Content-Type: text/html; charset=gbk");
@@ -981,7 +981,7 @@ class FinanceController extends CommonController
 
             //车牌号列表
             $car = M("car")->where("is_del=0")->select();
-            $cars = array_column($car, "car_num", "id");
+            $cars = $this->_array_column($car, "car_num", "id");
 
             //导出数据
             header("Content-Type: text/html; charset=gbk");

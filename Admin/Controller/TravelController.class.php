@@ -105,7 +105,7 @@ class TravelController extends CommonController
 
             $company_ids = M("company")->where(array("company_name" => array("like", "%$key%")))->field("id")->select();
 
-            $company_ids = $company_ids ? array_column($company_ids, "id") : [0];
+            $company_ids = $company_ids ? $this->_array_column($company_ids, "id") : [0];
 
             $sql .= " and ( serial_number like '%$key%' or user_name like '%$key%' or company_id in (" . implode(",", $company_ids) . ") )";
         }
@@ -228,7 +228,7 @@ class TravelController extends CommonController
 
             $company_ids = M("company")->where(array("company_name" => array("like", "%$key%")))->field("id")->select();
 
-            $company_ids = $company_ids ? array_column($company_ids, "id") : [0];
+            $company_ids = $company_ids ? $this->_array_column($company_ids, "id") : [0];
 
             $sql .= " and ( serial_number like '%$key%' or user_name like '%$key%' or company_id in (" . implode(",", $company_ids) . ") )";
         }
@@ -262,7 +262,7 @@ class TravelController extends CommonController
 
             $company_ids = M("company")->where(array("company_name" => array("like", "%$key%")))->field("id")->select();
 
-            $company_ids = $company_ids ? array_column($company_ids, "id") : [0];
+            $company_ids = $company_ids ? $this->_array_column($company_ids, "id") : [0];
 
             $sql .= " and ( serial_number like '%$key%' or user_name like '%$key%' or jj_driver_name like '%$key%' or company_id in (" . implode(",", $company_ids) . ") )";
         }
@@ -292,7 +292,7 @@ class TravelController extends CommonController
 
             $company_ids = M("company")->where(array("company_name" => array("like", "%$key%")))->field("id")->select();
 
-            $company_ids = $company_ids ? array_column($company_ids, "id") : [0];
+            $company_ids = $company_ids ? $this->_array_column($company_ids, "id") : [0];
 
             $sql .= " and ( serial_number like '%$key%' or user_name like '%$key%' or jj_driver_name like '%$key%' or company_id in (" . implode(",", $company_ids) . ") )";
 
@@ -321,7 +321,7 @@ class TravelController extends CommonController
             $key         = trim($_POST["search"]["value"]);
             $company_ids = M("company")->where(array("company_name" => array("like", "%$key%")))->field("id")->select();
 
-            $company_ids = $company_ids ? array_column($company_ids, "id") : [0];
+            $company_ids = $company_ids ? $this->_array_column($company_ids, "id") : [0];
 
             $sql .= " and ( serial_number like '%$key%' or user_name like '%$key%' or jj_driver_name like '%$key%' or company_id in (" . implode(",", $company_ids) . ") )";
         }
@@ -448,7 +448,7 @@ class TravelController extends CommonController
             $search_sql = "serial_number like '%$key%' or from_place like '%$key%' or to_place like '%$key%'";
             $company    = M("company")->where(array("is_del" => 0, "company_name" => array("like", "%" . $key . "%")))->field("id")->select();
             if ($company) {
-                $search_sql .= " or company_id in (" . implode(",", array_column($company, "id")) . ")";
+                $search_sql .= " or company_id in (" . implode(",", $this->_array_column($company, "id")) . ")";
             }
             $map["_string"] = $search_sql;
         }

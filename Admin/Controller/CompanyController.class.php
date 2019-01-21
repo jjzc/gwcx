@@ -335,7 +335,7 @@ class CompanyController  extends CommonController
         if(!empty($key)){
             $company_ids = M("company")->where(array("company_name"=>array("like","%$key%")))->field("id")->select();
             if($company_ids){
-                $map["user_company"] = array("IN",array_column($company_ids,"id"));
+                $map["user_company"] = array("IN",$this->_array_column($company_ids,"id"));
             }else{
                 $map['user_phone | user_sex | user_email | user_name | user_idcard'] = array('like', "%$key%");
             }

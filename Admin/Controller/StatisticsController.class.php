@@ -44,7 +44,7 @@ class StatisticsController extends CommonController {
         $companyM=new CompanyModel();
         if(!empty($_REQUEST["searchKey"])){
             $ids = $companyM->where(array("company_name" => array("like", "%" . trim($_REQUEST["searchKey"]) . "%")))->field("id")->select();
-            $mapc["id"]=array("IN",$ids ? array_column($ids,"id") : array(0));
+            $mapc["id"]=array("IN",$ids ? $this->_array_column($ids,"id") : array(0));
 //            $mapc["id"]=array("eq",$ids[0]['id']);
         }
 
@@ -130,7 +130,7 @@ class StatisticsController extends CommonController {
         $companyM=new CompanyModel();
         if(!empty($_POST["searchKey"])){
             $ids = $companyM->where(array("company_name" => array("like", "%" . trim($_POST["searchKey"]) . "%")))->field("id")->select();
-            $mapc["id"]=array("IN",$ids ? array_column($ids,"id") : array(0));
+            $mapc["id"]=array("IN",$ids ? $this->_array_column($ids,"id") : array(0));
         }
 
         $companys=$companyM->where($mapc)->order("id asc")->select();
@@ -289,7 +289,7 @@ class StatisticsController extends CommonController {
 
         if(!empty($_POST["searchKey"])){
             $ids = $carM->where(array("car_num" => array("like", "%" . trim($_POST["searchKey"]) . "%")))->field("id")->select();
-            $mapc["id"]=array("IN",$ids ? array_column($ids,"id") : array(0));
+            $mapc["id"]=array("IN",$ids ? $this->_array_column($ids,"id") : array(0));
         }
 
         $resCount=$carM->where($mapc)->order("is_del asc")->select();
@@ -399,7 +399,7 @@ class StatisticsController extends CommonController {
 
         if(!empty($_POST["searchKey"])){
             $ids = $carM->where(array("car_num" => array("like", "%" . trim($_POST["searchKey"]) . "%")))->field("id")->select();
-            $mapc["id"]=array("IN",$ids ? array_column($ids,"id") : array(0));
+            $mapc["id"]=array("IN",$ids ? $this->_array_column($ids,"id") : array(0));
         }
 
 
@@ -550,7 +550,7 @@ class StatisticsController extends CommonController {
         if(!empty($_POST["searchKey"])){
             $model = new DriverModel();
             $ids = $model->where(array("driver_phone|driver_name" => array("like", "%" . trim($_POST["searchKey"]) . "%")))->field("id")->select();
-            $mapc["id"]=array("IN",$ids ? array_column($ids,"id") : array(0));
+            $mapc["id"]=array("IN",$ids ? $this->_array_column($ids,"id") : array(0));
         }
 
         $driverM=new DriverModel();
@@ -620,7 +620,7 @@ class StatisticsController extends CommonController {
         if(!empty($_POST["searchKey"])){
             $model = new DriverModel();
             $ids = $model->where(array("driver_phone|driver_name" => array("like", "%" . trim($_POST["searchKey"]) . "%")))->field("id")->select();
-            $mapc["id"]=array("IN",$ids ? array_column($ids,"id") : array(0));
+            $mapc["id"]=array("IN",$ids ? $this->_array_column($ids,"id") : array(0));
         }
 
         $driverM=new DriverModel();
@@ -717,7 +717,7 @@ class StatisticsController extends CommonController {
             $model = new UserModel();
             $ids = $model->where(array("user_phone|user_name"=>array("like","%".trim($_POST["key"])."%")))->field("id")->select();
             //$map['company_id'] = array('eq',$_POST["company"]);
-            $mapc["id"]=array("IN",$ids ? array_column($ids,"id") : array(0));
+            $mapc["id"]=array("IN",$ids ? $this->_array_column($ids,"id") : array(0));
         }
 
         $resCount=M("User")->where($mapc)->order("is_del asc")->select();
@@ -781,7 +781,7 @@ class StatisticsController extends CommonController {
         if(!empty($_POST["searchKey"])){
             $model = new UserModel();
             $ids = $model->where(array("user_phone|user_name"=>array("like","%".trim($_POST["searchKey"])."%")))->field("id")->select();
-            $mapc["id"]=array("IN",$ids ? array_column($ids,"id") : array(0));
+            $mapc["id"]=array("IN",$ids ? $this->_array_column($ids,"id") : array(0));
         }
 
         $res=M("User")->where($mapc)->order("is_del asc")->limit($_POST["start"],$_POST["length"])->select();
