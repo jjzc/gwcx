@@ -1,4 +1,5 @@
-/Runtime/
-/Common/
-.idea/
+#####################
+/Runtime/*
+/Common/*
+.idea/*
 
