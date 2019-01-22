@@ -169,16 +169,17 @@ class ReportController extends CommonController
             header("Content-Disposition:filename=" . iconv("UTF-8", "GBK", $excel_name) . ".csv");
             $fp = fopen('php://output', 'a');
 
+            //输出表头
+            if ($page == 1) {
+                $column_name = array("单位名称", "出行次数", "出行里程", "路桥费", "出行服务费", "出差补助", "其他", "小计");
+                foreach ($column_name as $i => $v) {
+                    $column_name[$i] = iconv('utf-8', 'GB18030', $v);
+                }
+                fputcsv($fp, $column_name);
+            }
+
             if ($companys) {
                 register_shutdown_function(array(&$this, 'company_export_to_csv'), $page + 1);
-
-                if ($page == 1) {
-                    $column_name = array("单位名称", "出行次数", "出行里程", "路桥费", "出行服务费", "出差补助", "其他", "小计");
-                    foreach ($column_name as $i => $v) {
-                        $column_name[$i] = iconv('utf-8', 'GB18030', $v);
-                    }
-                    fputcsv($fp, $column_name);
-                }
 
                 foreach ($companys as &$val) {
                     $data   = array();
@@ -237,17 +238,16 @@ class ReportController extends CommonController
             header("Content-Disposition:filename=" . iconv("UTF-8", "GBK", $excel_name) . ".csv");
             $fp = fopen('php://output', 'a');
 
+            if ($page == 1) {    //输出表头
+                $column_name = array("单位名称", "流水号", "用车人", "用车时间", "出行性质", "目的地", "出行里程", "路桥费", "出行服务费", "出差补助", "其他", "小计");
+                foreach ($column_name as $i => $v) {
+                    $column_name[$i] = iconv('utf-8', 'GB18030', $v);
+                }
+                fputcsv($fp, $column_name);
+            }
+
             if ($travels) {
                 register_shutdown_function(array(&$this, 'company_export_to_csv'), $page + 1);
-
-                if ($page == 1) {
-                    //输出表头
-                    $column_name = array("单位名称", "流水号", "用车人", "用车时间", "出行性质", "目的地", "出行里程", "路桥费", "出行服务费", "出差补助", "其他", "小计");
-                    foreach ($column_name as $i => $v) {
-                        $column_name[$i] = iconv('utf-8', 'GB18030', $v);
-                    }
-                    fputcsv($fp, $column_name);
-                }
 
                 foreach ($travels as &$v) {
                     //输出数据
@@ -281,7 +281,6 @@ class ReportController extends CommonController
         }
         ob_flush();
         flush();
-//        exit;
     }
 
     //车辆数据报表
@@ -993,7 +992,7 @@ class ReportController extends CommonController
                     $data[] = iconv('utf-8', 'GB18030', $val["serial_number"]);
                     $data[] = iconv('utf-8', 'GB18030', $companyyy['company_name']);
                     $data[] = iconv('utf-8', 'GB18030', $user['user_name']);
-                    $data[] = iconv('utf-8', 'GB18030', $val["start_car_time"] ? date("Y-m-d H:i:s", $val["start_car_time"]): '');
+                    $data[] = iconv('utf-8', 'GB18030', $val["start_car_time"] ? date("Y-m-d H:i:s", $val["start_car_time"]) : '');
                     $data[] = iconv('utf-8', 'GB18030', $val["to_place"]);
                     $data[] = iconv('utf-8', 'GB18030', $val["mileage"]);
                     $data[] = iconv('utf-8', 'GB18030', $val["fees_sum"]);

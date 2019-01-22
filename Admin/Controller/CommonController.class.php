@@ -23,73 +23,79 @@ class CommonController extends Controller
 
         if (!$userId) {
             $this->redirect("/Admin/User/login");
+        }
+//        else {
+        $last_access = session("last_access");
+        //超时退出
+        if (time() - $last_access > 30 * 60) {
+            $this->redirect("/Admin/User/login");
+        }
+//            else {
+        session("last_access", time());
+
+        //获取用户所有的权限
+        $adminGroup = M("AdminGroup")->find($groupId);
+        $ruleids    = explode(",", $adminGroup["group_rule"]);
+
+
+        //dump($roles);
+        $allUrls = session('allUrls');
+        if(empty($allUrls)){
+            $allUrls = array();
+
+            $rulemap["id"] = array("in", $ruleids);
+            $roles         = M("Url")->where($rulemap)->select();
+            for ($i = 0, $count = count($roles); $i < $count && $count; $i++) {
+                array_push($allUrls, $roles[$i]["url"]);
+            }
+
+            session("allUrls", $allUrls);
+        }
+
+
+        //1、直接判断是否具有路由访问权限，没有则直接返回到index
+        //echo (ACTION_NAME);
+        //进行匹配
+        $acitve = false;
+
+        if (strpos(ACTION_NAME, "get") !== false) {
+            $acitve = true;
         } else {
-            $last_access = session("last_access");
-            //超时退出
-            if (time() - $last_access > 30 * 60) {
-                $this->redirect("/Admin/User/login");
-            } else {
-                session("last_access", time());
-
-                //获取用户所有的权限
-                $adminGroup = M("AdminGroup")->find($groupId);
-                $ruleids    = explode(",", $adminGroup["group_rule"]);
-
-
-                $rulemap["id"] = array("in", $ruleids);
-                $roles         = M("Url")->where($rulemap)->select();
-
-                //dump($roles);
-                $allUrls = array();
-                for ($i = 0, $count = count($roles); $i < $count && $count; $i++) {
-                    array_push($allUrls, $roles[$i]["url"]);
+            for ($i = 0; $i < count($roles) && count($roles); $i++) {
+                if (strpos($roles[$i]["url"], ACTION_NAME) !== false) {
+                    $acitve = true;
+                    break;
                 }
+            }
+        }
+        if (!$acitve) {
+            //没有访问权限，跳转到没有权限页面
+            //$this->redirect("/Admin/User/denied");
+        }
+        //获取权限范围内的菜单列表
+        $menuList = session('menuList');
+        if (empty($menuList)) {
+            $map            = array();
+            $map["id"]      = array("IN", $ruleids);
+            $map["is_menu"] = 1;
+            $map["pid"]     = 0;
 
-                session("allUrls", $allUrls);
-
-                //1、直接判断是否具有路由访问权限，没有则直接返回到index
-                //echo (ACTION_NAME);
-                //进行匹配
-//                $acitve=false;
-//
-//                if(strpos(ACTION_NAME,"get")!==false){
-//                    $acitve=true;
-//                }else{
-//                    for($i=0;$i<count($roles)&& count($roles);$i++){
-//                        if(strpos($roles[$i]["url"],ACTION_NAME)!==false){
-//                            $acitve=true;
-//                            break;
-//                        }
-//                    }
-//                }
-//                if(!$acitve){
-//                    //没有访问权限，跳转到没有权限页面
-//                    //$this->redirect("/Admin/User/denied");
-//                }
-                //获取权限范围内的菜单列表
-                $menuList = session('menuList');
-                if(empty($menuList)){
-                    $map            = array();
-                    $map["id"]      = array("IN", $ruleids);
-                    $map["is_menu"] = 1;
-                    $map["pid"]     = 0;
-
-                    $menuList = M("Url")->where($map)->order(" sort desc , id")->select();
-                    foreach ($menuList as $key => $item) {
-                        $map["pid"] = $item["id"];
-                        $submenu    = M("Url")->where($map)->order(" sort desc , id")->select();
-                        foreach ($submenu as $k => $v) {
-                            $map["pid"]             = $v["id"];
-                            $submenu[$k]["submenu"] = M("Url")->where($map)->order(" sort desc , id")->select();
-                        }
-                        $menuList[$item["id"]]["submenu"] = $submenu;
-                    }
-
-                    session("menuList",$menuList);
+            $menuList = M("Url")->where($map)->order(" sort desc , id")->select();
+            foreach ($menuList as $key => $item) {
+                $map["pid"] = $item["id"];
+                $submenu    = M("Url")->where($map)->order(" sort desc , id")->select();
+                foreach ($submenu as $k => $v) {
+                    $map["pid"]             = $v["id"];
+                    $submenu[$k]["submenu"] = M("Url")->where($map)->order(" sort desc , id")->select();
                 }
-                $mid = intval($_REQUEST["mid"]);
-                $this->assign("mid", $mid);
-                $this->assign("menuList", $menuList[$mid]["submenu"]);
+                $menuList[$item["id"]]["submenu"] = $submenu;
+            }
+
+            session("menuList", $menuList);
+        }
+//        $mid = intval($_REQUEST["mid"]);
+        $this->assign("mid", intval($_REQUEST["mid"]));
+        $this->assign("menuList", $menuList);
 //
 //                if ($tag) {
 ////                    $pid      = $this->getPid($tag)['id'];
@@ -104,17 +110,8 @@ class CommonController extends Controller
 //                    $this->assign("menuList", $menuList);
 //                }
 
-            }
-        }
-    }
-
-    protected function getPid($id)
-    {
-        $url = M("Url")->where(array("id" => $id))->find();
-        if ($url["pid"] != 0) {
-            $url = $this->getPid($url['pid']);
-        }
-        return $url;
+//            }
+//        }
     }
 
     /**
@@ -122,28 +119,6 @@ class CommonController extends Controller
      * 以下方法兼容PHP低版本
      */
     function _array_column(array $array, $column_key, $index_key = null)
-    {
-        $result = [];
-        foreach ($array as $arr) {
-            if (!is_array($arr)) continue;
-
-            if (is_null($column_key)) {
-                $value = $arr;
-            } else {
-                $value = $arr[$column_key];
-            }
-
-            if (!is_null($index_key)) {
-                $key          = $arr[$index_key];
-                $result[$key] = $value;
-            } else {
-                $result[] = $value;
-            }
-        }
-        return $result;
-    }
-
-    function array_column(array $array, $column_key, $index_key = null)
     {
         $result = [];
         foreach ($array as $arr) {

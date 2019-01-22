@@ -68,7 +68,7 @@ class FinanceController extends CommonController
 
         $total_cost = M("CostWash")->where($map)->sum("cost");
 
-        M("CostWash")->getLastSql();
+//        M("CostWash")->getLastSql();
         $order = array();
         switch ($_POST["order"][0]["column"]) {
             case 1:
@@ -981,7 +981,7 @@ class FinanceController extends CommonController
 
             //车牌号列表
             $car = M("car")->where("is_del=0")->select();
-            $cars = $this->_array_column($car, "car_num", "id");
+            $cars = array_column($car, "car_num", "id");
 
             //导出数据
             header("Content-Type: text/html; charset=gbk");
