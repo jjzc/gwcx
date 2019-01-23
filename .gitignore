@@ -1,5 +1,5 @@
 #####################
 /Runtime/*
-/Common/Conf/config.php
+/Common/*
 .idea/*
 
