@@ -1467,22 +1467,15 @@ class TravelController extends CommonController {
         $useUser=M("User")->find($travel["use_user_id"]);
 		$company=M("Company")->find($useUser["user_company"]);
 
-
         $set=M("set")->find(1);
         $account="account=".$set["jjaccount"]."&pwd=".$set["jjpwd"];
         $res=httpFF("http://api.99huaan.com/passenger/login","",$account,"POST");
         $res=json_decode($res,true);
-		
-		
-		
-		
+
         $token=$res["token"];
-		
-		
-		
+
         $member_id=$res["data"]["member_id"];
         $franchisee_id=$res["data"]["franchisee_id"];
-
 
         $sendData="";
         $sendData.="token=".$token."&";
@@ -1520,13 +1513,7 @@ class TravelController extends CommonController {
 
         //dump($res);
 
-
-
-
-
-
         //$this->ajaxReturn(array("code"=>0));
-
 
 //        $data["id_member"]="e8b5db7e939311e8b2627cd30ab8ab74";
 //        $data["user_name"]="道县机关事务局";
@@ -1541,12 +1528,6 @@ class TravelController extends CommonController {
 //        $data["end_address"]=$travel["to_place"];
 //        $data["appointment_time"]=date('Y-m-d h:i', $travel["departure_time"]);
 //        $data["order_memo"]="无";
-
-
-
-
-
-
 
         //发送数据给创建订单服务器
         //$res=httpF("http://admin.99huaan.com/order/specialCar/createByTransport","",json_encode($data),"POST");
