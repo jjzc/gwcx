@@ -87,6 +87,7 @@
 
                 <div class="portlet-body">
                     <form action="" method="post">
+                        <input type="hidden" name="is_default_p" value="0">
                         <div class="form-group" style="width: 190px; float: left;">
                             <div class="input-group date form_datetime col-md-5" id="startTimediv" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input1">
                                 <input id="startTime" name="startTime" class="form-control jt" size="16" type="text" value="{$startTime}" placeholder="开始时间" readonly style="width: 100px">
@@ -330,6 +331,10 @@
 <script>
 
     $(function(){
+        $("#btn_add").click(function () {
+            //用于后端将页码重置为默认页码
+            $("input[name='is_default_p']").val(1);
+        });
         $("#page a").click(function(event) {
             event.preventDefault();
             $("form").attr("action", $(this).attr("href")).submit();

@@ -15,6 +15,10 @@ class ReportController extends CommonController
             $this->assign("aa", "0");
         } else {
 
+            if($_REQUEST["is_default_p"] == 1){  //重置页码为第一页
+                $_GET["p"] = 1;
+            }
+
             $startTime    = trim($_REQUEST['startTime']);       //开始时间
             $endTime      = trim($_REQUEST['endTime']);         //结束时间
             $type         = intval($_REQUEST["type"]);          //报表类型
@@ -290,6 +294,10 @@ class ReportController extends CommonController
         if (empty($_POST)) {
             $this->assign("aa", "0");
         } else {
+
+            if($_REQUEST["is_default_p"] == 1){  //重置页码为第一页
+                $_GET["p"] = 1;
+            }
 
             $startTime = trim($_REQUEST['startTime']);
             $endTime   = trim($_REQUEST['endTime']);
@@ -726,6 +734,10 @@ class ReportController extends CommonController
             $this->assign("aa", "0");
         } else {
 
+            if($_REQUEST["is_default_p"] == 1){  //重置页码为第一页
+                $_GET["p"] = 1;
+            }
+
             $startTime = trim($_REQUEST['startTime']);
             $endTime   = trim($_REQUEST['endTime']);
             $type      = intval($_REQUEST["type"]);
@@ -1027,6 +1039,10 @@ class ReportController extends CommonController
         if (empty($_POST)) {
             $this->assign("aa", "0");
         } else {
+
+            if($_REQUEST["is_default_p"] == 1){  //重置页码为第一页
+                $_GET["p"] = 1;
+            }
 
             $startTime = trim($_REQUEST['startTime']);
             $endTime   = trim($_REQUEST['endTime']);

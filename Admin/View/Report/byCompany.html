@@ -93,6 +93,7 @@
 
                 <div class="portlet-body">
                     <form action="" method="post">
+                        <input type="hidden" name="is_default_p" value="0">
                         <div class="form-group" style="width: 190px; float: left;">
                             <div class="input-group date form_datetime col-md-5" id="startTimediv" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input1">
                                 <input id="startTime" name="startTime" class="form-control jt" size="16" type="text" value="{$startTime}" placeholder="开始时间" readonly style="width: 100px">
@@ -343,6 +344,10 @@
 
     $(function(){
         show($("#type"));
+        $("#btn_add").click(function () {
+            //用于后端将页码重置为默认页码
+            $("input[name='is_default_p']").val(1);
+        });
         $("#page a").click(function(event) {
             event.preventDefault();
             $("form").attr("action", $(this).attr("href")).submit();
@@ -358,9 +363,6 @@
             bdhtml = window.document.body.innerHTML;//获取当前页的html代码
             sprnstr = "<!--startprint" + oper + "-->";//设置打印开始区域
             eprnstr = "<!--endprint" + oper + "-->";//设置打印结束区域
-            console.log(bdhtml);
-            console.log(sprnstr);
-            console.log(eprnstr);
             prnhtml = bdhtml.substring(bdhtml.indexOf(sprnstr) + 18); //从开始代码向后取html
 
             prnhtml = prnhtml.substring(0, prnhtml.indexOf(eprnstr));//从结束代码向前取html
