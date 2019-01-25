@@ -323,11 +323,11 @@ class TravelController extends CommonController
 
             $company_ids = $company_ids ? $this->_array_column($company_ids, "id") : [0];
 
-            $sql .= " and ( serial_number like '%$key%' or user_name like '%$key%' or jj_driver_name like '%$key%' or company_id in (" . implode(",", $company_ids) . ") )";
+            $sql .= " and ( serial_number like '%$key%' or user_name like '%$key%' or jj_driver_name like '%$key%' or company_id in (" . implode(",", $company_ids) . ") ) ";
         }
         $resCount = M("Travel")->where($sql)->select();
 
-        $res = M("Travel")->where($sql)->limit($_POST["start"], $_POST["length"])->select();
+        $res = M("Travel")->where($sql)->order("id asc")->limit($_POST["start"], $_POST["length"])->select();
 
         //返回数据
         $travels                    = array();
