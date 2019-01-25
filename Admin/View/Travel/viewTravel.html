@@ -406,10 +406,10 @@
         <tr>
             <td height="70" rowspan="2">收费详情</td>
             <td colspan="6" style="text-align: left">
-                路桥费{$travel.fees_sum}元，停车费{$travel.parking_rate_sum}元,司机住宿补贴{$travel.driver_cost}元，超时费{$travel.over_time_cost}元，超公里费{$travel.over_mileage_cost}元，其他费用{$travel.else_cost}元，司机补贴{$travel.driver_bt_cost}元。            </td>
+                路桥费{if $travel.fees_sum>0}{$travel.fees_sum}{else}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{/if}元，停车费{if $travel.parking_rate_sum>0}{$travel.parking_rate_sum}{else}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{/if}元,司机住宿补贴{if $travel.driver_cost>0}{$travel.driver_cost}{else}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{/if}元，超时费{if $travel.over_time_cost>0}{$travel.over_time_cost}{else}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{/if}元，超公里费{if $travel.over_mileage_cost>0}{$travel.over_mileage_cost}{else}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{/if}元，其他费用{if $travel.else_cost>0}{$travel.else_cost}{else}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{/if}元，司机补贴{if $travel.driver_bt_cost>0}{$travel.driver_bt_cost}{else}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{/if}元。</td>
         </tr>
         <tr>
-          <td colspan="6" style="text-align: left">出行服务费{$travel.service_charge}元</td>
+          <td colspan="6" style="text-align: left">出行服务费{if $travel.service_charge>0}{$travel.service_charge}{else}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{/if}元</td>
         </tr>
         <tr>
             <td rowspan="3">其他</td>
