@@ -55,7 +55,6 @@ class TravelController extends CommonController
     //代办事项，也就是工作台
     public function backlogTravel()
     {
-
         $this->display();
     }
 
@@ -170,6 +169,7 @@ class TravelController extends CommonController
 
                     $res = M("Travel")->save($travel);
                     if ($res) {
+                        A("UserCenter")->logCreatWeb("审核通过，出行流水号： " . $travel["serial_number"]);
                         $this->ajaxReturn(array("code" => 1));
                     } else {
                         $this->ajaxReturn(array("code" => 0, "error" => "操作失败"));
@@ -192,6 +192,7 @@ class TravelController extends CommonController
 
                     $res = M("Travel")->save($travel);
                     if ($res) {
+                        A("UserCenter")->logCreatWeb("审核通过，出行流水号： " . $travel["serial_number"]);
                         $this->ajaxReturn(array("code" => 1));
                     } else {
                         $this->ajaxReturn(array("code" => 0, "error" => "操作失败"));
@@ -209,6 +210,7 @@ class TravelController extends CommonController
 
                 $res = M("Travel")->save($travel);
                 if ($res) {
+                    A("UserCenter")->logCreatWeb("审核驳回，出行流水号： " . $travel["serial_number"]);
                     $this->ajaxReturn(array("code" => 1));
                 } else {
                     $this->ajaxReturn(array("code" => 0, "error" => "操作失败"));
@@ -393,6 +395,7 @@ class TravelController extends CommonController
 
         $res = M("Travel")->save($travel);
         if ($res) {
+            A("UserCenter")->logCreatWeb("取消出行，出行流水号： " . $travel["serial_number"]);
             $this->ajaxReturn(array("code" => 1));
         } else {
             $this->ajaxReturn(array("code" => 0));
@@ -414,6 +417,7 @@ class TravelController extends CommonController
 
         $res = M("Travel")->save($travel);
         if ($res) {
+            A("UserCenter")->logCreatWeb("派车审核" . $_POST["type"] == 1 ? "通过" : "驳回" . "，出行流水号： " . $travel["serial_number"]);
             $this->ajaxReturn(array("code" => 1));
         } else {
             $this->ajaxReturn(array("code" => 0));
@@ -518,6 +522,8 @@ class TravelController extends CommonController
         $data["is_del"] = 1;
         $res            = M("Travel")->save($data);
         if ($res) {
+            $travel = M("Travel")->find($data["id"]);
+            A("UserCenter")->logCreatWeb("删除出行，出行流水号： " . $travel["serial_number"]);
             $this->ajaxReturn(array("code" => 1));
         } else {
             $this->ajaxReturn(array("code" => 0));
@@ -816,6 +822,8 @@ class TravelController extends CommonController
             //短信通知司机
             $systemC->reassignmentCarDriver($driver["driver_phone"], $travel);
 
+            A("UserCenter")->logCreatWeb("改派出行，出行流水号： " . $travel["serial_number"]);
+
             $this->ajaxReturn(array("code" => 1));
         } else {
             //将原有的车辆状态改为1
@@ -860,6 +868,8 @@ class TravelController extends CommonController
             $systemC->reassignmentDriverOld($oldDriver["driver_phone"], $travel);
             //短信通知新司机说有新订单
             $systemC->sendSendCarOkDriver($newDriver["driver_phone"], $travel);
+
+            A("UserCenter")->logCreatWeb("改派出行，出行流水号： " . $travel["serial_number"]);
 
             $this->ajaxReturn(array("code" => 1));
         }
@@ -922,6 +932,8 @@ class TravelController extends CommonController
 
         $travelM = new TravelModel();
         if ($travelM->save($data)) {
+
+            A("UserCenter")->logCreatWeb("派车，出行流水号： " . $travel["serial_number"]);
 
             $travel = $travelM->find($travel_id);
             //锁定车辆
@@ -1140,6 +1152,7 @@ class TravelController extends CommonController
         $res = M("Travel")->save($_POST);
 
         if ($res) {
+            A("UserCenter")->logCreatWeb("修改出行订单，出行流水号： " . $travel["serial_number"]);
             $this->ajaxReturn(array("code" => 1));
         } else {
             $this->ajaxReturn(array("code" => 0));
@@ -1218,6 +1231,7 @@ class TravelController extends CommonController
 
             $travel = $travelM->find($_POST["id"]);
 
+            A("UserCenter")->logCreatWeb("完成出行订单，出行流水号： " . $travel["serial_number"]);
 
             //只有需要派车的情况下才释放车辆司机
             if ($travel["is_arrange_car"] == 1) {
@@ -1305,6 +1319,9 @@ class TravelController extends CommonController
 
         $travelM = new TravelModel();
         if ($travelM->save($_POST)) {
+            $travel = M("Travel")->find($_POST["id"]);
+            A("UserCenter")->logCreatWeb("核算费用，出行流水号： " . $travel["serial_number"]);
+
             $this->ajaxReturn(array("code" => 1));
         } else {
             $this->ajaxReturn(array("code" => 0));
@@ -1431,6 +1448,7 @@ class TravelController extends CommonController
 
 
         if ($travelM->add($_POST)) {
+            A("UserCenter")->logCreatWeb("手工补单，出行流水号： " . $_POST["serial_number"]);
             $this->ajaxReturn(array("code" => 1));
         } else {
             $this->ajaxReturn(array("code" => 0));
@@ -1585,6 +1603,7 @@ class TravelController extends CommonController
 
             $res = M("Travel")->add($travel);
             if ($res) {
+                A("UserCenter")->logCreatWeb("补单申请审核通过，出行流水号： " . $travel["serial_number"]);
                 $this->ajaxReturn(array("code" => 1));
             } else {
                 $this->ajaxReturn(array("code" => 0));
@@ -1596,6 +1615,7 @@ class TravelController extends CommonController
             $travel["supplement_info"] = $info;
             $res                       = M("Supplement")->save($travel);
             if ($res) {
+                A("UserCenter")->logCreatWeb("补单申请审核驳回");
                 $this->ajaxReturn(array("code" => 1));
             } else {
                 $this->ajaxReturn(array("code" => 0));
@@ -1784,7 +1804,7 @@ class TravelController extends CommonController
         $res     = json_decode($res, true);
 //        @file_put_contents($_SERVER["DOCUMENT_ROOT"]."/jzw.txt","\n\n res:".json_encode($res),FILE_APPEND);
 
-        $token = $res["token"];
+        $token         = $res["token"];
         $member_id     = $res["data"]["member_id"];
         $franchisee_id = $res["data"]["franchisee_id"];
 
@@ -1814,16 +1834,17 @@ class TravelController extends CommonController
         $res = json_decode($res, true);
 
         if ($res["result"] == "1") {
-            $travel["jj_id"]           = $res["data"]["order_id"];
-            $travel["send_other_res"]  = $_POST["send_other_res"];
-            $travel["arrange_type_id"] = $_POST["arrange_id"];
-            $travel["state"]           = $state;
-            $travel["send_car_time"]   = time();
+            $travel["jj_id"]              = $res["data"]["order_id"];
+            $travel["send_other_res"]     = $_POST["send_other_res"];
+            $travel["arrange_type_id"]    = $_POST["arrange_id"];
+            $travel["state"]              = $state;
+            $travel["send_car_time"]      = time();
             $travel["is_need_settlement"] = 0;//使用玖玖专车就不需要费用核算了，只有自有车辆出行才费用核算
 
             $re = M("Travel")->save($travel);
 
             if ($re) {
+                A("UserCenter")->logCreatWeb("派车给第三方，出行流水号： " . $travel["serial_number"]);
                 $this->ajaxReturn(array("code" => 1));
             } else {
                 $this->ajaxReturn(array("code" => 0));
@@ -1854,7 +1875,7 @@ class TravelController extends CommonController
             $travel["cancel_time"]   = time();
             $travel["state"]         = 11;
             M("travel")->save($travel);
-
+            A("UserCenter")->logCreatWeb("管理员取消出行，出行流水号： " . $travel["serial_number"]);
 
             switch ($travel["state"]) {
                 case 5:
