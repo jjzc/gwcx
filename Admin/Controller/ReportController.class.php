@@ -15,17 +15,17 @@ class ReportController extends CommonController
             $this->assign("aa", "0");
         } else {
 
-            if($_REQUEST["is_default_p"] == 1){  //重置页码为第一页
+            if ($_REQUEST["is_default_p"] == 1) {  //重置页码为第一页
                 $_GET["p"] = 1;
             }
 
-            $startTime    = trim($_REQUEST['startTime']);       //开始时间
-            $endTime      = trim($_REQUEST['endTime']);         //结束时间
-            $type         = intval($_REQUEST["type"]);          //报表类型
+            $startTime = trim($_REQUEST['startTime']);       //开始时间
+            $endTime   = trim($_REQUEST['endTime']);         //结束时间
+            $type      = intval($_REQUEST["type"]);          //报表类型
 //            $searchKey    = trim($_REQUEST["searchKey"]);       //搜索关键字
             $travelNature = trim($_REQUEST["travelNature"]);    //出行性质
-            $company_ids = $_REQUEST["company"];                //出行单位id
-            $use_user = trim($_REQUEST["use_user"]);            //用车人姓名
+            $company_ids  = $_REQUEST["company"];                //出行单位id
+            $use_user     = trim($_REQUEST["use_user"]);            //用车人姓名
 
             //查询条件
             $map             = array();
@@ -40,7 +40,7 @@ class ReportController extends CommonController
                 $map['t.departure_time'] = array('between', array(strtotime($startTime), strtotime($endTime) + 24 * 3600 - 1));
             }
 
-            if($company_ids){
+            if ($company_ids) {
                 $map["t.company_id"] = array("IN", $company_ids);
             }
 
@@ -97,8 +97,8 @@ class ReportController extends CommonController
 //                        $map["t.use_user_id"] = array("IN", $this->_array_column($user_ids, "id"));
 //                    }
 //                }
-                if(!empty($use_user)){
-                    $user_ids    = M("user")->where(array("is_del" => 0, "user_name" => array("like", "%" . $use_user . "%")))->field("id")->select();  //查询是否匹配用车人
+                if (!empty($use_user)) {
+                    $user_ids = M("user")->where(array("is_del" => 0, "user_name" => array("like", "%" . $use_user . "%")))->field("id")->select();  //查询是否匹配用车人
                     if ($user_ids) {
                         $map["t.use_user_id"] = array("IN", $this->_array_column($user_ids, "id"));
                     }
@@ -135,9 +135,9 @@ class ReportController extends CommonController
         }
 
         //所有单位
-        $allCompany = M("company")->where(array("is_del"=>0))->field("id,company_name")->select();
-        foreach ($allCompany as &$item){
-            if($company_ids && in_array($item["id"],$company_ids)){
+        $allCompany = M("company")->where(array("is_del" => 0))->field("id,company_name")->select();
+        foreach ($allCompany as &$item) {
+            if ($company_ids && in_array($item["id"], $company_ids)) {
                 $item["is_selected"] = 1;
             }
         }
@@ -161,7 +161,7 @@ class ReportController extends CommonController
         $endTime   = trim($_REQUEST['endTime']);
 //        $searchKey = trim($_REQUEST["searchKey"]);
         $company_ids = $_REQUEST["company"];                //出行单位id
-        $use_user = trim($_REQUEST["use_user"]);            //用车人姓名
+        $use_user    = trim($_REQUEST["use_user"]);            //用车人姓名
 
         //查询条件
         $map             = array();
@@ -176,7 +176,7 @@ class ReportController extends CommonController
             $map['t.departure_time'] = array('between', array(strtotime($startTime), strtotime($endTime) + 24 * 3600 - 1));
         }
 
-        if($company_ids){
+        if ($company_ids) {
             $map["t.company_id"] = array("IN", $company_ids);
         }
 
@@ -252,8 +252,8 @@ class ReportController extends CommonController
 //                    $map["t.use_user_id"] = array("IN", $this->_array_column($user_ids, "id"));
 //                }
 //            }
-            if(!empty($use_user)){
-                $user_ids    = M("user")->where(array("is_del" => 0, "user_name" => array("like", "%" . $use_user . "%")))->field("id")->select();  //查询是否匹配用车人
+            if (!empty($use_user)) {
+                $user_ids = M("user")->where(array("is_del" => 0, "user_name" => array("like", "%" . $use_user . "%")))->field("id")->select();  //查询是否匹配用车人
                 if ($user_ids) {
                     $map["t.use_user_id"] = array("IN", $this->_array_column($user_ids, "id"));
                 }
@@ -329,14 +329,16 @@ class ReportController extends CommonController
             $this->assign("aa", "0");
         } else {
 
-            if($_REQUEST["is_default_p"] == 1){  //重置页码为第一页
+            if ($_REQUEST["is_default_p"] == 1) {  //重置页码为第一页
                 $_GET["p"] = 1;
             }
 
-            $startTime = trim($_REQUEST['startTime']);
-            $endTime   = trim($_REQUEST['endTime']);
-            $type      = intval($_REQUEST['type']);
-            $searchKey = trim($_REQUEST['searchKey']);
+            $startTime   = trim($_REQUEST['startTime']);
+            $endTime     = trim($_REQUEST['endTime']);
+            $type        = intval($_REQUEST['type']);
+            $searchKey   = trim($_REQUEST['searchKey']);
+            $company_ids = $_REQUEST['company'];
+            $car_ids     = $_REQUEST['car'];
 
             $map             = array();
             $map["t.is_del"] = 0;
@@ -351,20 +353,24 @@ class ReportController extends CommonController
                 $map['t.departure_time'] = array('between', array(strtotime($startTime), strtotime($endTime) + 24 * 3600 - 1));
             }
 
+            if($car_ids){
+                $map["t.car_id"] = array("IN",$car_ids);
+            }
+
             $this->assign("type", $type);
             $this->assign("searchKey", $searchKey);
             $this->assign("aa", "1");
 
             if ($type == 1) {
                 $map['c.is_del'] = 0;
-                if ($searchKey) {  //搜索车牌号或者单位名称
-                    $search_sql = " c.car_num like '%" . $searchKey . "%' ";
+//                if ($searchKey) {  //搜索车牌号或者单位名称
+//                    $search_sql = " c.car_num like '%" . $searchKey . "%' ";
 //                    $company    = M("company")->where(array("is_del"=>0,"company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
 //                    if ($company) {
 //                        $search_sql .= "  or c.company_id in (" . implode(",", $this->_array_column($company, "id")) . ")";
 //                    }
-                    $map["_string"] = $search_sql;
-                }
+//                    $map["_string"] = $search_sql;
+//                }
 
                 $count = M("car as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.car_id")->where($map)->group("t.car_id")->having('count(t.car_id)>=1')->field('car_id')->select();
 
@@ -447,24 +453,29 @@ class ReportController extends CommonController
 
             if ($type == 2) {
                 if ($searchKey) { // 搜索车牌号或者司机或者单位或者用车人
-                    $search_sql = " t.jj_driver_name like '%" . $searchKey . "%' or t.jj_car_num like '%" . $searchKey . "%'";
-                    $car        = M("car")->where(array("car_num" => array("like", "%" . $searchKey . "%")))->field("id")->select();
-                    if ($car) {
-                        $search_sql .= " or t.car_id in (" . implode(",", $this->_array_column($car, "id")) . ")";
-                    }
-                    $driver = M("driver")->where(array("driver_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
-                    if ($driver) {
-                        $search_sql .= " or t.driver_id in (" . implode(",", $this->_array_column($driver, "id")) . ")";
-                    }
-                    $company = M("company")->where(array("company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
-                    if ($company) {
-                        $search_sql .= " or t.company_id in (" . implode(",", $this->_array_column($company, "id")) . ")";
-                    }
+//                    $search_sql = " t.jj_driver_name like '%" . $searchKey . "%' or t.jj_car_num like '%" . $searchKey . "%'";
+//                    $car        = M("car")->where(array("car_num" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+//                    if ($car) {
+//                        $search_sql .= " or t.car_id in (" . implode(",", $this->_array_column($car, "id")) . ")";
+//                    }
+//                    $driver = M("driver")->where(array("driver_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+//                    if ($driver) {
+//                        $search_sql .= " or t.driver_id in (" . implode(",", $this->_array_column($driver, "id")) . ")";
+//                    }
+//                    $company = M("company")->where(array("company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+//                    if ($company) {
+//                        $search_sql .= " or t.company_id in (" . implode(",", $this->_array_column($company, "id")) . ")";
+//                    }
                     $user = M("user")->where(array("user_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
                     if ($user) {
-                        $search_sql .= " or t.use_user_id in (" . implode(",", $this->_array_column($user, "id")) . ")";
+                        $map["_string"] = " t.use_user_id in (" . implode(",", $this->_array_column($user, "id")) . ")";
                     }
-                    $map["_string"] = $search_sql;
+//                    $map["_string"] = $search_sql;
+                }
+
+                if($company_ids){
+//                    var_dump($company_ids);exit;
+                    $map["t.company_id"] = array("IN",$company_ids);
                 }
 
                 $count = M("Travel as t")->where($map)->count();
@@ -516,9 +527,31 @@ class ReportController extends CommonController
             }
         }
 
-//        $companysall = M("company")->where(array("is_del"=>0))->field('id,company_name')->select();
+        $allCompany = M("company")->where(array("is_del" => 0))->field('id,company_name')->select();
+        foreach ($allCompany as &$item) {
+            if ($company_ids && in_array($item["id"], $company_ids)) {
+                $item["is_selected"] = 1;
+            }
+        }
+        unset($item);
+//        $allDriver = M("driver")->where(array("is_del" => 0))->field('id,driver_name')->select();
+//        foreach ($allDriver as &$item) {
+//            if ($company_ids && in_array($item["id"], $car_ids)) {
+//                $item["is_selected"] = 1;
+//            }
+//        }
+//        unset($item);
+        $allCar = M("car")->where(array("is_del" => 0))->field('id,car_num')->select();
+        foreach ($allCar as &$item) {
+            if ($car_ids && in_array($item["id"], $car_ids)) {
+                $item["is_selected"] = 1;
+            }
+        }
+        unset($item);
 
-//        $this->assign('companysall',$companysall);
+        $this->assign('allCompany', $allCompany);
+//        $this->assign('allDriver', $allDriver);
+        $this->assign('allCar', $allCar);
         $this->assign("startTime", $startTime ? $startTime : date('Y-m-01', strtotime(date("Y-m-d"))));
         $this->assign("endTime", $endTime ? $endTime : date('Y-m-d', strtotime(date("Y-m-d"))));
         $this->display();
@@ -534,6 +567,8 @@ class ReportController extends CommonController
         $endTime   = trim($_REQUEST['endTime']);
         $type      = intval($_REQUEST['type']);
         $searchKey = trim($_REQUEST['searchKey']);
+        $company_ids = $_REQUEST['company'];
+        $car_ids     = $_REQUEST['car'];
 
         $map             = array();
         $map["t.is_del"] = 0;
@@ -548,17 +583,22 @@ class ReportController extends CommonController
             $map['t.departure_time'] = array('between', array(strtotime($startTime), strtotime($endTime) + 24 * 3600 - 1));
         }
 
+
+        if(!empty($car_ids) && $car_ids!='null'){
+            $map["t.car_id"] = array("IN",$car_ids);
+        }
+
         if ($type == 1) {
 
             $map['c.is_del'] = 0;
-            if ($searchKey) {  //搜索车牌号或者单位名称
-                $search_sql = " c.car_num like '%" . $searchKey . "%' ";
+//            if ($searchKey) {  //搜索车牌号或者单位名称
+//                $search_sql = " c.car_num like '%" . $searchKey . "%' ";
 //                $company    = M("company")->where(array("is_del"=>0,"company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
 //                if ($company) {
 //                    $search_sql .= " or c.company_id in (" . implode(",", $this->_array_column($company, "id")) . ")";
 //                }
-                $map["_string"] = $search_sql;
-            }
+//                $map["_string"] = $search_sql;
+//            }
 
             $field = 'c.id,t.car_id,c.car_num,count(t.car_id) AS finishCount,sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount,sum(t.parking_rate_sum +t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as qitacount,sum(totle_rate) as heji ';
 
@@ -668,24 +708,28 @@ class ReportController extends CommonController
         if ($type == 2) {
 
             if ($searchKey) { // 搜索车牌号或者司机或者单位或者用车人
-                $search_sql = " t.jj_driver_name like '%" . $searchKey . "%' or t.jj_car_num like '%" . $searchKey . "%'";
-                $car        = M("car")->where(array("car_num" => array("like", "%" . $searchKey . "%")))->field("id")->select();
-                if ($car) {
-                    $search_sql .= " or t.car_id in (" . implode(",", $this->_array_column($car, "id")) . ")";
-                }
-                $driver = M("driver")->where(array("driver_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
-                if ($driver) {
-                    $search_sql .= " or t.driver_id in (" . implode(",", $this->_array_column($driver, "id")) . ")";
-                }
-                $company = M("company")->where(array("company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
-                if ($company) {
-                    $search_sql .= " or t.company_id in (" . implode(",", $this->_array_column($company, "id")) . ")";
-                }
+//                $search_sql = " t.jj_driver_name like '%" . $searchKey . "%' or t.jj_car_num like '%" . $searchKey . "%'";
+//                $car        = M("car")->where(array("car_num" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+//                if ($car) {
+//                    $search_sql .= " or t.car_id in (" . implode(",", $this->_array_column($car, "id")) . ")";
+//                }
+//                $driver = M("driver")->where(array("driver_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+//                if ($driver) {
+//                    $search_sql .= " or t.driver_id in (" . implode(",", $this->_array_column($driver, "id")) . ")";
+//                }
+//                $company = M("company")->where(array("company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+//                if ($company) {
+//                    $search_sql .= " or t.company_id in (" . implode(",", $this->_array_column($company, "id")) . ")";
+//                }
                 $user = M("user")->where(array("user_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
                 if ($user) {
-                    $search_sql .= " or t.use_user_id in (" . implode(",", $this->_array_column($user, "id")) . ")";
+                    $map["_string"] = " t.use_user_id in (" . implode(",", $this->_array_column($user, "id")) . ")";
                 }
-                $map["_string"] = $search_sql;
+//                $map["_string"] = $search_sql;
+            }
+
+            if($company_ids && $company_ids != 'null'){
+                $map["t.company_id"] = array("IN",$company_ids);
             }
 
             //导出数据
@@ -771,7 +815,7 @@ class ReportController extends CommonController
             $this->assign("aa", "0");
         } else {
 
-            if($_REQUEST["is_default_p"] == 1){  //重置页码为第一页
+            if ($_REQUEST["is_default_p"] == 1) {  //重置页码为第一页
                 $_GET["p"] = 1;
             }
 
@@ -779,6 +823,8 @@ class ReportController extends CommonController
             $endTime   = trim($_REQUEST['endTime']);
             $type      = intval($_REQUEST["type"]);
             $searchKey = trim($_REQUEST["searchKey"]);
+            $company_ids = $_REQUEST['company'];
+            $driver_ids = $_REQUEST['driver'];
 
             $map             = array();
             $map['t.is_del'] = 0;
@@ -793,17 +839,21 @@ class ReportController extends CommonController
                 $map['t.departure_time'] = array('between', array(strtotime($startTime), strtotime($endTime) + 24 * 3600));
             }
 
+            if($driver_ids){
+                $map['t.driver_id'] = array('in', $driver_ids);
+            }
+
             $this->assign("aa", "1");
             $this->assign("type", $type);
-            $this->assign("driver_name", $searchKey);
+            $this->assign("searchKey", $searchKey);
 
             if ($type == 1) {
 
                 $map['c.is_del'] = 0;
 
-                if (!empty($searchKey)) {
-                    $map["c.driver_phone|c.driver_name"] = array("like", "%" . $searchKey . "%");
-                }
+//                if (!empty($searchKey)) {
+//                    $map["c.driver_phone|c.driver_name"] = array("like", "%" . $searchKey . "%");
+//                }
 
                 $count = M("Driver as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.driver_id")->where($map)->group("t.driver_id")->having('count(t.driver_id)>=1')->field('driver_id')->select();
 
@@ -845,20 +895,24 @@ class ReportController extends CommonController
 
             if ($type == 2) {
                 if ($searchKey) { // 搜索司机姓名或者单位或者用车人
-                    $search_sql = " t.jj_driver_name like '%" . $searchKey . "%'";
-                    $driver     = M("driver")->where(array("is_del" => 0, "driver_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
-                    if ($driver) {
-                        $search_sql .= " or t.driver_id in (" . implode(",", $this->_array_column($driver, "id")) . ")";
-                    }
-                    $company = M("company")->where(array("is_del" => 0, "company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
-                    if ($company) {
-                        $search_sql .= " or t.company_id in (" . implode(",", $this->_array_column($company, "id")) . ")";
-                    }
+//                    $search_sql = " t.jj_driver_name like '%" . $searchKey . "%'";
+//                    $driver     = M("driver")->where(array("is_del" => 0, "driver_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+//                    if ($driver) {
+//                        $search_sql .= " or t.driver_id in (" . implode(",", $this->_array_column($driver, "id")) . ")";
+//                    }
+//                    $company = M("company")->where(array("is_del" => 0, "company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+//                    if ($company) {
+//                        $search_sql .= " or t.company_id in (" . implode(",", $this->_array_column($company, "id")) . ")";
+//                    }
                     $user = M("user")->where(array("is_del" => 0, "user_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
                     if ($user) {
-                        $search_sql .= " or t.use_user_id in (" . implode(",", $this->_array_column($user, "id")) . ")";
+                        $map["_string"] = " t.use_user_id in (" . implode(",", $this->_array_column($user, "id")) . ")";
                     }
-                    $map["_string"] = $search_sql;
+//                    $map["_string"] = $search_sql;
+                }
+
+                if($company_ids){
+                    $map['t.company_id'] = array('in', $company_ids);
                 }
 
                 $count = M("Travel as t")->where($map)->field("t.use_user_id,t.company_id,t.driver_id,t.serial_number,t.start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,t.else_cost,t.totle_rate")->count();
@@ -906,6 +960,23 @@ class ReportController extends CommonController
             }
         }
 
+        $allCompany = M("company")->where(array("is_del" => 0))->field('id,company_name')->select();
+        foreach ($allCompany as &$item) {
+            if ($company_ids && in_array($item["id"], $company_ids)) {
+                $item["is_selected"] = 1;
+            }
+        }
+        unset($item);
+        $allDriver = M("driver")->where(array("is_del" => 0))->field('id,driver_name')->select();
+        foreach ($allDriver as &$item) {
+            if ($driver_ids && in_array($item["id"], $driver_ids)) {
+                $item["is_selected"] = 1;
+            }
+        }
+        unset($item);
+
+        $this->assign('allCompany', $allCompany);
+        $this->assign('allDriver', $allDriver);
         $this->assign("startTime", $startTime ? $startTime : date('Y-m-01', strtotime(date("Y-m-d"))));
         $this->assign("endTime", $endTime ? $endTime : date('Y-m-d', strtotime(date("Y-m-d"))));
         $this->display();
@@ -918,6 +989,8 @@ class ReportController extends CommonController
         $endTime   = trim($_REQUEST['endTime']);
         $type      = intval($_REQUEST["type"]);
         $searchKey = trim($_REQUEST["searchKey"]);
+        $company_ids = $_REQUEST['company'];
+        $driver_ids = $_REQUEST['driver'];
 
         $map             = array();
         $map['t.is_del'] = 0;
@@ -932,15 +1005,19 @@ class ReportController extends CommonController
             $map['t.departure_time'] = array('between', array(strtotime($startTime), strtotime($endTime) + 24 * 3600));
         }
 
+        if($driver_ids && $driver_ids != 'null'){
+            $map['t.driver_id'] = array('in', $driver_ids);
+        }
+
         header("Content-Type: text/html; charset=gbk");
         header("Content-type:application/vnd.ms-excel");
 
         if ($type == 1) {
             $map['c.is_del'] = 0;
 
-            if (!empty($searchKey)) {
-                $map["c.driver_phone|c.driver_name"] = array("like", "%" . $searchKey . "%");
-            }
+//            if (!empty($searchKey)) {
+//                $map["c.driver_phone|c.driver_name"] = array("like", "%" . $searchKey . "%");
+//            }
 
             $field = 't.driver_id,c.driver_name,c.driver_phone,count(t.driver_id) AS finishCount,sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount,sum(t.parking_rate_sum +t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as qitacount,sum(totle_rate) as heji ';
 
@@ -990,20 +1067,24 @@ class ReportController extends CommonController
 
         if ($type == 2) {
             if ($searchKey) {
-                $search_sql = " t.jj_driver_name like '%" . $searchKey . "%'";
-                $driver     = M("driver")->where(array("is_del" => 0, "driver_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
-                if ($driver) {
-                    $search_sql .= " or t.driver_id in (" . implode(",", $this->_array_column($driver, "id")) . ")";
-                }
-                $company = M("company")->where(array("is_del" => 0, "company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
-                if ($company) {
-                    $search_sql .= " or t.company_id in (" . implode(",", $this->_array_column($company, "id")) . ")";
-                }
+//                $search_sql = " t.jj_driver_name like '%" . $searchKey . "%'";
+//                $driver     = M("driver")->where(array("is_del" => 0, "driver_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+//                if ($driver) {
+//                    $search_sql .= " or t.driver_id in (" . implode(",", $this->_array_column($driver, "id")) . ")";
+//                }
+//                $company = M("company")->where(array("is_del" => 0, "company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+//                if ($company) {
+//                    $search_sql .= " or t.company_id in (" . implode(",", $this->_array_column($company, "id")) . ")";
+//                }
                 $user = M("user")->where(array("is_del" => 0, "user_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
                 if ($user) {
-                    $search_sql .= " or t.use_user_id in (" . implode(",", $this->_array_column($user, "id")) . ")";
+                    $map["_string"] = " t.use_user_id in (" . implode(",", $this->_array_column($user, "id")) . ")";
                 }
-                $map["_string"] = $search_sql;
+//                $map["_string"] = $search_sql;
+            }
+
+            if($company_ids && $company_ids != 'null'){
+                $map['t.company_id'] = array('in', $company_ids);
             }
 
             $field   = "t.use_user_id,t.company_id,t.driver_id,t.serial_number,t.start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,(t.parking_rate_sum +t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as else_cost ,t.totle_rate,t.jj_id,t.jj_driver_name";
@@ -1077,7 +1158,7 @@ class ReportController extends CommonController
             $this->assign("aa", "0");
         } else {
 
-            if($_REQUEST["is_default_p"] == 1){  //重置页码为第一页
+            if ($_REQUEST["is_default_p"] == 1) {  //重置页码为第一页
                 $_GET["p"] = 1;
             }
 
@@ -1085,6 +1166,7 @@ class ReportController extends CommonController
             $endTime   = trim($_REQUEST['endTime']);
             $type      = intval($_REQUEST["type"]);
             $searchKey = trim($_REQUEST["searchKey"]);
+            $company_ids = $_REQUEST["company"];
 
             $map             = array();
             $map['t.is_del'] = 0;
@@ -1152,13 +1234,18 @@ class ReportController extends CommonController
             if ($type == 2) {
 
                 if (!empty($searchKey)) {
-                    $company_ids = M("company")->where(array("is_del" => 0, "company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配单位名称
+//                    $company_ids = M("company")->where(array("is_del" => 0, "company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配单位名称
                     $user_ids    = M("user")->where(array("is_del" => 0, "user_name|user_phone" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配用车人
-                    if ($company_ids) {
-                        $map["t.company_id"] = array("IN", $this->_array_column($company_ids, "id"));
-                    } elseif ($user_ids) {
+//                    if ($company_ids) {
+//                        $map["t.company_id"] = array("IN", $this->_array_column($company_ids, "id"));
+//                    } else
+                        if ($user_ids) {
                         $map["t.use_user_id"] = array("IN", $this->_array_column($user_ids, "id"));
                     }
+                }
+
+                if($company_ids){
+                    $map['t.company_id'] = array('in',$company_ids);
                 }
 
                 $count = M("Travel as t")->join("left join " . C("DB_PREFIX") . "company as u on u.id =  t.company_id left join " . C("DB_PREFIX") . "user c on c.id = t.use_user_id")->where($map)->count();
@@ -1187,6 +1274,14 @@ class ReportController extends CommonController
             }
         }
 
+        $allCompany = M("company")->where(array("is_del" => 0))->field('id,company_name')->select();
+        foreach ($allCompany as &$item) {
+            if ($company_ids && in_array($item["id"], $company_ids)) {
+                $item["is_selected"] = 1;
+            }
+        }
+
+        $this->assign('allCompany', $allCompany);
         $this->assign("startTime", $startTime ? $startTime : date('Y-m-01', strtotime(date("Y-m-d"))));
         $this->assign("endTime", $endTime ? $endTime : date('Y-m-d', strtotime(date("Y-m-d"))));
         $this->display();
@@ -1200,6 +1295,7 @@ class ReportController extends CommonController
         $endTime   = trim($_REQUEST['endTime']);
         $type      = intval($_REQUEST["type"]);
         $searchKey = trim($_REQUEST["searchKey"]);
+        $company_ids = $_REQUEST["company"];
 
         $map             = array();
         $map['t.is_del'] = 0;
@@ -1286,13 +1382,18 @@ class ReportController extends CommonController
             }
 
             if (!empty($searchKey)) {
-                $company_ids = M("company")->where(array("is_del" => 0, "company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配单位名称
+//                    $company_ids = M("company")->where(array("is_del" => 0, "company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配单位名称
                 $user_ids    = M("user")->where(array("is_del" => 0, "user_name|user_phone" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配用车人
-                if ($company_ids) {
-                    $map["t.company_id"] = array("IN", $this->_array_column($company_ids, "id"));
-                } elseif ($user_ids) {
+//                    if ($company_ids) {
+//                        $map["t.company_id"] = array("IN", $this->_array_column($company_ids, "id"));
+//                    } else
+                if ($user_ids) {
                     $map["t.use_user_id"] = array("IN", $this->_array_column($user_ids, "id"));
                 }
+            }
+
+            if($company_ids && $company_ids!= 'null'){
+                $map['t.company_id'] = array('in',$company_ids);
             }
 
             $field   = 'c.user_name,u.company_name,t.serial_number,t.start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,t.totle_rate ,t.driver_bt_cost,(t.parking_rate_sum +t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as qita';
