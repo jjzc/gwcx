@@ -22,8 +22,10 @@ class ReportController extends CommonController
             $startTime    = trim($_REQUEST['startTime']);       //开始时间
             $endTime      = trim($_REQUEST['endTime']);         //结束时间
             $type         = intval($_REQUEST["type"]);          //报表类型
-            $searchKey    = trim($_REQUEST["searchKey"]);       //搜索关键字
+//            $searchKey    = trim($_REQUEST["searchKey"]);       //搜索关键字
             $travelNature = trim($_REQUEST["travelNature"]);    //出行性质
+            $company_ids = $_REQUEST["company"];                //出行单位id
+            $use_user = trim($_REQUEST["use_user"]);            //用车人姓名
 
             //查询条件
             $map             = array();
@@ -38,17 +40,21 @@ class ReportController extends CommonController
                 $map['t.departure_time'] = array('between', array(strtotime($startTime), strtotime($endTime) + 24 * 3600 - 1));
             }
 
+            if($company_ids){
+                $map["t.company_id"] = array("IN", $company_ids);
+            }
+
             $this->assign("nature_name", $travelNature);
-            $this->assign("companyname", $searchKey);
+            $this->assign("company_ids", $company_ids);
             $this->assign("type", $type);
             $this->assign("aa", "1");
 
             if ($type == 1) {
                 $map['c.is_del'] = 0;      //统计未删除的单位
 
-                if (!empty($searchKey)) {
-                    $map["c.company_name"] = array("like", "%" . $searchKey . "%");
-                }
+//                if (!empty($searchKey)) {
+//                    $map["c.company_name"] = array("like", "%" . $searchKey . "%");
+//                }
 
                 //分页查询
                 $count    = M("Company as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.company_id")->where($map)->group("t.company_id")->having('count(t.company_id)>=1')->field('company_id')->select();
@@ -82,12 +88,18 @@ class ReportController extends CommonController
 
                 $map["c.is_del"] = 0;
 
-                if (!empty($searchKey)) {
-                    $company_ids = M("company")->where(array("is_del" => 0, "company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配单位名称
-                    $user_ids    = M("user")->where(array("is_del" => 0, "user_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配用车人
-                    if ($company_ids) {
-                        $map["t.company_id"] = array("IN", $this->_array_column($company_ids, "id"));
-                    } elseif ($user_ids) {
+//                if (!empty($searchKey)) {
+//                    $company_ids = M("company")->where(array("is_del" => 0, "company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配单位名称
+//                    $user_ids    = M("user")->where(array("is_del" => 0, "user_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配用车人
+//                    if ($company_ids) {
+//                        $map["t.company_id"] = array("IN", $this->_array_column($company_ids, "id"));
+//                    } elseif ($user_ids) {
+//                        $map["t.use_user_id"] = array("IN", $this->_array_column($user_ids, "id"));
+//                    }
+//                }
+                if(!empty($use_user)){
+                    $user_ids    = M("user")->where(array("is_del" => 0, "user_name" => array("like", "%" . $use_user . "%")))->field("id")->select();  //查询是否匹配用车人
+                    if ($user_ids) {
                         $map["t.use_user_id"] = array("IN", $this->_array_column($user_ids, "id"));
                     }
                 }
@@ -122,9 +134,19 @@ class ReportController extends CommonController
             }
         }
 
+        //所有单位
+        $allCompany = M("company")->where(array("is_del"=>0))->field("id,company_name")->select();
+        foreach ($allCompany as &$item){
+            if($company_ids && in_array($item["id"],$company_ids)){
+                $item["is_selected"] = 1;
+            }
+        }
+
         //出行性质
         $travelNature = M("travelNature")->where(" is_del = 0")->select();
 
+        $this->assign("use_user", $use_user);
+        $this->assign("allCompany", $allCompany);
         $this->assign("travelNature", $travelNature);
         $this->assign("startTime", $startTime ? $startTime : date('Y-m-01', strtotime(date("Y-m-d"))));
         $this->assign("endTime", $endTime ? $endTime : date('Y-m-d', strtotime(date("Y-m-d"))));
@@ -137,7 +159,9 @@ class ReportController extends CommonController
         set_time_limit(0);
         $startTime = trim($_REQUEST['startTime']);
         $endTime   = trim($_REQUEST['endTime']);
-        $searchKey = trim($_REQUEST["searchKey"]);
+//        $searchKey = trim($_REQUEST["searchKey"]);
+        $company_ids = $_REQUEST["company"];                //出行单位id
+        $use_user = trim($_REQUEST["use_user"]);            //用车人姓名
 
         //查询条件
         $map             = array();
@@ -152,12 +176,16 @@ class ReportController extends CommonController
             $map['t.departure_time'] = array('between', array(strtotime($startTime), strtotime($endTime) + 24 * 3600 - 1));
         }
 
+        if($company_ids){
+            $map["t.company_id"] = array("IN", $company_ids);
+        }
+
         if ($_REQUEST["type"] == 1) {  //导出统计报表
             $map['c.is_del'] = 0;
 
-            if (!empty($searchKey)) {
-                $map["c.company_name"] = array("like", "%" . $searchKey . "%");
-            }
+//            if (!empty($searchKey)) {
+//                $map["c.company_name"] = array("like", "%" . $searchKey . "%");
+//            }
 
             //数据查询
             $size  = 200;
@@ -215,12 +243,18 @@ class ReportController extends CommonController
 
             $map["c.is_del"] = 0;
 
-            if (!empty($searchKey)) {
-                $company_ids = M("company")->where(array("is_del" => 0, "company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配单位名称
-                $user_ids    = M("user")->where(array("is_del" => 0, "user_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配用车人
-                if ($company_ids) {
-                    $map["t.company_id"] = array("IN", $this->_array_column($company_ids, "id"));
-                } elseif ($user_ids) {
+//            if (!empty($searchKey)) {
+//                $company_ids = M("company")->where(array("is_del" => 0, "company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配单位名称
+//                $user_ids    = M("user")->where(array("is_del" => 0, "user_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配用车人
+//                if ($company_ids) {
+//                    $map["t.company_id"] = array("IN", $this->_array_column($company_ids, "id"));
+//                } elseif ($user_ids) {
+//                    $map["t.use_user_id"] = array("IN", $this->_array_column($user_ids, "id"));
+//                }
+//            }
+            if(!empty($use_user)){
+                $user_ids    = M("user")->where(array("is_del" => 0, "user_name" => array("like", "%" . $use_user . "%")))->field("id")->select();  //查询是否匹配用车人
+                if ($user_ids) {
                     $map["t.use_user_id"] = array("IN", $this->_array_column($user_ids, "id"));
                 }
             }
@@ -482,6 +516,9 @@ class ReportController extends CommonController
             }
         }
 
+//        $companysall = M("company")->where(array("is_del"=>0))->field('id,company_name')->select();
+
+//        $this->assign('companysall',$companysall);
         $this->assign("startTime", $startTime ? $startTime : date('Y-m-01', strtotime(date("Y-m-d"))));
         $this->assign("endTime", $endTime ? $endTime : date('Y-m-d', strtotime(date("Y-m-d"))));
         $this->display();
