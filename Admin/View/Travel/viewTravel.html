@@ -270,7 +270,7 @@
 <div style="width: 0px; height: 0px; overflow:hidden;">
     <!--打印区域开始-->
     <!--startprint1-->
-    <table width="950" border="1" cellspacing="0" cellpadding="0" class="travelDetailTable">
+    <table width="1080"  border="1" cellpadding="0" cellspacing="0" class="travelDetailTable">
         <tr> <td colspan="2" >流水单号：</td>
             <td colspan="2" style="text-align: left">{$travel.serial_number}</td>
             <td>服务车辆所属</td>
@@ -420,9 +420,11 @@
             <td colspan="5" style="text-align: left">意见：{$travel.evaluate}</td>
         </tr>
         <tr>
-            <td colspan="6" style="text-align: left">出行备注：</td>
+            <td colspan="4"  rowspan="2" style="text-align: left">出行备注：</td>
+            <td colspan="2"  rowspan="2" style="text-align: left">用车人签字：</td>
+
         </tr>
-    </table>
+  </table>
     <!--endprint1-->
     <!--打印区域结束-->
 </div>

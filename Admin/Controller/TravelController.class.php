@@ -329,7 +329,7 @@ class TravelController extends CommonController
         }
         $resCount = M("Travel")->where($sql)->select();
 
-        $res = M("Travel")->where($sql)->order("id asc")->limit($_POST["start"], $_POST["length"])->select();
+        $res = M("Travel")->where($sql)->order("id desc")->limit($_POST["start"], $_POST["length"])->select();
 
         //返回数据
         $travels                    = array();
