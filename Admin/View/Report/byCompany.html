@@ -109,10 +109,13 @@
                             </div>
                         </div>
 
-                        <div class="form-group" style="width: 200px; float: left;margin-right:10px;">
-                            <div id="search" style="float:left;height: 34px;text-align: center;position: relative;">
-                                <input type="text" class="form-control input-inline jt" style="width: 200px" id="searchKey" name="searchKey" placeholder="请输入单位名称" value="{$companyname}"/>
-                            </div>
+                        <div class="form-group" style="width: 200px; float: left; margin-right: 8px;">
+                            <!--<span class="col-md-6">单位：</span>-->
+                            <select class="form-control input-inline input-medium" name="company[]" multiple="multiple" id="select_company">
+                                {foreach $allCompany as $k=>$v}
+                                <option value="{$v.id}" {if $v.is_selected eq 1}selected{/if} >{$v.company_name}</option>
+                                {/foreach}
+                            </select>
                         </div>
                         <div class="form-group travel-nature" style="width: 160px; float: left; margin-right: 8px;display: none">
                             <select name="travelNature" class="form-control" id="travelNature">
@@ -121,6 +124,12 @@
                                 <option value="{$v.nature_name}" {if $v.nature_name eq $nature_name}selected{/if}>{$v.nature_name}</option>
                                 {/foreach}
                             </select>
+                        </div>
+
+                        <div class="form-group" >
+                            <div id="search" style="float:left;height: 34px;text-align: center;position: relative;">
+                                <input type="text" class="form-control input-inline jt" style="width: 200px" id="use_user" name="use_user" placeholder="请输入用户姓名" value="{$use_user}"/>
+                            </div>
                         </div>
 
                         <div class="form-group" style="width: 160px; float: left; margin-right: 8px;">
@@ -340,9 +349,18 @@
 <script src="{$smarty.const.PUBLIC_URL}/js/js.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 
+<script type="text/javascript" src="{$smarty.const.PUBLIC_URL}js/bootstrap-multiselect.js"></script>
+
 <script>
 
     $(function(){
+        $('#select_company').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: true,
+            nonSelectedText: '请选择出行单位',
+            maxHeight: 200,
+            buttonWidth:'200px'
+    });
         show($("#type"));
         $("#btn_add").click(function () {
             //用于后端将页码重置为默认页码
@@ -378,19 +396,21 @@
     function export_csv(){
         var startTime = $("#startTime").val();
         var endTime = $("#endTime").val();
-        var searchKey = $("#searchKey").val();
+        var company = $("#select_company").val();
         var type = $("#type").val();
         var travelNature = $("#travelNature").val();
-        window.location.href = '{U("Admin/Report/company_export_to_csv")}?startTime='+startTime+'&endTime='+endTime+'&searchKey='+searchKey+'&type='+type+"&travelNature="+travelNature;
+        var use_user = $("#use_user").val();
+        // console.log(company);return;
+        window.location.href = '{U("Admin/Report/company_export_to_csv")}?startTime='+startTime+'&endTime='+endTime+'&company='+company+'&type='+type+"&travelNature="+travelNature+"&use_user="+use_user;
     }
 
     function show(obj){
         if($(obj).val() == 2){
             $(".travel-nature").show();
-            $("#searchKey").attr("placeholder","请输入单位名称或者用车人");
+            $("#use_user").show();
         }else{
             $(".travel-nature").hide();
-            $("#searchKey").attr("placeholder","请输入单位名称");
+            $("#use_user").hide();
         }
     }
 

@@ -107,29 +107,27 @@
                             </div>
                         </div>
 
-                        <div class="form-group" style="width: 240px; float: left;margin-right:10px;">
-                            <div id="search" style="float:left;height: 34px;text-align: center;position: relative;">
-                                <input type="text" class="form-control input-inline jt" style="width: 240px" id="searchKey" name="searchKey" placeholder="请输入车牌号" VALUE="{$searchKey}"/>
-                            </div>
+                        <div class="form-group" style="width: 220px; float: left; margin-right: 8px;">
+                            <select name="car[]" class="form-control input-inline input-medium" multiple="multiple" id="car">
+                                {foreach $allCar as $k=>$v}
+                                <option value="{$v.id}" {if $v.is_selected eq 1}selected{/if} >{$v.car_num}</option>
+                                {/foreach}
+                            </select>
                         </div>
 
-                        <!--<div class="form-group" style="width: 160px; float: left; margin-right: 8px;">-->
-                            <!--<select name="car" class="form-control" id="car">-->
-                                <!--<option value="0">车辆(不限)</option>-->
-                                <!--{foreach $carsall as $k=>$v}-->
-                                <!--<option value="{$v.id}" {if $v.id eq $carname}selected{/if} >{$v.car_num}</option>-->
-                                <!--{/foreach}-->
-                            <!--</select>-->
-                        <!--</div>-->
+                        <div class="form-group" style="width: 220px; float: left; margin-right: 8px;">
+                            <select name="company[]" class="form-control input-inline input-medium" multiple="multiple" id="company">
+                                {foreach $allCompany as $k=>$v}
+                                <option value="{$v.id}" {if $v.is_selected eq 1}selected{/if} >{$v.company_name}</option>
+                                {/foreach}
+                            </select>
+                        </div>
 
-                        <!--<div class="form-group" style="width: 160px; float: left; margin-right: 8px;">-->
-                            <!--<select name="company" class="form-control" id="company">-->
-                                <!--<option value="0">单位(不限)</option>-->
-                                <!--{foreach $companysall as $k=>$v}-->
-                                <!--<option value="{$v.id}" {if $v.id eq $companyname}selected{/if}>{$v.company_name}</option>-->
-                                <!--{/foreach}-->
-                            <!--</select>-->
-                        <!--</div>-->
+                        <div class="form-group" >
+                            <div id="search" style="float:left;height: 34px;text-align: center;">
+                                <input type="text" class="form-control input-inline jt" style="width: 240px;display: none" id="searchKey" name="searchKey" placeholder="请输入用车人" VALUE="{$searchKey}"/>
+                            </div>
+                        </div>
 
                         <div class="form-group" style="width: 160px; float: left; margin-right: 8px;">
                             <select name="type" class="form-control" id="type" onchange="show(this)">
@@ -406,11 +404,9 @@
 
     function show(obj){
         if($(obj).val() == 2){
-            $(".travel-nature").show();
-            $("#searchKey").attr("placeholder","请输入车牌号/司机/单位/用车人");
+            $("#searchKey").show();
         }else{
-            $(".travel-nature").hide();
-            $("#searchKey").attr("placeholder","请输入车牌号");
+            $("#searchKey").hide();
         }
     }
 
@@ -418,11 +414,11 @@
     function export_csv(){
         var startTime = $("#startTime").val();
         var endTime = $("#endTime").val();
-        // var car = $("#car").val();
-        // var company = $("#company").val();
+        var car = $("#car").val();
+        var company = $("#company").val();
         var type = $("#type").val();
         var searchKey = $("#searchKey").val();
-        window.location.href = '{U("Admin/Report/car_export_to_csv")}?startTime='+startTime+'&endTime='+endTime+'&searchKey='+searchKey+'&type='+type;
+        window.location.href = '{U("Admin/Report/car_export_to_csv")}?startTime='+startTime+'&endTime='+endTime+'&searchKey='+searchKey+'&type='+type+'&car='+car+'&company='+company;
     }
 
     jQuery(document).ready(function () {
@@ -440,19 +436,21 @@
             //fiflt();
         });
 
-        //用车人选择
         $('#car').multiselect({
             includeSelectAllOption: true,
             enableFiltering: true,
-            maxHeight: 200
-        });//用车人选择
+            nonSelectedText: '车牌(不限)',
+            maxHeight: 200,
+            buttonWidth:'220px'
+        });
 
-        //用车人选择
         $('#company').multiselect({
             includeSelectAllOption: true,
             enableFiltering: true,
-            maxHeight: 200
-        });//用车人选择
+            nonSelectedText: '单位(不限)',
+            maxHeight: 200,
+            buttonWidth:'220px'
+        });
     });
 </script>
 {/block}

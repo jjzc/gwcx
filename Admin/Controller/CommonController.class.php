@@ -14,9 +14,7 @@ class CommonController extends Controller
 {
     function __construct()
     {
-        parent::__construct();//这里不写会报错。
-        //因为这个构造方法覆盖掉了父类的构造方法，所以要引入
-        //echo "这里检验登陆状态";//可以写你的验证代码
+        parent::__construct();
 
         $userId  = session("user_id");
         $groupId = session("group_id");
@@ -24,13 +22,13 @@ class CommonController extends Controller
         if (!$userId) {
             $this->redirect("/Admin/User/login");
         }
-//        else {
+
         $last_access = session("last_access");
         //超时退出
         if (time() - $last_access > 30 * 60) {
             $this->redirect("/Admin/User/login");
         }
-//            else {
+
         session("last_access", time());
 
         //获取用户所有的权限
@@ -54,7 +52,6 @@ class CommonController extends Controller
 
 
         //1、直接判断是否具有路由访问权限，没有则直接返回到index
-        //echo (ACTION_NAME);
         //进行匹配
         $acitve = false;
 
@@ -93,25 +90,10 @@ class CommonController extends Controller
 
             session("menuList", $menuList);
         }
-//        $mid = intval($_REQUEST["mid"]);
+
         $this->assign("mid", intval($_REQUEST["mid"]));
         $this->assign("menuList", $menuList);
-//
-//                if ($tag) {
-////                    $pid      = $this->getPid($tag)['id'];
-//                    $mid =
-//                    $menuList = M("Url")->where(array("id" => array("IN", $ruleids), "pid" => $tag, "is_menu" => 1))->order(" sort desc , id")->select();
-//                    foreach ($menuList as $key => $item) {
-//                        $submenu                   = M("Url")->where(array("pid" => $item["id"], "is_menu" => 1))->order(" sort desc , id")->select();
-//                        $menuList[$key]["submenu"] = $submenu;
-//                    }
-//                    print_r($menuList);exit;
-//                    $this->assign("tag", $tag);
-//                    $this->assign("menuList", $menuList);
-//                }
 
-//            }
-//        }
     }
 
     /**
