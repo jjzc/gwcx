@@ -359,11 +359,16 @@ class ReportController extends CommonController
                 $map["t.car_id"] = array("IN",$car_ids);
             }
 
+            if($company_ids){
+                $map["t.company_id"] = array("IN",$company_ids);
+            }
+
             $this->assign("type", $type);
             $this->assign("searchKey", $searchKey);
             $this->assign("aa", "1");
 
             if ($type == 1) {
+
                 $map['c.is_del'] = 0;
 //                if ($searchKey) {  //搜索车牌号或者单位名称
 //                    $search_sql = " c.car_num like '%" . $searchKey . "%' ";
@@ -476,11 +481,6 @@ class ReportController extends CommonController
 //                    $map["_string"] = $search_sql;
                 }
 
-                if($company_ids){
-//                    var_dump($company_ids);exit;
-                    $map["t.company_id"] = array("IN",$company_ids);
-                }
-
                 $count = M("Travel as t")->where($map)->count();
 
                 $pageSize = 15;
@@ -589,6 +589,10 @@ class ReportController extends CommonController
 
         if(!empty($car_ids) && $car_ids!='null'){
             $map["t.car_id"] = array("IN",$car_ids);
+        }
+
+        if($company_ids  && $company_ids!='null'){
+            $map["t.company_id"] = array("IN",$company_ids);
         }
 
         if ($type == 1) {
@@ -731,9 +735,9 @@ class ReportController extends CommonController
 //                $map["_string"] = $search_sql;
             }
 
-            if($company_ids && $company_ids != 'null'){
-                $map["t.company_id"] = array("IN",$company_ids);
-            }
+//            if($company_ids && $company_ids != 'null'){
+//                $map["t.company_id"] = array("IN",$company_ids);
+//            }
 
             //导出数据
             header("Content-Type: text/html; charset=gbk");
@@ -846,6 +850,10 @@ class ReportController extends CommonController
                 $map['t.driver_id'] = array('in', $driver_ids);
             }
 
+            if($company_ids){
+                $map['t.company_id'] = array('in', $company_ids);
+            }
+
             $this->assign("aa", "1");
             $this->assign("type", $type);
             $this->assign("searchKey", $searchKey);
@@ -912,10 +920,6 @@ class ReportController extends CommonController
                         $map["_string"] = " t.use_user_id in (" . implode(",", $this->_array_column($user, "id")) . ")";
                     }
 //                    $map["_string"] = $search_sql;
-                }
-
-                if($company_ids){
-                    $map['t.company_id'] = array('in', $company_ids);
                 }
 
                 $count = M("Travel as t")->where($map)->field("t.use_user_id,t.company_id,t.driver_id,t.serial_number,t.start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,t.else_cost,t.totle_rate")->count();
@@ -1012,6 +1016,10 @@ class ReportController extends CommonController
             $map['t.driver_id'] = array('in', $driver_ids);
         }
 
+        if($company_ids && $company_ids != 'null'){
+            $map['t.company_id'] = array('in', $company_ids);
+        }
+
         header("Content-Type: text/html; charset=gbk");
         header("Content-type:application/vnd.ms-excel");
 
@@ -1084,10 +1092,6 @@ class ReportController extends CommonController
                     $map["_string"] = " t.use_user_id in (" . implode(",", $this->_array_column($user, "id")) . ")";
                 }
 //                $map["_string"] = $search_sql;
-            }
-
-            if($company_ids && $company_ids != 'null'){
-                $map['t.company_id'] = array('in', $company_ids);
             }
 
             $field   = "t.use_user_id,t.company_id,t.driver_id,t.serial_number,t.start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,(t.parking_rate_sum +t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as else_cost ,t.totle_rate,t.jj_id,t.jj_driver_name";
