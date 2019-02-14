@@ -448,13 +448,14 @@ class TravelController extends CommonController
         $map["is_del"] = array('eq', 0);
 
         if (!empty($_POST["searchKey"])) {
-            $key        = trim($_POST["searchKey"]);
-            $search_sql = "serial_number like '%$key%' or from_place like '%$key%' or to_place like '%$key%'";
-            $company    = M("company")->where(array("is_del" => 0, "company_name" => array("like", "%" . $key . "%")))->field("id")->select();
-            if ($company) {
-                $search_sql .= " or company_id in (" . implode(",", $this->_array_column($company, "id")) . ")";
-            }
-            $map["_string"] = $search_sql;
+//            $key        = trim($_POST["searchKey"]);
+//            $search_sql = "serial_number like '%$key%' or from_place like '%$key%' or to_place like '%$key%'";
+//            $company    = M("company")->where(array("is_del" => 0, "company_name" => array("like", "%" . $key . "%")))->field("id")->select();
+//            if ($company) {
+//                $search_sql .= " or company_id in (" . implode(",", $this->_array_column($company, "id")) . ")";
+//            }
+//            $map["_string"] = $search_sql;
+            $map['serial_number|from_place|to_place'] = array("like","%".trim($_POST["searchKey"])."%");
         }
         if (!empty($_POST["startTime"])) {
             $map['departure_time'] = array('gt', strtotime($_POST["startTime"]));
@@ -569,6 +570,14 @@ class TravelController extends CommonController
 
         //获取筛选条件
         $map["is_del"] = array('eq', 0);
+
+        if (!empty($_POST["searchKey"])) {
+//            $key        = trim($_POST["searchKey"]);
+//            $search_sql = "serial_number like '%$key%' or from_place like '%$key%' or to_place like '%$key%'";
+//            $map["_string"] = $search_sql;
+            $map['serial_number|from_place|to_place'] = array("like","%".trim($_POST["searchKey"])."%");
+        }
+
         if (!empty($_POST["startTime"])) {
             $map['departure_time'] = array('gt', strtotime($_POST["startTime"]));
         }
@@ -591,7 +600,7 @@ class TravelController extends CommonController
             $map['state'] = array('eq', $_POST["state"]);
         }
 
-        $list = M("travel")->where($map)->limit((($page - 1) * 1000) . ",1000 ")->order("id asc")->select();
+        $list = M("travel")->where($map)->limit((($page - 1) * 1000) . ",1000 ")->order("id desc")->select();
         if ($list) {
             register_shutdown_function(array(&$this, 'toExcel'), $page + 1);
 

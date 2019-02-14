@@ -12,14 +12,13 @@ use Model\TravelTypeModel;
 use Model\UserModel;
 use Model\CompanyModel;
 
-/**
- *User控制器，主要负责对车辆的操作
- */
+
 class StatisticsController extends CommonController {
-    /*
-     * 单位数据统计
-     */
+
     public function byCompany(){
+        $company = M("company")->where(array("is_del"=>0))->field("id,company_name")->select();
+
+        $this->assign("company",$company);
         $this->display();
     }
 
@@ -37,8 +36,8 @@ class StatisticsController extends CommonController {
         if((!empty($_POST["startTime"]))&&!empty($_POST["endTime"])){
             $map['departure_time']  = array('between',array(strtotime($_POST["startTime"]),strtotime($_POST["endTime"])+24*3600));
         }
-        if($_POST["company"]!=0){
-            $mapc["id"]=$_POST["company"];
+        if($_POST["company"]){
+            $mapc["id"]=array("in",$_POST["company"]);
         }
 
         $companyM=new CompanyModel();
@@ -52,10 +51,6 @@ class StatisticsController extends CommonController {
         $companysCount=$companyM->where($mapc)->order("id asc")->select();
 
         $companys=$companyM->where($mapc)->order("id asc")->limit($_POST["start"],$_POST["length"])->select();
-
-
-
-
 
         $cout=0;
 
@@ -98,12 +93,9 @@ class StatisticsController extends CommonController {
             if(empty($companys[$i]["companyRateCount"])){$companys[$i]["companyRateCount"]=0;}
             if(empty($companys[$i]["companyMileageCount"])){$companys[$i]["companyMileageCount"]=0;}
 
-
-
         }
 
         $resCount=$companyM->where($mapc)->order("id asc")->select();
-
 
         //返回数据
         $stat=array();
@@ -128,9 +120,12 @@ class StatisticsController extends CommonController {
             $map['departure_time']  = array('between',array(strtotime($_POST["startTime"]),strtotime($_POST["endTime"])+24*3600));
         }
         $companyM=new CompanyModel();
-        if(!empty($_POST["searchKey"])){
-            $ids = $companyM->where(array("company_name" => array("like", "%" . trim($_POST["searchKey"]) . "%")))->field("id")->select();
-            $mapc["id"]=array("IN",$ids ? $this->_array_column($ids,"id") : array(0));
+//        if(!empty($_POST["searchKey"])){
+//            $ids = $companyM->where(array("company_name" => array("like", "%" . trim($_POST["searchKey"]) . "%")))->field("id")->select();
+//            $mapc["id"]=array("IN",$ids ? $this->_array_column($ids,"id") : array(0));
+//        }
+        if($_POST["company"]){
+            $mapc["id"]=array("in",$_POST["company"]);
         }
 
         $companys=$companyM->where($mapc)->order("id asc")->select();
@@ -258,6 +253,9 @@ class StatisticsController extends CommonController {
     }
 
     public function byCar(){
+        $car = M("car")->where(array("is_del"=>0))->field("id,car_num")->select();
+
+        $this->assign("car",$car);
         $this->display();
     }
 
@@ -281,8 +279,8 @@ class StatisticsController extends CommonController {
             $startTime=0;
             $endTime=1893427200;
         }
-        if($_POST["car"]!=0){
-            $mapc["id"]=$_POST["car"];
+        if($_POST["car"]){
+            $mapc["id"]=array("in",$_POST["car"]);
         }
 
         $carM=new CarModel();
@@ -305,9 +303,7 @@ class StatisticsController extends CommonController {
 
         $count=0;
 
-
         $cars=array();
-
 
         for($i=0;$i<count($res)&& count($res);$i++){
 
@@ -355,12 +351,7 @@ class StatisticsController extends CommonController {
 
             $cars[$i]["countMaintain"]=$travelM->where($mapTravel)->where("car_id=".$res[$i]["id"]." and is_del=0")->where(array("state"=>"9"))->sum("mileage");
 
-
-
         }
-
-
-
 
         //返回数据
         $stat=array();
@@ -370,9 +361,6 @@ class StatisticsController extends CommonController {
         $stat["data"]=$cars;
 
         $this->ajaxReturn($stat);
-
-
-
     }
 
     public function byCarToExcel(){
@@ -397,9 +385,12 @@ class StatisticsController extends CommonController {
         }
         $carM=new CarModel();
 
-        if(!empty($_POST["searchKey"])){
-            $ids = $carM->where(array("car_num" => array("like", "%" . trim($_POST["searchKey"]) . "%")))->field("id")->select();
-            $mapc["id"]=array("IN",$ids ? $this->_array_column($ids,"id") : array(0));
+//        if(!empty($_POST["searchKey"])){
+//            $ids = $carM->where(array("car_num" => array("like", "%" . trim($_POST["searchKey"]) . "%")))->field("id")->select();
+//            $mapc["id"]=array("IN",$ids ? $this->_array_column($ids,"id") : array(0));
+//        }
+        if($_POST["car"]){
+            $mapc["id"]=array("in",$_POST["car"]);
         }
 
 
@@ -547,10 +538,13 @@ class StatisticsController extends CommonController {
             $startTime=0;
             $endTime=1893427200;
         }
-        if(!empty($_POST["searchKey"])){
-            $model = new DriverModel();
-            $ids = $model->where(array("driver_phone|driver_name" => array("like", "%" . trim($_POST["searchKey"]) . "%")))->field("id")->select();
-            $mapc["id"]=array("IN",$ids ? $this->_array_column($ids,"id") : array(0));
+//        if(!empty($_POST["searchKey"])){
+//            $model = new DriverModel();
+//            $ids = $model->where(array("driver_phone|driver_name" => array("like", "%" . trim($_POST["searchKey"]) . "%")))->field("id")->select();
+//            $mapc["id"]=array("IN",$ids ? $this->_array_column($ids,"id") : array(0));
+//        }
+        if($_POST['driver']){
+            $mapc["id"]=array("IN",$_POST['driver']);
         }
 
         $driverM=new DriverModel();
@@ -617,10 +611,13 @@ class StatisticsController extends CommonController {
             $startTime=0;
             $endTime=1893427200;
         }
-        if(!empty($_POST["searchKey"])){
-            $model = new DriverModel();
-            $ids = $model->where(array("driver_phone|driver_name" => array("like", "%" . trim($_POST["searchKey"]) . "%")))->field("id")->select();
-            $mapc["id"]=array("IN",$ids ? $this->_array_column($ids,"id") : array(0));
+//        if(!empty($_POST["searchKey"])){
+//            $model = new DriverModel();
+//            $ids = $model->where(array("driver_phone|driver_name" => array("like", "%" . trim($_POST["searchKey"]) . "%")))->field("id")->select();
+//            $mapc["id"]=array("IN",$ids ? $this->_array_column($ids,"id") : array(0));
+//        }
+        if($_POST['driver']){
+            $mapc["id"]=array("IN",$_POST['driver']);
         }
 
         $driverM=new DriverModel();

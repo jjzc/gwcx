@@ -56,6 +56,14 @@
                             </div>
                         </div>
 
+                        <div class="form-group" style="width: 160px; float: left; margin-right: 8px;">
+                            <select name="car[]" class="form-control" onchange="fiflt()" id="car" multiple>
+                                {foreach $cars as $k=>$v}
+                                <option value="{$v.id}" >{$v.car_num}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+
                         <div class="form-group" style="width: 140px; float: left; margin-right: 8px;">
                             <select name="oilshop" class="form-control" onchange="fiflt()" id="oilshop">
                                 <option value="0">加油地点(不限)</option>
@@ -65,13 +73,13 @@
                             </select>
                         </div>
 
-                        <div class="form-group" style="width: 160px; float: left;margin-right:35px;">
-                            <div id="search" style="float:left;height: 34px;text-align: center;position: relative;">
-                                <input type="hidden" name="car" id="car"/>
-                                <input type="text" class="form-control input-inline jt" id="searchKey" name="searchKey"
-                                       placeholder="请输入车牌号" onchange="fiflt()"/>
-                            </div>
-                        </div>
+                        <!--<div class="form-group" style="width: 160px; float: left;margin-right:35px;">-->
+                            <!--<div id="search" style="float:left;height: 34px;text-align: center;position: relative;">-->
+                                <!--<input type="hidden" name="car" id="car"/>-->
+                                <!--<input type="text" class="form-control input-inline jt" id="searchKey" name="searchKey"-->
+                                       <!--placeholder="请输入车牌号" onchange="fiflt()"/>-->
+                            <!--</div>-->
+                        <!--</div>-->
 
                         <div class="form-group" style="width: 120px; float: left;">
                             <input type="text" onchange="fiflt();" class="form-control" name="card_num" id="card_num"
@@ -256,6 +264,7 @@
         type="text/javascript"></script>
 
 <!-- END PAGE LEVEL SCRIPTS -->
+<script type="text/javascript" src="{$smarty.const.PUBLIC_URL}js/bootstrap-multiselect.js"></script>
 
 
 <script>
@@ -422,7 +431,13 @@
     jQuery(document).ready(function () {
         TableDatatablesResponsive.init();//待审核出行表格初始化
         //SweetAlert.init();
-
+        $('#car').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: true,
+            nonSelectedText: '车辆(不限)',
+            maxHeight: 200,
+            buttonWidth:'160px'
+        });
 
         $('.form_datetime').datetimepicker({
             language: 'zh-CN',

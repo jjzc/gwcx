@@ -1188,6 +1188,10 @@ class ReportController extends CommonController
                 $map['t.departure_time'] = array('between', array(strtotime($startTime), strtotime($endTime) + 24 * 3600));
             }
 
+            if($company_ids){
+                $map['t.company_id'] = array('in',$company_ids);
+            }
+
             $this->assign("username", $searchKey);
             $this->assign("type", $type);
             $this->assign("aa", "1");
@@ -1249,10 +1253,6 @@ class ReportController extends CommonController
                         if ($user_ids) {
                         $map["t.use_user_id"] = array("IN", $this->_array_column($user_ids, "id"));
                     }
-                }
-
-                if($company_ids){
-                    $map['t.company_id'] = array('in',$company_ids);
                 }
 
                 $count = M("Travel as t")->join("left join " . C("DB_PREFIX") . "company as u on u.id =  t.company_id left join " . C("DB_PREFIX") . "user c on c.id = t.use_user_id")->where($map)->count();

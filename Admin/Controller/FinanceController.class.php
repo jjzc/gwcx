@@ -54,17 +54,17 @@ class FinanceController extends CommonController
         }
         //获取用户输入车牌号
         if (!empty($_POST["car"])) {
-            $key = intval($_POST["car"]);
-            $map['car_id'] = array('eq', $key);
+//            $key = intval($_POST["car"]);
+            $map['car_id'] = array('in', $_POST["car"]);
         }
         //获取用户输入洗车地点
         if (!empty($_POST["wash_site"])) {
-            $key = $_POST["wash_site"];
+            $key                 = $_POST["wash_site"];
             $map['wash_shop_id'] = array('eq', $key);//根据表内ID值比对
         }
 
         $map["is_del"] = 0;
-        $resCount = M("CostWash")->where($map)->select();
+        $resCount      = M("CostWash")->where($map)->select();
 
         $total_cost = M("CostWash")->where($map)->sum("cost");
 
@@ -87,22 +87,22 @@ class FinanceController extends CommonController
 
         $res = M("CostWash")->where($map)->order($order)->limit($_POST["start"], $_POST["length"])->select();
         for ($i = 0; $i < count($res) && count($res); $i++) {
-            $carM = new CarModel();
-            $car = $carM->find($res[$i]["car_id"]);
+            $carM               = new CarModel();
+            $car                = $carM->find($res[$i]["car_id"]);
             $res[$i]["car_num"] = $car["car_num"];
 
 
-            $washshop = M("WashShop")->find($res[$i]["wash_shop_id"]);
+            $washshop             = M("WashShop")->find($res[$i]["wash_shop_id"]);
             $res[$i]["shop_name"] = $washshop["shop_name"];
         }
 
         //返回数据
-        $cars = array();
-        $cars["draw"] = $_POST["draw"];
-        $cars["recordsTotal"] = count($resCount);//总记录条数
+        $cars                    = array();
+        $cars["draw"]            = $_POST["draw"];
+        $cars["recordsTotal"]    = count($resCount);//总记录条数
         $cars["recordsFiltered"] = count($resCount);//过滤后的记录数，也就是搜索结果数据
-        $cars["total_cost"] = $total_cost;
-        $cars["data"] = $res;
+        $cars["total_cost"]      = $total_cost;
+        $cars["data"]            = $res;
 
         $this->ajaxReturn($cars);
     }
@@ -110,9 +110,9 @@ class FinanceController extends CommonController
     //删除洗车记录
     public function delWashRecord()
     {
-        $record["id"] = $_POST["id"];
+        $record["id"]     = $_POST["id"];
         $record["is_del"] = 1;
-        $res = M("CostWash")->save($record);
+        $res              = M("CostWash")->save($record);
         if ($res) {
             A("UserCenter")->logCreatWeb("删除洗车记录 ID为" . $_POST["id"]);
             $this->ajaxReturn(array("code" => 1));
@@ -197,25 +197,25 @@ class FinanceController extends CommonController
         }
         //接收用户输入车牌号
         if (!empty($_POST["car"])) {
-            $key = $_POST["car"];
+//            $key = $_POST["car"];
             //$map['car_num | seat_num | engine_num | frame_num | maintain_interval | compulsory_insurance_time | commercial_insurance_time | car_name | brand |old_company|new_company'] = array('like', "%$key%");
 //            $map['car'] = array('like', "%$key%");
-            $map['car_id'] = array('eq', "$key");
+            $map['car_id'] = array('in', $_POST["car"]);
         }
 
         //接收用户输入维修地点
         if (!empty($_POST["repairsite"])) {
-            $key = $_POST["repairsite"];//维修地点
+            $key                   = $_POST["repairsite"];//维修地点
             $map['repair_shop_id'] = array('eq', $key);//根据表内ID值比对
         }
         //接收用户输入维修类型
         if (!empty($_POST["repairshop"])) {
-            $key = $_POST["repairshop"];//维修类型
+            $key         = $_POST["repairshop"];//维修类型
             $map['type'] = array('eq', $key);//根据表内ID值比对
         }
 
         $map["is_del"] = 0;
-        $resCount = M("CostRepair")->where($map)->select();
+        $resCount      = M("CostRepair")->where($map)->select();
 
 //        @file_put_contents($_SERVER["DOCUMENT_ROOT"]."/jzw.txt"," sql:".M("CostRepair")->getLastSql(),FILE_APPEND);
         $total_cost = M("CostRepair")->where($map)->sum("cost");
@@ -248,36 +248,36 @@ class FinanceController extends CommonController
         }
 
 
-        if (!empty($_POST["car"])) {
-            $card_num = $_POST["car"];
-
-            $map['car_id'] = array('like', "%$card_num%");
-        }
+//        if (!empty($_POST["car"])) {
+//            $card_num = $_POST["car"];
+//
+//            $map['car_id'] = array('like', "%$card_num%");
+//        }
         $res = M("CostRepair")->where($map)->order($order)->limit($_POST["start"], $_POST["length"])->select();
         for ($i = 0; $i < count($res) && count($res); $i++) {
-            $carM = new CarModel();
-            $car = $carM->find($res[$i]["car_id"]);
+            $carM               = new CarModel();
+            $car                = $carM->find($res[$i]["car_id"]);
             $res[$i]["car_num"] = $car["car_num"];
 
-            $repairShop = M("RepairShop")->find($res[$i]["repair_shop_id"]);
-            $res[$i]["shop_name"] = $repairShop["shop_name"];
-            $repairType = M("RepairType")->find($res[$i]["type"]);
+            $repairShop                = M("RepairShop")->find($res[$i]["repair_shop_id"]);
+            $res[$i]["shop_name"]      = $repairShop["shop_name"];
+            $repairType                = M("RepairType")->find($res[$i]["type"]);
             $res[$i]["repairTypeName"] = $repairType["repair_type_name"];
 
-            $res[$i]["frame_num"] = $car["frame_num"];
-            $res[$i]["engine_num"] = $car["engine_num"];
-            $res[$i]["buy_time"] = $car["buy_time"];
+            $res[$i]["frame_num"]   = $car["frame_num"];
+            $res[$i]["engine_num"]  = $car["engine_num"];
+            $res[$i]["buy_time"]    = $car["buy_time"];
             $res[$i]["new_company"] = $car["new_company"];
             $res[$i]["old_company"] = $car["old_company"];
         }
 
         //返回数据
-        $cars = array();
-        $cars["draw"] = $_POST["draw"];
-        $cars["recordsTotal"] = count($resCount);//总记录条数
+        $cars                    = array();
+        $cars["draw"]            = $_POST["draw"];
+        $cars["recordsTotal"]    = count($resCount);//总记录条数
         $cars["recordsFiltered"] = count($resCount);//过滤后的记录数，也就是搜索结果数据
-        $cars["total_cost"] = $total_cost;
-        $cars["data"] = $res;
+        $cars["total_cost"]      = $total_cost;
+        $cars["data"]            = $res;
 
         $this->ajaxReturn($cars);
     }
@@ -285,9 +285,9 @@ class FinanceController extends CommonController
     //删除维修记录
     public function delRepairRecord()
     {
-        $record["id"] = $_POST["id"];
+        $record["id"]     = $_POST["id"];
         $record["is_del"] = 1;
-        $res = M("CostRepair")->save($record);
+        $res              = M("CostRepair")->save($record);
         A("UserCenter")->logCreatWeb("删除维修记录 ID为" . $_POST["id"]);
         if ($res) {
             $this->ajaxReturn(array("code" => 1));
@@ -323,18 +323,18 @@ class FinanceController extends CommonController
     public function addRepairRecordDo()
     {
         $_POST["start_time"] = strtotime($_POST["start_time"]);//转换为时间戳格式
-        $_POST["end_time"] = strtotime($_POST["end_time"]);//转换为时间戳格式
+        $_POST["end_time"]   = strtotime($_POST["end_time"]);//转换为时间戳格式
 
 
         $id = intval($_POST["id"]);
 
         if ($id) {
             $_POST["utime"] = time();
-            $res = M("CostRepair")->save($_POST);
+            $res            = M("CostRepair")->save($_POST);
         } else {
             $_POST["ctime"] = time();
             $_POST["utime"] = time();
-            $res = M("CostRepair")->add($_POST);
+            $res            = M("CostRepair")->add($_POST);
         }
 
         $type = $id ? '修改' : '新增';
@@ -366,7 +366,7 @@ class FinanceController extends CommonController
     {
         //搜索条件
         $startTime = $_POST["startTime"];
-        $endTime = $_POST["endTime"];
+        $endTime   = $_POST["endTime"];
 
         if (!empty($_POST["startTime"])) {
             $map['trading_time'] = array('gt', strtotime($_POST["startTime"]));
@@ -380,8 +380,8 @@ class FinanceController extends CommonController
         }
 
 
-        if ($_POST["car"] != 0) {
-            $map['car_id'] = array('eq', $_POST["car"]);
+        if ($_POST["car"]) {
+            $map['car_id'] = array('in', $_POST["car"]);
         }
         if ($_POST["oilshop"] != 0) {
             $map['oil_shop_id'] = array('eq', $_POST["oilshop"]);
@@ -401,13 +401,13 @@ class FinanceController extends CommonController
 
         //接收用户输入加油量
         if (!empty($_POST["fuel_charge"])) {
-            $key = $_POST["fuel_charge"];//维修地点
+            $key                = $_POST["fuel_charge"];//维修地点
             $map['fuel_charge'] = array('eq', $key);//根据表内ID值比对
         }
 
         //接收用户输入油耗
         if (!empty($_POST["oil_wear"])) {
-            $key = $_POST["oil_wear"];//维修地点
+            $key             = $_POST["oil_wear"];//维修地点
             $map['oil_wear'] = array('eq', $key);//根据表内ID值比对
         }
 
@@ -419,7 +419,7 @@ class FinanceController extends CommonController
 
         $resCount = M("CostOil")->where($map)->select();
 
-        $total_cost = M("CostOil")->where($map)->sum("cost");
+        $total_cost        = M("CostOil")->where($map)->sum("cost");
         $total_fuel_charge = M("CostOil")->where($map)->sum("fuel_charge");
 
 
@@ -450,22 +450,22 @@ class FinanceController extends CommonController
 
         $res = M("CostOil")->where($map)->order($order)->order("trading_time desc")->limit($_POST["start"], $_POST["length"])->select();
         for ($i = 0; $i < count($res) && count($res); $i++) {
-            $carM = new CarModel();
-            $car = $carM->find($res[$i]["car_id"]);
+            $carM               = new CarModel();
+            $car                = $carM->find($res[$i]["car_id"]);
             $res[$i]["car_num"] = $car["car_num"];
 
-            $oilshop = M("OilShop")->find($res[$i]["oil_shop_id"]);
+            $oilshop             = M("OilShop")->find($res[$i]["oil_shop_id"]);
             $res[$i]["oil_name"] = $oilshop["oil_name"];
         }
 
         //返回数据
-        $cars = array();
-        $cars["draw"] = $_POST["draw"];
-        $cars["recordsTotal"] = count($resCount);//总记录条数
-        $cars["recordsFiltered"] = count($resCount);//过滤后的记录数，也就是搜索结果数据
-        $cars["total_cost"] = $total_cost;
+        $cars                      = array();
+        $cars["draw"]              = $_POST["draw"];
+        $cars["recordsTotal"]      = count($resCount);//总记录条数
+        $cars["recordsFiltered"]   = count($resCount);//过滤后的记录数，也就是搜索结果数据
+        $cars["total_cost"]        = $total_cost;
         $cars["total_fuel_charge"] = $total_fuel_charge;
-        $cars["data"] = $res;
+        $cars["data"]              = $res;
 
         $this->ajaxReturn($cars);
     }
@@ -473,9 +473,9 @@ class FinanceController extends CommonController
     //删除加油记录
     public function delOilRecord()
     {
-        $record["id"] = $_POST["id"];
+        $record["id"]     = $_POST["id"];
         $record["is_del"] = 1;
-        $res = M("CostOil")->save($record);
+        $res              = M("CostOil")->save($record);
         A("UserCenter")->logCreatWeb("删除加油记录 ID为" . $_POST["id"]);
         if ($res) {
             $this->ajaxReturn(array("code" => 1));
@@ -512,11 +512,11 @@ class FinanceController extends CommonController
 
         if ($id) {
             $_POST["utime"] = time();
-            $res = M("CostOil")->save($_POST);
+            $res            = M("CostOil")->save($_POST);
         } else {
             $_POST["ctime"] = time();
             $_POST["utime"] = time();
-            $res = M("CostOil")->add($_POST);
+            $res            = M("CostOil")->add($_POST);
 
         }
 
@@ -556,12 +556,12 @@ class FinanceController extends CommonController
 
         //接收用户输入车牌号
         if (!empty($_POST["car"])) {
-            $key = $_POST["car"];//维修类型
-            $map['car_id'] = array('eq', $key);//根据表内ID值比对
+            $key           = $_POST["car"];//维修类型
+            $map['car_id'] = array('in', $key);//根据表内ID值比对
         }
 
         $map["is_del"] = 0;
-        $resCount = M("CostInsurance")->where($map)->select();
+        $resCount      = M("CostInsurance")->where($map)->select();
 
         $total_cost = M("CostInsurance")->where($map)->sum("cost");   //总花费
 
@@ -589,18 +589,18 @@ class FinanceController extends CommonController
 
         $res = M("CostInsurance")->where($map)->order($order)->limit($_POST["start"], $_POST["length"])->select();
         for ($i = 0; $i < count($res) && count($res); $i++) {
-            $carM = new CarModel();
-            $car = $carM->find($res[$i]["car_id"]);
+            $carM               = new CarModel();
+            $car                = $carM->find($res[$i]["car_id"]);
             $res[$i]["car_num"] = $car["car_num"];
         }
 
         //返回数据
-        $cars = array();
-        $cars["draw"] = $_POST["draw"];
-        $cars["recordsTotal"] = count($resCount);//总记录条数
+        $cars                    = array();
+        $cars["draw"]            = $_POST["draw"];
+        $cars["recordsTotal"]    = count($resCount);//总记录条数
         $cars["recordsFiltered"] = count($resCount);//过滤后的记录数，也就是搜索结果数据
-        $cars["total_cost"] = $total_cost;
-        $cars["data"] = $res;
+        $cars["total_cost"]      = $total_cost;
+        $cars["data"]            = $res;
 
         $this->ajaxReturn($cars);
     }
@@ -624,7 +624,7 @@ class FinanceController extends CommonController
     //新增、修改年检 数据入库
     public function addInsuranceRecordDo()
     {
-        $_POST["pay_time"] = strtotime($_POST["pay_time"]);//转换为时间戳格式
+        $_POST["pay_time"]    = strtotime($_POST["pay_time"]);//转换为时间戳格式
         $_POST["effect_time"] = strtotime($_POST["effect_time"]);//转换为时间戳格式
         $_POST["expire_time"] = strtotime($_POST["expire_time"]);//转换为时间戳格式
 
@@ -632,18 +632,18 @@ class FinanceController extends CommonController
 
         if ($id) {
             $_POST["utime"] = time();
-            $res = M("CostInsurance")->save($_POST);
+            $res            = M("CostInsurance")->save($_POST);
         } else {
             $_POST["ctime"] = time();
             $_POST["utime"] = time();
-            $res = M("CostInsurance")->add($_POST);
+            $res            = M("CostInsurance")->add($_POST);
         }
 
         $type = $id ? '修改' : '新增';
 
 //        @file_put_contents($_SERVER["DOCUMENT_ROOT"]."/jzw.txt","\n\n sql:".M("CostInsurance")->getLastSql(),FILE_APPEND);
         if ($res) {
-            $data = array();
+            $data       = array();
             $data["id"] = $_POST["car_id"];
             if ($_POST["cost_type"] == 1) {
                 $data["compulsory_insurance_time"] = $_POST["expire_time"];
@@ -661,7 +661,7 @@ class FinanceController extends CommonController
             $car = M("Car")->find($_POST["car_id"]);
             A("UserCenter")->logCreatWeb($type . "保险/保养记录,车牌号为" . $car["car_num"]);
             $carM = new CarModel();
-            $rs = $carM->save($data);
+            $rs   = $carM->save($data);
             if (false !== $rs) {
 
                 $this->ajaxReturn(array("code" => 1, "msg" => $type . "成功!"));
@@ -678,9 +678,9 @@ class FinanceController extends CommonController
     //删除年检记录
     public function delInsuranceRecord()
     {
-        $record["id"] = $_POST["id"];
+        $record["id"]     = $_POST["id"];
         $record["is_del"] = 1;
-        $res = M("CostInsurance")->save($record);
+        $res              = M("CostInsurance")->save($record);
 
         $car = M("Car")->find($_POST["car_id"]);
         A("UserCenter")->logCreatWeb("删除保险/保养记录,车牌号为" . $car["car_num"]);
@@ -698,9 +698,9 @@ class FinanceController extends CommonController
         $Model = new CostWashModel();
 
         $start_time = $_POST["startTime"];//开始时间
-        $end_time = $_POST["endTime"];//结束时间
-        $car_id = $_POST["car"];//车牌号
-        $wash_site = $_POST["wash_site"];//洗车地点
+        $end_time   = $_POST["endTime"];//结束时间
+        $car_id     = $_POST["car"];//车牌号
+        $wash_site  = $_POST["wash_site"];//洗车地点
 
         $where = " where is_del = 0 ";
 
@@ -711,25 +711,28 @@ class FinanceController extends CommonController
             $where .= " and wash_time <= " . strtotime($end_time . " 23:59:59");
         }
         if (!empty($car_id)) {
-            $where .= " and car_id = " . $car_id;
+//            var_dump($car_id);
+//            $where .= " and car_id = " . $car_id;
+//            echo implode(",",$car_id);
+            $where .= " and car_id in (" . implode(",", $car_id) . ")";
         }
         if (!empty($wash_site)) {
             $where .= " and wash_shop_id = " . $wash_site;
         }
 
-        $sort = " order by id asc";
-        $sql = "select *  from ot_cost_wash";
+        $sort  = " order by id asc";
+        $sql   = "select *  from ot_cost_wash";
         $limit = " limit " . (($page - 1) * 1000) . ",1000 ";
-        $list = $Model->query($sql . $where . $sort . $limit);
+        $list  = $Model->query($sql . $where . $sort . $limit);
         if ($list) {
             register_shutdown_function(array(&$this, 'washRecordToExcel'), $page + 1);
 
             //洗车商店
-            $wash_shop = M("WashShop")->select();
+            $wash_shop  = M("WashShop")->select();
             $wash_shops = $this->_array_column($wash_shop, "shop_name", "id");
 
             //车牌号列表
-            $car = M("car")->where("is_del=0")->select();
+            $car  = M("car")->where("is_del=0")->select();
             $cars = $this->_array_column($car, "car_num", "id");
 
             //导出数据
@@ -749,7 +752,7 @@ class FinanceController extends CommonController
 
             foreach ($list as $k => $v) {
 
-                $data = array();
+                $data   = array();
                 $data[] = iconv('utf-8', 'GB18030', $cars[$v["car_id"]]);
                 $data[] = iconv('utf-8', 'GB18030', $wash_shops[$v["wash_shop_id"]]);
                 $data[] = iconv('utf-8', 'GB18030', date("Y-m-d", $v['wash_time']));
@@ -774,8 +777,8 @@ class FinanceController extends CommonController
         $Model = new CostRepairModel();
 
         $start_time = trim($_POST["startTime"]);//开始时间
-        $end_time = trim($_POST["endTime"]);//结束时间
-        $car_id = trim($_POST["car"]);//车牌号
+        $end_time   = trim($_POST["endTime"]);//结束时间
+        $car_id     = $_POST["car"];//车牌号
         $repairsite = intval($_POST["repairsite"]);//維修地点
         $repairshop = intval($_POST["repairshop"]);//维修类型
 
@@ -788,7 +791,8 @@ class FinanceController extends CommonController
             $where .= " and end_time <= " . strtotime($end_time . " 23:59:59");
         }
         if (!empty($car_id)) {
-            $where .= " and car_id = " . $car_id;
+//            $where .= " and car_id = " . $car_id;
+            $where .= " and car_id in (" . implode(",", $car_id) . ")";
         }
         if (!empty($repairsite)) {
             $where .= " and repair_shop_id = " . $repairsite;
@@ -797,23 +801,23 @@ class FinanceController extends CommonController
             $where .= " and type = " . $repairshop;
         }
 
-        $sort = " order by id asc";
-        $sql = "select *  from ot_cost_repair";
+        $sort  = " order by id desc";
+        $sql   = "select *  from ot_cost_repair";
         $limit = " limit " . (($page - 1) * 1000) . ",1000 ";
-        $list = $Model->query($sql . $where . $sort . $limit);
+        $list  = $Model->query($sql . $where . $sort . $limit);
         if ($list) {
             register_shutdown_function(array(&$this, 'repairRecordToExcel'), $page + 1);
 
             //维修地点
-            $repair_shop = M("RepairShop")->select();
+            $repair_shop  = M("RepairShop")->select();
             $repair_shops = $this->_array_column($repair_shop, "shop_name", "id");
 
             //维修类型
-            $repair_type = M("RepairType")->select();
+            $repair_type  = M("RepairType")->select();
             $repair_types = $this->_array_column($repair_type, "repair_type_name", "id");
 
             //车牌号列表
-            $car = M("car")->where("is_del=0")->select();
+            $car  = M("car")->where("is_del=0")->select();
             $cars = $this->_array_column($car, "car_num", "id");
 
             //导出数据
@@ -833,7 +837,7 @@ class FinanceController extends CommonController
 
             foreach ($list as $k => $v) {
 
-                $data = array();
+                $data   = array();
                 $data[] = iconv('utf-8', 'GB18030', $cars[$v["car_id"]]);
                 $data[] = iconv('utf-8', 'GB18030', $repair_shops[$v["repair_shop_id"]]);
                 $data[] = iconv('utf-8', 'GB18030', $repair_types[$v["type"]]);
@@ -858,14 +862,14 @@ class FinanceController extends CommonController
     {
         $Model = new CostRepairModel();
 
-        $start_time = trim($_POST["startTime"]);//开始时间
-        $end_time = trim($_POST["endTime"]);//结束时间
-        $car_id = trim($_POST["car"]);//车牌号
-        $oilshop = trim($_POST["oilshop"]);//加油地点
-        $card_num = trim($_POST["card_num"]);//卡号
+        $start_time    = trim($_POST["startTime"]);//开始时间
+        $end_time      = trim($_POST["endTime"]);//结束时间
+        $car_id        = $_POST["car"];//车牌号
+        $oilshop       = trim($_POST["oilshop"]);//加油地点
+        $card_num      = trim($_POST["card_num"]);//卡号
         $serial_number = trim($_POST["serial_number"]);//流水号
-        $fuel_charge = trim($_POST["fuel_charge"]);//加油量
-        $oil_wear = trim($_POST["oil_wear"]);//百公里油耗
+        $fuel_charge   = trim($_POST["fuel_charge"]);//加油量
+        $oil_wear      = trim($_POST["oil_wear"]);//百公里油耗
 
         $where = " where is_del = 0 ";
 
@@ -876,7 +880,7 @@ class FinanceController extends CommonController
             $where .= " and trading_time <= " . strtotime($end_time . " 23:59:59");
         }
         if (!empty($car_id)) {
-            $where .= " and car_id = " . $car_id;
+            $where .= " and car_id in (" . implode(",",$car_id) . ")";
         }
         if (!empty($oilshop)) {
             $where .= " and oil_shop_id = " . $oilshop;
@@ -894,19 +898,19 @@ class FinanceController extends CommonController
             $where .= " and oil_wear = " . $oil_wear;
         }
 
-        $sort = " order by id asc";
-        $sql = "select *  from ot_cost_oil";
+        $sort  = " order by id asc";
+        $sql   = "select *  from ot_cost_oil";
         $limit = " limit " . (($page - 1) * 1000) . ",1000 ";
-        $list = $Model->query($sql . $where . $sort . $limit);
+        $list  = $Model->query($sql . $where . $sort . $limit);
         if ($list) {
             register_shutdown_function(array(&$this, 'oilRecordToExcel'), $page + 1);
 
             //加油站
-            $oil_shop = M("OilShop")->select();
+            $oil_shop  = M("OilShop")->select();
             $oil_shops = $this->_array_column($oil_shop, "oil_name", "id");
 
             //车牌号列表
-            $car = M("car")->where("is_del=0")->select();
+            $car  = M("car")->where("is_del=0")->select();
             $cars = $this->_array_column($car, "car_num", "id");
 
             //导出数据
@@ -926,7 +930,7 @@ class FinanceController extends CommonController
 
             foreach ($list as $k => $v) {
 
-                $data = array();
+                $data   = array();
                 $data[] = iconv('utf-8', 'GB18030', $cars[$v["car_id"]]);
                 $data[] = iconv('utf-8', 'GB18030', $oil_shops[$v["oil_shop_id"]]);
                 $data[] = iconv('utf-8', 'GB18030', $v["fuel_charge"]);
@@ -954,8 +958,8 @@ class FinanceController extends CommonController
         $Model = new CostInsuranceModel();
 
         $start_time = trim($_POST["startTime"]);//开始时间
-        $end_time = trim($_POST["endTime"]);//结束时间
-        $car_id = intval($_POST["car"]);//车牌号
+        $end_time   = trim($_POST["endTime"]);//结束时间
+        $car_id     = $_POST["car"];//车牌号
 
         $where = " where is_del = 0 ";
 
@@ -966,13 +970,13 @@ class FinanceController extends CommonController
             $where .= " and expire_time <= " . strtotime($end_time . " 23:59:59");
         }
         if (!empty($car_id)) {
-            $where .= " and car_id = " . $car_id;
+            $where .= " and car_id in (" . implode(",",$car_id) . ")";
         }
 
-        $sort = " order by id asc";
-        $sql = "select *  from ot_cost_insurance";
+        $sort  = " order by id asc";
+        $sql   = "select *  from ot_cost_insurance";
         $limit = " limit " . (($page - 1) * 1000) . ",1000 ";
-        $list = $Model->query($sql . $where . $sort . $limit);
+        $list  = $Model->query($sql . $where . $sort . $limit);
         if ($list) {
             register_shutdown_function(array(&$this, 'insuranceRecordToExcel'), $page + 1);
 
@@ -980,7 +984,7 @@ class FinanceController extends CommonController
             $type = array(1 => "交强险", 2 => "商业险", 3 => "年检", 4 => "车船税");
 
             //车牌号列表
-            $car = M("car")->where("is_del=0")->select();
+            $car  = M("car")->where("is_del=0")->select();
             $cars = array_column($car, "car_num", "id");
 
             //导出数据
@@ -1000,7 +1004,7 @@ class FinanceController extends CommonController
 
             foreach ($list as $k => $v) {
 
-                $data = array();
+                $data   = array();
                 $data[] = iconv('utf-8', 'GB18030', $cars[$v["car_id"]]);
                 $data[] = iconv('utf-8', 'GB18030', $type[$v["cost_type"]]);
                 $data[] = iconv('utf-8', 'GB18030', $v["cost"]);
@@ -1029,7 +1033,7 @@ class FinanceController extends CommonController
             $map['shop_name'] = array('like', "%$key%");
         }
         $map["is_del"] = array("eq", 0);
-        $resCount = M("WashShop")->where($map)->select();
+        $resCount      = M("WashShop")->where($map)->select();
 
         $order = array();
         switch ($_POST["order"][0]["column"]) {
@@ -1040,11 +1044,11 @@ class FinanceController extends CommonController
         $res = M("WashShop")->where($map)->order($order)->limit($_POST["start"], $_POST["length"])->select();
 
         //返回数据
-        $data = array();
-        $data["draw"] = $_POST["draw"];
-        $data["recordsTotal"] = count($resCount);//总记录条数
+        $data                    = array();
+        $data["draw"]            = $_POST["draw"];
+        $data["recordsTotal"]    = count($resCount);//总记录条数
         $data["recordsFiltered"] = count($resCount);//过滤后的记录数，也就是搜索结果数据
-        $data["data"] = $res;
+        $data["data"]            = $res;
 
         $this->ajaxReturn($data);
     }
@@ -1079,7 +1083,7 @@ class FinanceController extends CommonController
 
     public function delWashShopDo()
     {
-        $repair = M("WashShop")->find($_POST["id"]);
+        $repair           = M("WashShop")->find($_POST["id"]);
         $repair["is_del"] = 1;
 
         $res = M("WashShop")->save($repair);
@@ -1102,7 +1106,7 @@ class FinanceController extends CommonController
             $map['oil_name'] = array('like', "%$key%");
         }
         $map["is_del"] = array("eq", 0);
-        $resCount = M("OilShop")->where($map)->select();
+        $resCount      = M("OilShop")->where($map)->select();
 
         $order = array();
         switch ($_POST["order"][0]["column"]) {
@@ -1113,11 +1117,11 @@ class FinanceController extends CommonController
         $res = M("OilShop")->where($map)->order($order)->limit($_POST["start"], $_POST["length"])->select();
 
         //返回数据
-        $data = array();
-        $data["draw"] = $_POST["draw"];
-        $data["recordsTotal"] = count($resCount);//总记录条数
+        $data                    = array();
+        $data["draw"]            = $_POST["draw"];
+        $data["recordsTotal"]    = count($resCount);//总记录条数
         $data["recordsFiltered"] = count($resCount);//过滤后的记录数，也就是搜索结果数据
-        $data["data"] = $res;
+        $data["data"]            = $res;
 
         $this->ajaxReturn($data);
     }
@@ -1152,7 +1156,7 @@ class FinanceController extends CommonController
 
     public function delOilShopDo()
     {
-        $repair = M("OilShop")->find($_POST["id"]);
+        $repair           = M("OilShop")->find($_POST["id"]);
         $repair["is_del"] = 1;
 
         $res = M("OilShop")->save($repair);
@@ -1175,7 +1179,7 @@ class FinanceController extends CommonController
             $map['shop_name'] = array('like', "%$key%");
         }
         $map["is_del"] = array("eq", 0);
-        $resCount = M("RepairShop")->where($map)->select();
+        $resCount      = M("RepairShop")->where($map)->select();
 
         $order = array();
         switch ($_POST["order"][0]["column"]) {
@@ -1186,11 +1190,11 @@ class FinanceController extends CommonController
         $res = M("RepairShop")->where($map)->order($order)->limit($_POST["start"], $_POST["length"])->select();
 
         //返回数据
-        $data = array();
-        $data["draw"] = $_POST["draw"];
-        $data["recordsTotal"] = count($resCount);//总记录条数
+        $data                    = array();
+        $data["draw"]            = $_POST["draw"];
+        $data["recordsTotal"]    = count($resCount);//总记录条数
         $data["recordsFiltered"] = count($resCount);//过滤后的记录数，也就是搜索结果数据
-        $data["data"] = $res;
+        $data["data"]            = $res;
 
         $this->ajaxReturn($data);
     }
@@ -1225,7 +1229,7 @@ class FinanceController extends CommonController
 
     public function delRepairShopDo()
     {
-        $repair = M("RepairShop")->find($_POST["id"]);
+        $repair           = M("RepairShop")->find($_POST["id"]);
         $repair["is_del"] = 1;
 
         $res = M("RepairShop")->save($repair);
@@ -1241,14 +1245,14 @@ class FinanceController extends CommonController
     public function getCarRepair()
     {
         $resCount = M("RepairType")->where("is_del=0")->select();
-        $res = M("RepairType")->where("is_del=0")->limit($_POST["start"], $_POST["length"])->select();
+        $res      = M("RepairType")->where("is_del=0")->limit($_POST["start"], $_POST["length"])->select();
 
         //返回数据
-        $types = array();
-        $types["draw"] = $_POST["draw"];
-        $types["recordsTotal"] = count($resCount);//总记录条数
+        $types                    = array();
+        $types["draw"]            = $_POST["draw"];
+        $types["recordsTotal"]    = count($resCount);//总记录条数
         $types["recordsFiltered"] = count($resCount);//过滤后的记录数，也就是搜索结果数据
-        $types["data"] = $res;
+        $types["data"]            = $res;
 
         $this->ajaxReturn($types);
     }
@@ -1282,9 +1286,9 @@ class FinanceController extends CommonController
 
     public function delCarRepair()
     {
-        $repair["id"] = $_POST["id"];
+        $repair["id"]     = $_POST["id"];
         $repair["is_del"] = 1;
-        $res = M("RepairType")->save($repair);
+        $res              = M("RepairType")->save($repair);
         if ($res) {
             $this->ajaxReturn(array("code" => 1));
         } else {
@@ -1292,15 +1296,16 @@ class FinanceController extends CommonController
         }
     }
 
-    public function getCarList(){
+    public function getCarList()
+    {
         $key = trim($_REQUEST['key']);
-        if(empty($key)){
-            $this->ajaxReturn(array("data"=>""));
+        if (empty($key)) {
+            $this->ajaxReturn(array("data" => ""));
         }
 
         $model = new CarModel();
-        $data = $model->where(array("car_num"=>array("like","%".$key."%")))->limit(20)->field("id,car_num as name")->select();
-        $this->ajaxReturn(array("data"=>$data));
+        $data  = $model->where(array("car_num" => array("like", "%" . $key . "%")))->limit(20)->field("id,car_num as name")->select();
+        $this->ajaxReturn(array("data" => $data));
     }
 
 
