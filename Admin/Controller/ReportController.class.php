@@ -99,9 +99,10 @@ class ReportController extends CommonController
 //                }
                 if (!empty($use_user)) {
                     $user_ids = M("user")->where(array("is_del" => 0, "user_name" => array("like", "%" . $use_user . "%")))->field("id")->select();  //查询是否匹配用车人
-                    if ($user_ids) {
-                        $map["t.use_user_id"] = array("IN", $this->_array_column($user_ids, "id"));
-                    }
+//                    if ($user_ids) {
+//                        $map["t.use_user_id"] = array("IN", $this->_array_column($user_ids, "id"));
+//                    }
+                    $map["t.use_user_id"] = array("IN", $user_ids ? $this->_array_column($user_ids, "id") : array(0));
                 }
 
                 if ($travelNature) {
@@ -254,9 +255,10 @@ class ReportController extends CommonController
 //            }
             if (!empty($use_user)) {
                 $user_ids = M("user")->where(array("is_del" => 0, "user_name" => array("like", "%" . $use_user . "%")))->field("id")->select();  //查询是否匹配用车人
-                if ($user_ids) {
-                    $map["t.use_user_id"] = array("IN", $this->_array_column($user_ids, "id"));
-                }
+//                if ($user_ids) {
+//                    $map["t.use_user_id"] = array("IN", $this->_array_column($user_ids, "id"));
+//                }
+                $map["t.use_user_id"] = array("IN", $user_ids ? $this->_array_column($user_ids, "id") : array(0));
             }
 
             $travelNature = trim($_REQUEST['travelNature']);
@@ -470,6 +472,7 @@ class ReportController extends CommonController
                     if ($user) {
                         $map["_string"] = " t.use_user_id in (" . implode(",", $this->_array_column($user, "id")) . ")";
                     }
+                    $map["_string"] = " t.use_user_id in (" . implode(",", $this->_array_column($user, "id")) . ")";
 //                    $map["_string"] = $search_sql;
                 }
 
