@@ -936,7 +936,7 @@ class ReportController extends CommonController
                 $Page->setConfig('theme', '%FIRST%%UP_PAGE%%LINK_PAGE%%DOWN_PAGE%%END%%HEADER%');
                 $Page->lastSuffix = false;
 
-                $field   = "t.use_user_id,t.company_id,t.driver_id,t.serial_number,t.start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,(t.parking_rate_sum +t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as else_cost ,t.totle_rate,t.jj_id,t.jj_driver_name";
+                $field   = "t.use_user_id,t.company_id,t.driver_id,t.serial_number,t.start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,t.driver_bt_cost,(t.parking_rate_sum +t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as else_cost ,t.totle_rate,t.jj_id,t.jj_driver_name";
                 $travels = M("Travel as t")->where($map)->field($field)->limit($Page->firstRow . ',' . $Page->listRows)->select();
 
                 foreach ($travels as &$val) {
@@ -1094,7 +1094,7 @@ class ReportController extends CommonController
 //                $map["_string"] = $search_sql;
             }
 
-            $field   = "t.use_user_id,t.company_id,t.driver_id,t.serial_number,t.start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,(t.parking_rate_sum +t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as else_cost ,t.totle_rate,t.jj_id,t.jj_driver_name";
+            $field   = "t.use_user_id,t.company_id,t.driver_id,t.serial_number,t.start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,t.driver_bt_cost,(t.parking_rate_sum +t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as else_cost ,t.totle_rate,t.jj_id,t.jj_driver_name";
             $travels = M("Travel t")->where($map)->limit(($page - 1) * 1000 . ' , 1000')->field($field)->select();
 
             $excel_name = $_REQUEST["startTime"] . "至" . $_REQUEST["endTime"] . "司机数据明细";
@@ -1134,7 +1134,7 @@ class ReportController extends CommonController
                     $data[] = iconv('utf-8', 'GB18030', $val["mileage"]);
                     $data[] = iconv('utf-8', 'GB18030', $val["fees_sum"]);
                     $data[] = iconv('utf-8', 'GB18030', $val["service_charge"]);
-                    $data[] = iconv('utf-8', 'GB18030', 0);
+                    $data[] = iconv('utf-8', 'GB18030', $val["driver_bt_cost"]);
                     $data[] = iconv('utf-8', 'GB18030', $val["else_cost"]);
                     $data[] = iconv('utf-8', 'GB18030', $val["totle_rate"]);
                     fputcsv($fp, $data);
@@ -1268,7 +1268,7 @@ class ReportController extends CommonController
                 $Page->setConfig('theme', '%FIRST%%UP_PAGE%%LINK_PAGE%%DOWN_PAGE%%END%%HEADER%');
                 $Page->lastSuffix = false;
 
-                $field   = 'c.user_name,c.user_phone,u.company_name as company_namee,t.use_user_id,t.company_id,t.travel_nature,t.serial_number,t.start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,t.else_cost,t.totle_rate';
+                $field   = 'c.user_name,c.user_phone,u.company_name as company_namee,t.use_user_id,t.company_id,t.travel_nature,t.serial_number,t.start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,t.else_cost,t.totle_rate,t.driver_bt_cost';
                 $travels = M("Travel as t")->join("left join " . C("DB_PREFIX") . "company as u on u.id =  t.company_id left join " . C("DB_PREFIX") . "user c on c.id = t.use_user_id")->where($map)->limit($Page->firstRow . ',' . $Page->listRows)->field($field)->select();
 
                 //合计汇总
