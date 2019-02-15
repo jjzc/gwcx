@@ -122,7 +122,7 @@ class ReportController extends CommonController
                 $Page->lastSuffix = false;
 
                 //数据
-                $field   = 'u.user_name,c.company_name as company_namee,t.use_user_id,t.company_id,t.travel_nature,t.serial_number,t.start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,t.totle_rate, (t.parking_rate_sum + t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as qita';
+                $field   = 'u.user_name,c.company_name as company_namee,t.use_user_id,t.company_id,t.travel_nature,t.serial_number,t.start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,t.totle_rate,t.driver_bt_cost, (t.parking_rate_sum + t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as qita';
                 $travels = M("Travel as t")->join("left join " . C("DB_PREFIX") . "company as c on c.id =  t.company_id left join " . C("DB_PREFIX") . "user u on u.id = t.use_user_id")->where($map)->limit($Page->firstRow . ',' . $Page->listRows)->field($field)->select();
 
                 //合计汇总
