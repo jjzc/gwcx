@@ -54,7 +54,7 @@ class IndexController extends CommonController
 
         if ($total > 0) {
             if(!file_exists($_SERVER['DOCUMENT_ROOT'] . '/audio.mp3')){
-                $this->speech();
+//                $this->speech();
             }
             $this->ajaxReturn(array("code" => 1, "count" => $count));
         } else
