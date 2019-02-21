@@ -8,75 +8,58 @@
 
 namespace Admin\Controller;
 
-class IndexController extends CommonController {
-    public function index(){
-        $userId=session("user_id");
-        $user=M("AdminUser")->find($userId);
-        $this->assign("user",$user);
+use Model\TravelModel;
 
-        $group_id=session("group_id");
-        $group=M("AdminGroup")->find($group_id);
-        $this->assign("group",$group);
+class IndexController extends CommonController
+{
+    public function index()
+    {
+        $userId = session("user_id");
+        $user   = M("AdminUser")->find($userId);
+        $this->assign("user", $user);
 
-        //查询自己是否有出行管理权限
-        //有的话，找到拥有那个链接地址的权限
-//        $groupArray=explode(",",$group["group_rule"]);
-//        $rulemap["id"]=array("in",$groupArray);
-
-//        if(in_array("1",$groupArray)){
-//            $isHavaCxManage="1";
-//            $url=M("Url")->where("pid=1")->where($rulemap)->order("id asc")->find();
-//            $cxUrl=$url["url"];
-//
-//            $this->assign("isHavaCxManage",$isHavaCxManage);
-//            $this->assign("cxUrl",$cxUrl);
-//        }else{
-//            $isHavaCxManage="0";
-//            $this->assign("isHavaCxManage",$isHavaCxManage);
-//        }
-
-
-
-//        if(in_array("2",$groupArray)){
-//            $isHavaDwManage="1";
-//            $url=M("Url")->where("pid=2")->where($rulemap)->order("id asc")->find();
-//            $dwUrl=$url["url"];
-//
-//            $this->assign("isHavaDwManage",$isHavaDwManage);
-//            $this->assign("dwUrl",$dwUrl);
-//        }else{
-//            $isHavaDwManage="0";
-//            $this->assign("isHavaDwManage",$isHavaDwManage);
-//        }
-//
-//
-//        if(in_array("3",$groupArray)){
-//            $isHavaClManage="1";
-//            $url=M("Url")->where("pid=3")->where($rulemap)->order("id asc")->find();
-//            $clUrl=$url["url"];
-//
-//            $this->assign("isHavaClManage",$isHavaClManage);
-//            $this->assign("clUrl",$clUrl);
-//
-//
-//        }else{
-//            $isHavaClManage="0";
-//            $this->assign("isHavaClManage",$isHavaClManage);
-//        }
-//
-//
-//        if(in_array("4",$groupArray)){
-//            $isHavaSjManage="1";
-//            $url=M("Url")->where("pid=4")->where($rulemap)->order("id asc")->find();
-//            $sjUrl=$url["url"];
-//
-//            $this->assign("isHavaSjManage",$isHavaSjManage);
-//            $this->assign("sjUrl",$sjUrl);
-//        }else{
-//            $isHavaSjManage="0";
-//            $this->assign("isHavaSjManage",$isHavaSjManage);
-//        }
-
+        $group_id = session("group_id");
+        $group    = M("AdminGroup")->find($group_id);
+        $this->assign("group", $group);
         $this->display();
     }
+
+    public function speech()
+    {
+        require_once 'speech/AipSpeech.php';
+
+        $appId     = "1558992317";
+        $appKey    = "N8mAGAd5hmsciyrzQoHVaRmG";
+        $secretKey = "3e2mmzWGCR3lWcoAHforcmuGwzGMX2b0 ";
+
+        $client = new \AipSpeech($appId, $appKey, $secretKey);
+
+        $result = $client->synthesis('您有新的事务需要处理', 'zh', 1, array('vol' => 5,'per'=>1));
+
+        if (!is_array($result)) {
+            file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/audio.mp3', $result);
+        }
+
+    }
+
+
+    public function notice()
+    {
+
+        $field = " count(if(state=1,1,null)) as num1 , count(if(state=3,1,null)) as num2 , count(if(state=6,1,null)) as num3 , count(if(state=8,1,null)) as num4 , count(if(is_need_settlement=1 and is_settlemented=0 and state=9,1,null)) as num5 , count(if(state=10,1,null)) as num6 ";
+
+        $count = M("travel")->where("is_del=0")->field($field)->find();
+
+        $total = array_sum($count);
+
+        if ($total > 0) {
+            if(!file_exists($_SERVER['DOCUMENT_ROOT'] . '/audio.mp3')){
+                $this->speech();
+            }
+            $this->ajaxReturn(array("code" => 1, "count" => $count));
+        } else
+            $this->ajaxReturn(array("code" => 0));
+
+    }
+
 }

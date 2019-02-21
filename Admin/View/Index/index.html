@@ -28,7 +28,7 @@
 <div class="diskicon" style="display:inline-block; width:auto;">
     <ul>
         {if in_array("/index.php/Admin/Travel", $smarty.session.allUrls)}
-        <li text="出行管理" icon="{$smarty.const.PUBLIC_URL}/images/icon/travel.png" path="/index.php/Admin/Travel/backlogTravels?mid=1" data-property="{ title:'出行管理',minimize:'true',maximize:'false',target:'iframe',multiple:'false' }" data-style="[{ name:'left',value:'0px' },{ name:'top',value:'0px' }]" ><span class="icon"><span class="icon"><img src="{$smarty.const.PUBLIC_URL}/images/icon/travel.png" title="出行管理" ></span><span class="text">出行管理</span></li>
+        <li id="travel" text="出行管理" icon="{$smarty.const.PUBLIC_URL}/images/icon/travel.png" path="/index.php/Admin/Travel/backlogTravels?mid=1" data-property="{ title:'出行管理',minimize:'true',maximize:'false',target:'iframe',multiple:'false' }" data-style="[{ name:'left',value:'0px' },{ name:'top',value:'0px' }]" ><span class="icon"><span class="icon"><img src="{$smarty.const.PUBLIC_URL}/images/icon/travel.png" title="出行管理" ></span><span class="text">出行管理</span></li>
         {/if}
 
         {if in_array("/index.php/Admin/Company", $smarty.session.allUrls)}
@@ -67,6 +67,9 @@
         {if in_array("/index.php/Admin/Finance", $smarty.session.allUrls)}
         <li text="费用管理" icon="{$smarty.const.PUBLIC_URL}/images/icon/finance.png" path="/index.php/Admin/Finance/washRecord?mid=72" data-property="{ title:'费用管理',minimize:'true',maximize:'false',target:'iframe',multiple:'false' }" data-style="[{ name:'left',value:'0px' },{ name:'top',value:'0px' }]" ><span class="icon"><span class="icon"><img src="{$smarty.const.PUBLIC_URL}/images/icon/finance.png" title="费用管理" ></span><span class="text">费用管理</span></li>
         {/if}
+        <audio id="audio" src="/audio.mp3" preload="auto" style="display:none;"></audio>
+        <!--<embed src="/audio.mp3" hidden="false" autostart="true" loop="true" width="0" height="0">-->
+        <!--<audio id="audio" src="http://www.w3school.com.cn/i/song.ogg"></audio>-->
 
     </ul>
 </div>
@@ -81,7 +84,6 @@
         <li class="datetime" id="datetime2"><p>{$user.user_name}</p></li>
     </ul>
 </div>
-
 <script type="text/javascript" src="{$smarty.const.PUBLIC_URL}/js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="{$smarty.const.PUBLIC_URL}/js/json.js"></script>
 <script type="text/javascript" src="{$smarty.const.PUBLIC_URL}/js/jquery.cloud.js"></script>
@@ -89,6 +91,7 @@
 <script src="{$smarty.const.PUBLIC_URL}/plugin/layer/layer.js" type="text/javascript"></script>
 
 <script type="text/javascript">
+
     $(document).ready(function(e) {
         $.Init();	//初始化
         $(window).resize(function(){
@@ -98,7 +101,60 @@
 
         //注入当前时间
         showTime();
+
+        // play();
+        notice();
+        setInterval(notice,600*1000);
+
     });
+
+
+    //广播播放
+    function play(){
+        document.getElementById("audio").play();
+    }
+
+    //弹出信息
+    function noticeOpen(data) {
+        var html = '<div style="padding: 20px 80px;">';
+        html += '<div style="width: 50%;height: 25px;line-height: 25px; float: left;  font-size: 26px"><p style="padding: 0; margin: 0 auto;">待审核<span style="color: #FF3F3F;margin-left: 10px">'+data.num1+'</span></p></div>';
+        html += '<div style="width: 50%;height: 25px;line-height: 25px; float: left;  font-size: 26px"><p style="padding: 0; margin: 0 auto;">待派车<span style="color: #FF3F3F;margin-left: 10px">'+data.num2+'</span></p></div>';
+        html += '<div style="width: 50%;height: 25px;line-height: 25px; float: left;  font-size: 26px"><p style="padding: 0; margin: 0 auto;">待出车<span style="color: #FF3F3F;margin-left: 10px">'+data.num3+'</span></p></div>';
+        html += '<div style="width: 50%;height: 25px;line-height: 25px; float: left;  font-size: 26px"><p style="padding: 0; margin: 0 auto;">待完成<span style="color: #FF3F3F;margin-left: 10px">'+data.num4+'</span></p></div>';
+        html += '<div style="width: 50%;height: 25px;line-height: 25px; float: left;  font-size: 26px"><p style="padding: 0; margin: 0 auto;">待核算<span style="color: #FF3F3F;margin-left: 10px">'+data.num5+'</span></p></div>';
+        html += '<div style="width: 50%;height: 25px;line-height: 25px; float: left;  font-size: 26px"><p style="padding: 0; margin: 0 auto;">待取消<span style="color: #FF3F3F;margin-left: 10px">'+data.num6+'</span></p></div>';
+        html += '</div>';
+        layer.open({
+            type: 1
+            ,title : ['您有新的事务需要处理','font-size:18px;']
+            ,offset: 'rb' //具体配置参考：offset参数项
+            ,content: html
+            ,btn: '立即处理'
+            ,btnAlign: 'c' //按钮居中
+            ,shade: 0 //不显示遮罩
+            ,area : ['400px', '200px']
+            ,time: 60*1000
+            ,yes: function(){
+                layer.closeAll();
+                $("#travel").click();
+            }
+        });
+    }
+
+    function notice(){
+        $.ajax({
+            type:'post',
+            url:"/index.php/Admin/Index/notice",
+            dataType:'json',
+            data:{},
+            success:function(res){
+                if(res.code == 1){
+                    play();
+                    noticeOpen(res.count);
+                }
+            }
+        });
+    }
 
     function loginOut() {
         window.location.href="/index.php/Admin/User/loginOut";
