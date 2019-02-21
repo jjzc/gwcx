@@ -46,7 +46,8 @@ class IndexController extends CommonController
     public function notice()
     {
 
-        $field = " count(if(state=1,1,null)) as num1 , count(if(state=3,1,null)) as num2 , count(if(state=6,1,null)) as num3 , count(if(state=8,1,null)) as num4 , count(if(is_need_settlement=1 and is_settlemented=0 and state=9,1,null)) as num5 , count(if(state=10,1,null)) as num6 ";
+//        $field = " count(if(state=1,1,null)) as num1 , count(if(state=3,1,null)) as num2 , count(if(state=6,1,null)) as num3 , count(if(state=8,1,null)) as num4 , count(if(is_need_settlement=1 and is_settlemented=0 and state=9,1,null)) as num5 , count(if(state=10,1,null)) as num6 ";
+        $field = " count(if(state=1,1,null)) as num1 , count(if(state=3,1,null)) as num2 , count(if(state=6,1,null)) as num3 , count(if(state=10,1,null)) as num6 ";
 
         $count = M("travel")->where("is_del=0")->field($field)->find();
 

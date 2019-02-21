@@ -117,16 +117,16 @@
     //弹出信息
     function noticeOpen(data) {
         var html = '<div style="padding: 20px 80px;">';
-        html += '<div style="width: 50%;height: 25px;line-height: 25px; float: left;  font-size: 26px"><p style="padding: 0; margin: 0 auto;">待审核<span style="color: #FF3F3F;margin-left: 10px">'+data.num1+'</span></p></div>';
-        html += '<div style="width: 50%;height: 25px;line-height: 25px; float: left;  font-size: 26px"><p style="padding: 0; margin: 0 auto;">待派车<span style="color: #FF3F3F;margin-left: 10px">'+data.num2+'</span></p></div>';
-        html += '<div style="width: 50%;height: 25px;line-height: 25px; float: left;  font-size: 26px"><p style="padding: 0; margin: 0 auto;">待出车<span style="color: #FF3F3F;margin-left: 10px">'+data.num3+'</span></p></div>';
-        html += '<div style="width: 50%;height: 25px;line-height: 25px; float: left;  font-size: 26px"><p style="padding: 0; margin: 0 auto;">待完成<span style="color: #FF3F3F;margin-left: 10px">'+data.num4+'</span></p></div>';
-        html += '<div style="width: 50%;height: 25px;line-height: 25px; float: left;  font-size: 26px"><p style="padding: 0; margin: 0 auto;">待核算<span style="color: #FF3F3F;margin-left: 10px">'+data.num5+'</span></p></div>';
-        html += '<div style="width: 50%;height: 25px;line-height: 25px; float: left;  font-size: 26px"><p style="padding: 0; margin: 0 auto;">待取消<span style="color: #FF3F3F;margin-left: 10px">'+data.num6+'</span></p></div>';
+        html += '<div style="width: 50%;height: 25px;line-height: 25px; float: left;  font-size: 26px"><p style="padding: 0; margin: 0 auto; font-size: 16px">待审核<span style="color: #FF3F3F;margin-left: 10px">'+data.num1+'</span></p></div>';
+        html += '<div style="width: 50%;height: 25px;line-height: 25px; float: left;  font-size: 26px"><p style="padding: 0; margin: 0 auto; font-size: 16px">待派车<span style="color: #FF3F3F;margin-left: 10px">'+data.num2+'</span></p></div>';
+        html += '<div style="width: 50%;height: 25px;line-height: 25px; float: left;  font-size: 26px"><p style="padding: 0; margin: 0 auto; font-size: 16px">待出车<span style="color: #FF3F3F;margin-left: 10px">'+data.num3+'</span></p></div>';
+        // html += '<div style="width: 50%;height: 25px;line-height: 25px; float: left;  font-size: 26px"><p style="padding: 0; margin: 0 auto;">待完成<span style="color: #FF3F3F;margin-left: 10px">'+data.num4+'</span></p></div>';
+        // html += '<div style="width: 50%;height: 25px;line-height: 25px; float: left;  font-size: 26px"><p style="padding: 0; margin: 0 auto;">待核算<span style="color: #FF3F3F;margin-left: 10px">'+data.num5+'</span></p></div>';
+        html += '<div style="width: 50%;height: 25px;line-height: 25px; float: left;  font-size: 26px"><p style="padding: 0; margin: 0 auto; font-size: 16px;">待取消<span style="color: #FF3F3F;margin-left: 10px">'+data.num6+'</span></p></div>';
         html += '</div>';
         layer.open({
             type: 1
-            ,title : ['您有新的事务需要处理','font-size:18px;']
+            ,title : ['您有新的事务需要处理','font-size:20px']
             ,offset: 'rb' //具体配置参考：offset参数项
             ,content: html
             ,btn: '立即处理'
