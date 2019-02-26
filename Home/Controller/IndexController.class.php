@@ -32,4 +32,46 @@ class IndexController extends CommonController
         $this->assign("wdNum",$wdNum);
         $this->display();
     }
+
+    public function notice()
+    {
+
+        $map["is_del"]=0;
+        $map["company_id"]=session("user_company");
+        $map["state"]=0;
+
+        $count=M("travel")->where($map)->count();
+
+        if ($count > 0) {
+            if(!file_exists($_SERVER['DOCUMENT_ROOT'] . '/Public/mp3/audio_user.mp3')){
+                $this->speech();
+            }
+            $this->ajaxReturn(array("code" => 1, "count" => $count));
+        } else
+            $this->ajaxReturn(array("code" => 0));
+
+    }
+
+    public function speech()
+    {
+        require_once $_SERVER['DOCUMENT_ROOT'] .'/Admin/Controller/speech/AipSpeech.php';
+
+        $appId     = "1558992317";
+        $appKey    = "N8mAGAd5hmsciyrzQoHVaRmG";
+        $secretKey = "3e2mmzWGCR3lWcoAHforcmuGwzGMX2b0 ";
+
+        $client = new \AipSpeech($appId, $appKey, $secretKey);
+
+        $result = $client->synthesis('您有新的出行需要审核', 'zh', 1, array('vol' => 5));
+
+        $path = $_SERVER['DOCUMENT_ROOT'] . "/Public/mp3";
+        if(!is_dir($path)){
+            mkdir($path,777);
+        }
+
+        if (!is_array($result)) {
+            file_put_contents($path . '/audio_user.mp3', $result);
+        }
+
+    }
 }

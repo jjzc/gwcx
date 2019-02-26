@@ -23,6 +23,9 @@
     </style>
 </head>
 <body onselectstart="return false;" style="-moz-user-select:none;">
+
+<audio id="audio" src="{$smarty.const.PUBLIC_URL}/mp3/audio_user.mp3" preload="auto" style="display:none;"></audio>
+
 <div class="mainbody">
     <div id="cloud1" class="cloud" ></div>
     <div id="cloud2" class="cloud" ></div>
@@ -89,8 +92,52 @@
 
         //注入当前时间
         showTime();
+
+        notice();
+        setInterval(notice,600*1000);
     });
 
+    //广播播放
+    function play(){
+        document.getElementById("audio").play();
+    }
+
+    //弹出信息
+    function noticeOpen(data) {
+        var html = '<div style="padding: 20px 80px;">';
+        html += '<div style="width: 50%;height: 25px;line-height: 25px; float: left;  font-size: 26px"><p style="padding: 0; margin: 0 auto; font-size: 16px">待审核<span style="color: #FF3F3F;margin-left: 10px">'+data+'</span></p></div>';
+        html += '</div>';
+        layer.open({
+            type: 1
+            ,title : ['您有新的出行需要审核','font-size:20px']
+            ,offset: 'rb' //具体配置参考：offset参数项
+            ,content: html
+            ,btn: '立即处理'
+            ,btnAlign: 'c' //按钮居中
+            ,shade: 0 //不显示遮罩
+            ,area : ['400px', '200px']
+            ,time: 60*1000
+            ,yes: function(){
+                layer.closeAll();
+                $(".diskicon ul li:eq(1)").click();
+            }
+        });
+    }
+
+    function notice(){
+        $.ajax({
+            type:'post',
+            url:"/index.php/Home/Index/notice",
+            dataType:'json',
+            data:{},
+            success:function(res){
+                if(res.code == 1){
+                    play();
+                    noticeOpen(res.count);
+                }
+            }
+        });
+    }
 
     function loginOut() {
         window.location.href="/index.php/Home/User/loginOut";

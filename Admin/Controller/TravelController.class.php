@@ -1161,6 +1161,7 @@ class TravelController extends CommonController
         $res = M("Travel")->save($_POST);
 
         if ($res) {
+            $travel = M("Travel")->find($_POST["id"]);
             A("UserCenter")->logCreatWeb("修改出行订单，出行流水号： " . $travel["serial_number"]);
             $this->ajaxReturn(array("code" => 1));
         } else {

@@ -355,12 +355,12 @@ class ReportController extends CommonController
                 $map['t.departure_time'] = array('between', array(strtotime($startTime), strtotime($endTime) + 24 * 3600 - 1));
             }
 
-            if($car_ids){
-                $map["t.car_id"] = array("IN",$car_ids);
+            if ($car_ids) {
+                $map["t.car_id"] = array("IN", $car_ids);
             }
 
-            if($company_ids){
-                $map["t.company_id"] = array("IN",$company_ids);
+            if ($company_ids) {
+                $map["t.company_id"] = array("IN", $company_ids);
             }
 
             $this->assign("type", $type);
@@ -427,21 +427,24 @@ class ReportController extends CommonController
                 //汇总合计
                 $field = 't.id ,count(t.id) AS finishCount,sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount,sum(t.parking_rate_sum + t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as qitacount,sum(totle_rate) as xiaoji ';
                 $total = M("car as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.car_id")->where($map)->field($field)->having('finishCount>=1')->select();
+
+                $carIds = M("car as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.car_id")->where($map)->group("t.car_id")->field('t.car_id')->having('count(t.car_id)>=1')->select();
+                $carIds = $this->_array_column($carIds, 'car_id');
                 foreach ($total as &$val) {
                     //计算维修保养费用
-                    $xiche['car_id']    = array('eq', $val["id"]);
+                    $xiche['car_id']    = array('in', $carIds);
                     $xiche["is_del"]    = array('eq', 0);
                     $xiche["wash_time"] = $map['t.departure_time'];
 
-                    $weixiu['car_id']     = array('eq', $val["id"]);
+                    $weixiu['car_id']     = array('in', $carIds);
                     $weixiu["is_del"]     = array('eq', 0);
                     $weixiu["start_time"] = $map['t.departure_time'];
 
-                    $jiayou['car_id']       = array('eq', $val["id"]);
+                    $jiayou['car_id']       = array('in', $carIds);
                     $jiayou["is_del"]       = array('eq', 0);
                     $jiayou["trading_time"] = $map['t.departure_time'];
 
-                    $nianjian['car_id']   = array('eq', $val["id"]);
+                    $nianjian['car_id']   = array('in', $carIds);
                     $nianjian["is_del"]   = array('eq', 0);
                     $nianjian["pay_time"] = $map['t.departure_time'];
 
@@ -449,6 +452,11 @@ class ReportController extends CommonController
                     $val["weixiu"]   = M("CostRepair")->where($weixiu)->sum("cost");
                     $val["jiayou"]   = M("CostOil")->where($jiayou)->sum("cost");
                     $val["nianjian"] = M("CostInsurance")->where($nianjian)->sum("cost");
+
+                    $val["xiche"]    = $val["xiche"] ? $val["xiche"] : 0;
+                    $val["weixiu"]   = $val["weixiu"] ? $val["weixiu"] : 0;
+                    $val["jiayou"]   = $val["jiayou"] ? $val["jiayou"] : 0;
+                    $val["nianjian"] = $val["nianjian"] ? $val["nianjian"] : 0;
                     $val["xiaoji"]   = $val["xiche"] + $val["weixiu"] + $val["jiayou"] + $val["nianjian"];
                 }
                 unset($val);
@@ -566,10 +574,10 @@ class ReportController extends CommonController
 
         set_time_limit(0);
         //获取开始时间
-        $startTime = trim($_REQUEST['startTime']);
-        $endTime   = trim($_REQUEST['endTime']);
-        $type      = intval($_REQUEST['type']);
-        $searchKey = trim($_REQUEST['searchKey']);
+        $startTime   = trim($_REQUEST['startTime']);
+        $endTime     = trim($_REQUEST['endTime']);
+        $type        = intval($_REQUEST['type']);
+        $searchKey   = trim($_REQUEST['searchKey']);
         $company_ids = $_REQUEST['company'];
         $car_ids     = $_REQUEST['car'];
 
@@ -587,12 +595,12 @@ class ReportController extends CommonController
         }
 
 
-        if(!empty($car_ids) && $car_ids!='null'){
-            $map["t.car_id"] = array("IN",$car_ids);
+        if (!empty($car_ids) && $car_ids != 'null') {
+            $map["t.car_id"] = array("IN", $car_ids);
         }
 
-        if($company_ids  && $company_ids!='null'){
-            $map["t.company_id"] = array("IN",$company_ids);
+        if ($company_ids && $company_ids != 'null') {
+            $map["t.company_id"] = array("IN", $company_ids);
         }
 
         if ($type == 1) {
@@ -680,21 +688,24 @@ class ReportController extends CommonController
             //汇总合计
             $field = 't.id ,count(t.id) AS finishCount,sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount,sum(t.parking_rate_sum + t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as qitacount,sum(totle_rate) as heji ';
             $total = M("car as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.car_id")->where($map)->field($field)->having('finishCount>=1')->select();
+
+            $carIds = M("car as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.car_id")->where($map)->group("t.car_id")->field('t.car_id')->having('count(t.car_id)>=1')->select();
+            $carIds = $this->_array_column($carIds, 'car_id');
             foreach ($total as &$val) {
                 //计算维修保养费用
-                $xiche['car_id']    = array('eq', $val["id"]);
+                $xiche['car_id']    = array('in', $carIds);
                 $xiche["is_del"]    = array('eq', 0);
                 $xiche["wash_time"] = $map['t.departure_time'];
 
-                $weixiu['car_id']     = array('eq', $val["id"]);
+                $weixiu['car_id']     = array('in', $carIds);
                 $weixiu["is_del"]     = array('eq', 0);
                 $weixiu["start_time"] = $map['t.departure_time'];
 
-                $jiayou['car_id']       = array('eq', $val["id"]);
+                $jiayou['car_id']       = array('in', $carIds);
                 $jiayou["is_del"]       = array('eq', 0);
                 $jiayou["trading_time"] = $map['t.departure_time'];
 
-                $nianjian['car_id']   = array('eq', $val["id"]);
+                $nianjian['car_id']   = array('in', $carIds);
                 $nianjian["is_del"]   = array('eq', 0);
                 $nianjian["pay_time"] = $map['t.departure_time'];
 
@@ -702,6 +713,11 @@ class ReportController extends CommonController
                 $val["weixiu"]   = M("CostRepair")->where($weixiu)->sum("cost");
                 $val["jiayou"]   = M("CostOil")->where($jiayou)->sum("cost");
                 $val["nianjian"] = M("CostInsurance")->where($nianjian)->sum("cost");
+
+                $val["xiche"]    = $val["xiche"] ? $val["xiche"] : 0;
+                $val["weixiu"]   = $val["weixiu"] ? $val["weixiu"] : 0;
+                $val["jiayou"]   = $val["jiayou"] ? $val["jiayou"] : 0;
+                $val["nianjian"] = $val["nianjian"] ? $val["nianjian"] : 0;
                 $val["xiaoji"]   = $val["xiche"] + $val["weixiu"] + $val["jiayou"] + $val["nianjian"];
             }
             unset($val);
@@ -826,12 +842,12 @@ class ReportController extends CommonController
                 $_GET["p"] = 1;
             }
 
-            $startTime = trim($_REQUEST['startTime']);
-            $endTime   = trim($_REQUEST['endTime']);
-            $type      = intval($_REQUEST["type"]);
-            $searchKey = trim($_REQUEST["searchKey"]);
+            $startTime   = trim($_REQUEST['startTime']);
+            $endTime     = trim($_REQUEST['endTime']);
+            $type        = intval($_REQUEST["type"]);
+            $searchKey   = trim($_REQUEST["searchKey"]);
             $company_ids = $_REQUEST['company'];
-            $driver_ids = $_REQUEST['driver'];
+            $driver_ids  = $_REQUEST['driver'];
 
             $map             = array();
             $map['t.is_del'] = 0;
@@ -846,11 +862,11 @@ class ReportController extends CommonController
                 $map['t.departure_time'] = array('between', array(strtotime($startTime), strtotime($endTime) + 24 * 3600));
             }
 
-            if($driver_ids){
+            if ($driver_ids) {
                 $map['t.driver_id'] = array('in', $driver_ids);
             }
 
-            if($company_ids){
+            if ($company_ids) {
                 $map['t.company_id'] = array('in', $company_ids);
             }
 
@@ -992,12 +1008,12 @@ class ReportController extends CommonController
     //司机报表导出
     public function driver_export_to_csv($page = 1)
     {
-        $startTime = trim($_REQUEST['startTime']);
-        $endTime   = trim($_REQUEST['endTime']);
-        $type      = intval($_REQUEST["type"]);
-        $searchKey = trim($_REQUEST["searchKey"]);
+        $startTime   = trim($_REQUEST['startTime']);
+        $endTime     = trim($_REQUEST['endTime']);
+        $type        = intval($_REQUEST["type"]);
+        $searchKey   = trim($_REQUEST["searchKey"]);
         $company_ids = $_REQUEST['company'];
-        $driver_ids = $_REQUEST['driver'];
+        $driver_ids  = $_REQUEST['driver'];
 
         $map             = array();
         $map['t.is_del'] = 0;
@@ -1012,11 +1028,11 @@ class ReportController extends CommonController
             $map['t.departure_time'] = array('between', array(strtotime($startTime), strtotime($endTime) + 24 * 3600));
         }
 
-        if($driver_ids && $driver_ids != 'null'){
+        if ($driver_ids && $driver_ids != 'null') {
             $map['t.driver_id'] = array('in', $driver_ids);
         }
 
-        if($company_ids && $company_ids != 'null'){
+        if ($company_ids && $company_ids != 'null') {
             $map['t.company_id'] = array('in', $company_ids);
         }
 
@@ -1169,10 +1185,10 @@ class ReportController extends CommonController
                 $_GET["p"] = 1;
             }
 
-            $startTime = trim($_REQUEST['startTime']);
-            $endTime   = trim($_REQUEST['endTime']);
-            $type      = intval($_REQUEST["type"]);
-            $searchKey = trim($_REQUEST["searchKey"]);
+            $startTime   = trim($_REQUEST['startTime']);
+            $endTime     = trim($_REQUEST['endTime']);
+            $type        = intval($_REQUEST["type"]);
+            $searchKey   = trim($_REQUEST["searchKey"]);
             $company_ids = $_REQUEST["company"];
 
             $map             = array();
@@ -1188,8 +1204,8 @@ class ReportController extends CommonController
                 $map['t.departure_time'] = array('between', array(strtotime($startTime), strtotime($endTime) + 24 * 3600));
             }
 
-            if($company_ids){
-                $map['t.company_id'] = array('in',$company_ids);
+            if ($company_ids) {
+                $map['t.company_id'] = array('in', $company_ids);
             }
 
             $this->assign("username", $searchKey);
@@ -1246,11 +1262,11 @@ class ReportController extends CommonController
 
                 if (!empty($searchKey)) {
 //                    $company_ids = M("company")->where(array("is_del" => 0, "company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配单位名称
-                    $user_ids    = M("user")->where(array("is_del" => 0, "user_name|user_phone" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配用车人
+                    $user_ids = M("user")->where(array("is_del" => 0, "user_name|user_phone" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配用车人
 //                    if ($company_ids) {
 //                        $map["t.company_id"] = array("IN", $this->_array_column($company_ids, "id"));
 //                    } else
-                        if ($user_ids) {
+                    if ($user_ids) {
                         $map["t.use_user_id"] = array("IN", $this->_array_column($user_ids, "id"));
                     }
                 }
@@ -1298,10 +1314,10 @@ class ReportController extends CommonController
     public function user_export_to_csv($page = 1)
     {
         set_time_limit(0);
-        $startTime = trim($_REQUEST['startTime']);
-        $endTime   = trim($_REQUEST['endTime']);
-        $type      = intval($_REQUEST["type"]);
-        $searchKey = trim($_REQUEST["searchKey"]);
+        $startTime   = trim($_REQUEST['startTime']);
+        $endTime     = trim($_REQUEST['endTime']);
+        $type        = intval($_REQUEST["type"]);
+        $searchKey   = trim($_REQUEST["searchKey"]);
         $company_ids = $_REQUEST["company"];
 
         $map             = array();
@@ -1390,7 +1406,7 @@ class ReportController extends CommonController
 
             if (!empty($searchKey)) {
 //                    $company_ids = M("company")->where(array("is_del" => 0, "company_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配单位名称
-                $user_ids    = M("user")->where(array("is_del" => 0, "user_name|user_phone" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配用车人
+                $user_ids = M("user")->where(array("is_del" => 0, "user_name|user_phone" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配用车人
 //                    if ($company_ids) {
 //                        $map["t.company_id"] = array("IN", $this->_array_column($company_ids, "id"));
 //                    } else
@@ -1399,8 +1415,8 @@ class ReportController extends CommonController
                 }
             }
 
-            if($company_ids && $company_ids!= 'null'){
-                $map['t.company_id'] = array('in',$company_ids);
+            if ($company_ids && $company_ids != 'null') {
+                $map['t.company_id'] = array('in', $company_ids);
             }
 
             $field   = 'c.user_name,u.company_name,t.serial_number,t.start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,t.totle_rate ,t.driver_bt_cost,(t.parking_rate_sum +t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as qita';
