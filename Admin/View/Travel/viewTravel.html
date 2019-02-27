@@ -49,10 +49,12 @@
                             <td colspan="2" style="text-align: left">{$travel.serial_number}</td>
                             <td>服务车辆所属</td>
                             <td colspan="2"　style="text-align: left">
-                                {if $travel.arrange_type_id==1}
+                                {if $travel.car_id}
+                                自有车辆
+                                {elseif $travel.jj_id}
                                 玖玖专车{$travel.jj_id}
                                 {else}
-                                自有车辆
+                                尚未派车
                                 {/if}                            </td>
                         </tr>
                         {if $travel.center_error_msg or $travel.manage_error_msg}

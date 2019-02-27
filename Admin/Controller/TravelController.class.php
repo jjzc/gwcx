@@ -455,7 +455,7 @@ class TravelController extends CommonController
 //                $search_sql .= " or company_id in (" . implode(",", $this->_array_column($company, "id")) . ")";
 //            }
 //            $map["_string"] = $search_sql;
-            $map['serial_number|from_place|to_place'] = array("like","%".trim($_POST["searchKey"])."%");
+            $map['serial_number|from_place|to_place|jj_id'] = array("like","%".trim($_POST["searchKey"])."%");
         }
         if (!empty($_POST["startTime"])) {
             $map['departure_time'] = array('gt', strtotime($_POST["startTime"]));
