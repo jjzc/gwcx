@@ -2708,13 +2708,15 @@ class StatisticsController extends CommonController {
                 $driver=M("Driver")->find($res[$i]["driver_id"]);
                 $res[$i]["driver_name"] = $driver["driver_name"];
 
+            }else{
+                $res[$i]["driver_name"] = $res[$i]["jj_driver_name"];
             }
             if($res[$i]["car_id"]!=""&&$res[$i]["car_id"]!=null) {
                 $car=M("Car")->find($res[$i]["car_id"]);
                 $res[$i]["car_num"] = $car["car_num"];
+            }else{
+                $res[$i]["car_num"] = $res[$i]["jj_car_num"];
             }
-
-
         }
 
 
