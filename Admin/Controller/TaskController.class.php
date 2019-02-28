@@ -6,7 +6,7 @@ use Think\Controller;
 
 class TaskController extends Controller
 {
-    public function getToken()
+    private function getToken()
     {
         $set     = M("set")->find(1);
         $account = "account=" . $set["jjaccount"] . "&pwd=" . $set["jjpwd"];
@@ -100,6 +100,10 @@ class TaskController extends Controller
             exit;
         }
 
+    }
+
+    public function test(){
+        @file_put_contents($_SERVER["DOCUMENT_ROOT"]."/jzw.txt","time :".date("Y-m-d H:i:s",time()).PHP_EOL,FILE_APPEND);
     }
 
 }
