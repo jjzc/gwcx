@@ -600,7 +600,8 @@ class AdminController extends Controller {
         if ($res["result"] == "1") {
             $travel["jj_id"]           = $res["data"]["order_id"];
             $travel["send_other_res"]  = $_POST["send_other_res"];
-            $travel["arrange_type_id"] = $_POST["arrange_id"];
+//            $travel["arrange_type_id"] = $_POST["arrange_id"];
+            $travel["arrange_type_id"] = 1;    //FIXME 前端arrange_id没有传值过来 暂时写死
             $travel["state"]           = $state;
             $travel["send_car_time"]   = time();
             $travel["is_need_settlement"] = 0;//使用玖玖专车就不需要费用核算了，只有自有车辆出行才费用核算

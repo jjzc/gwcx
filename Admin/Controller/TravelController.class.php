@@ -1796,7 +1796,7 @@ class TravelController extends CommonController
     {
         $travel                        = M("Travel")->find($_POST["id"]);
         $travelType                    = M("TravelType")->find($travel["travel_type_id"]);
-        $travel["from_place_location"] = '';
+//        $travel["from_place_location"] = '';
         $state                         = 5;
         //如果不需要派车之后的审核，则直接将状态设置为待出车
         //如果派车之后需要审核，则直接将状态设置为待出车审核
@@ -1844,14 +1844,16 @@ class TravelController extends CommonController
         $res = json_decode($res, true);
 
         if ($res["result"] == "1") {
-            $travel["jj_id"]              = $res["data"]["order_id"];
-            $travel["send_other_res"]     = $_POST["send_other_res"];
-            $travel["arrange_type_id"]    = $_POST["arrange_id"];
-            $travel["state"]              = $state;
-            $travel["send_car_time"]      = time();
-            $travel["is_need_settlement"] = 0;//使用玖玖专车就不需要费用核算了，只有自有车辆出行才费用核算
+            $save["jj_id"]              = $res["data"]["order_id"];
+            $save["send_other_res"]     = $_POST["send_other_res"];
+            $save["arrange_type_id"]    = $_POST["arrange_id"];
+            $save["state"]              = $state;
+            $save["send_car_time"]      = time();
+            $save["is_need_settlement"] = 0;//使用玖玖专车就不需要费用核算了，只有自有车辆出行才费用核算
 
-            $re = M("Travel")->save($travel);
+            $re = M("Travel")->save($save,array("id"=>$_POST["id"]));
+
+//            @file_put_contents($_SERVER["DOCUMENT_ROOT"]."/log.txt"," sendCarToOtherSql:".M("Travel")->getLastSql().PHP_EOL,FILE_APPEND);
 
             if ($re) {
                 A("UserCenter")->logCreatWeb("派车给第三方，出行流水号： " . $travel["serial_number"]);
