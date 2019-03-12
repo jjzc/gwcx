@@ -29,7 +29,7 @@ class TaskController extends Controller
         if (empty($token)) {
             $token = $this->getToken();
             if ($token) {
-                S("AccToken", $token);
+                S("AccToken", $token ,3600*12);
             }
         }
 
