@@ -154,6 +154,53 @@ class ReportController extends CommonController
         $this->display();
     }
 
+    //获取所有数据，用于打印
+    public function getAllCompany()
+    {
+        $startTime    = trim($_REQUEST['startTime']);       //开始时间
+        $endTime      = trim($_REQUEST['endTime']);         //结束时间
+        $type         = intval($_REQUEST["type"]);          //报表类型
+        $travelNature = trim($_REQUEST["travelNature"]);    //出行性质
+        $company_ids  = $_REQUEST["company"];                //出行单位id
+        $use_user     = trim($_REQUEST["use_user"]);            //用车人姓名
+
+        //查询条件
+        $map             = array();
+        $map['t.is_del'] = 0;
+        $map['t.state']  = 9;
+
+        if (!empty($startTime) && empty($endTime)) {
+            $map['t.departure_time'] = array('gt', strtotime($startTime));
+        } elseif (!empty($endTime) && empty($startTime)) {
+            $map['t.departure_time'] = array('elt', strtotime($endTime) + 24 * 3600 - 1);
+        } elseif ((!empty($startTime)) && !empty($endTime)) {
+            $map['t.departure_time'] = array('between', array(strtotime($startTime), strtotime($endTime) + 24 * 3600 - 1));
+        }
+
+        if ($company_ids) {
+            $map["t.company_id"] = array("IN", $company_ids);
+        }
+
+        if ($type == 1) {
+            $map['c.is_del'] = 0;      //统计未删除的单位
+            $field           = 't.company_id,c.company_name,count(t.company_id) AS finishCount,sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount,sum(t.parking_rate_sum + t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as qitaCount ,sum(totle_rate) as heji';
+            $data            = M("Company as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.company_id")->where($map)->group("t.company_id")->field($field)->having('finishCount>=1')->select();
+        } else {
+            $map["c.is_del"] = 0;
+            if (!empty($use_user)) {
+                $user_ids             = M("user")->where(array("is_del" => 0, "user_name" => array("like", "%" . $use_user . "%")))->field("id")->select();  //查询是否匹配用车人
+                $map["t.use_user_id"] = array("IN", $user_ids ? $this->_array_column($user_ids, "id") : array(0));
+            }
+            if ($travelNature) {
+                $map["t.travel_nature"] = $travelNature;
+            }
+            //数据
+            $field = 'u.user_name,c.company_name as company_namee,t.use_user_id,t.company_id,t.travel_nature,t.serial_number,t.start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,t.totle_rate,t.driver_bt_cost, (t.parking_rate_sum + t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as qita';
+            $data  = M("Travel as t")->join("left join " . C("DB_PREFIX") . "company as c on c.id =  t.company_id left join " . C("DB_PREFIX") . "user u on u.id = t.use_user_id")->where($map)->field($field)->select();
+        }
+        $this->ajaxReturn(array('data' => $data, 'type' => $type));
+    }
+
     //单位报表导出
     public function company_export_to_csv($page = 1)
     {
@@ -566,6 +613,110 @@ class ReportController extends CommonController
         $this->assign("startTime", $startTime ? $startTime : date('Y-m-01', strtotime(date("Y-m-d"))));
         $this->assign("endTime", $endTime ? $endTime : date('Y-m-d', strtotime(date("Y-m-d"))));
         $this->display();
+    }
+
+    public function getAllCar()
+    {
+        $startTime   = trim($_REQUEST['startTime']);
+        $endTime     = trim($_REQUEST['endTime']);
+        $type        = intval($_REQUEST['type']);
+        $searchKey   = trim($_REQUEST['searchKey']);
+        $company_ids = $_REQUEST['company'];
+        $car_ids     = $_REQUEST['car'];
+
+        $map             = array();
+        $map["t.is_del"] = 0;
+        $map["t.state"]  = 9;
+
+        //获取开始时间
+        if (!empty($startTime) && empty($endTime)) {
+            $map['t.departure_time'] = array('gt', strtotime($startTime));
+        } elseif (!empty($endTime) && empty($startTime)) {
+            $map['t.departure_time'] = array('elt', strtotime($endTime) + 24 * 3600);
+        } elseif ((!empty($startTime)) && !empty($endTime)) {
+            $map['t.departure_time'] = array('between', array(strtotime($startTime), strtotime($endTime) + 24 * 3600 - 1));
+        }
+
+        if ($car_ids) {
+            $map["t.car_id"] = array("IN", $car_ids);
+        }
+
+        if ($company_ids) {
+            $map["t.company_id"] = array("IN", $company_ids);
+        }
+        if ($type == 1) {
+
+            $map['c.is_del'] = 0;
+
+            $field = 'c.id,t.car_id,c.car_num,count(t.car_id) AS finishCount,sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount,sum(t.parking_rate_sum + t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as qitacount,sum(totle_rate) as heji ';
+
+            $cars = M("car as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.car_id")->where($map)->group("t.car_id")->field($field)->having('finishCount>=1')->select();
+
+            foreach ($cars as &$val) {
+                //计算维修保养费用
+                $xiche['car_id']    = array('eq', $val["id"]);
+                $xiche["is_del"]    = array('eq', 0);
+                $xiche["wash_time"] = $map['t.departure_time'];
+
+                $weixiu['car_id']     = array('eq', $val["id"]);
+                $weixiu["is_del"]     = array('eq', 0);
+                $weixiu["start_time"] = $map['t.departure_time'];
+
+                $jiayou['car_id']       = array('eq', $val["id"]);
+                $jiayou["is_del"]       = array('eq', 0);
+                $jiayou["trading_time"] = $map['t.departure_time'];
+
+                $nianjian['car_id']   = array('eq', $val["id"]);
+                $nianjian["is_del"]   = array('eq', 0);
+                $nianjian["pay_time"] = $map['t.departure_time'];
+
+                $val["xiche"]    = M("CostWash")->where($xiche)->sum("cost");
+                $val["weixiu"]   = M("CostRepair")->where($weixiu)->sum("cost");
+                $val["jiayou"]   = M("CostOil")->where($jiayou)->sum("cost");
+                $val["nianjian"] = M("CostInsurance")->where($nianjian)->sum("cost");
+                $val["xiaoji"]   = $val["xiche"] + $val["weixiu"] + $val["jiayou"] + $val["nianjian"];
+
+            }
+            unset($val);
+            $this->ajaxReturn(array('data' => $cars, 'type' => $type));
+        }
+
+        if ($type == 2) {
+            if ($searchKey) { // 搜索车牌号或者司机或者单位或者用车人
+
+                $user = M("user")->where(array("user_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+                if ($user) {
+                    $map["_string"] = " t.use_user_id in (" . implode(",", $this->_array_column($user, "id")) . ")";
+                }
+                $map["_string"] = " t.use_user_id in (" . implode(",", $this->_array_column($user, "id")) . ")";
+            }
+            $travels = M("Travel t")->where($map)->select();
+
+            foreach ($travels as &$val) {
+                //获取用车人信息
+                $user             = M("User")->where(array("id" => $val["use_user_id"]))->find();
+                $val["user_name"] = $user["user_name"];
+
+                //单位信息
+                $companyyy            = M("Company")->where(array("id" => $val["company_id"]))->find();
+                $val["company_namee"] = $companyyy["company_name"];
+
+                //车辆信息
+                $car            = M("Car")->where(array("id" => $val["car_id"]))->find();
+                $val["car_num"] = $car["car_num"];
+
+                //司机信息
+                if ($val["jj_id"]) {  //第三方派车
+                    $val["driver_name"] = $val["jj_driver_name"];
+                    $val["car_num"]     = $val["jj_car_num"];
+                } else {
+                    //司机信息
+                    $driver             = M("Driver")->where(array("id" => $val["driver_id"]))->find();
+                    $val["driver_name"] = $driver["driver_name"];
+                }
+            }
+            $this->ajaxReturn(array('data' => $travels, 'type' => $type));
+        }
     }
 
     //车辆报表导出
@@ -1005,6 +1156,91 @@ class ReportController extends CommonController
         $this->display();
     }
 
+    public function getAllDriver()
+    {
+
+        $startTime   = trim($_REQUEST['startTime']);
+        $endTime     = trim($_REQUEST['endTime']);
+        $type        = intval($_REQUEST["type"]);
+        $searchKey   = trim($_REQUEST["searchKey"]);
+        $company_ids = $_REQUEST['company'];
+        $driver_ids  = $_REQUEST['driver'];
+
+        $map             = array();
+        $map['t.is_del'] = 0;
+        $map['t.state']  = 9;
+
+        //获取开始时间
+        if (!empty($startTime) && empty($endTime)) {
+            $map['t.departure_time'] = array('gt', strtotime($startTime));
+        } elseif (!empty($endTime) && empty($startTime)) {
+            $map['t.departure_time'] = array('elt', strtotime($endTime) + 24 * 3600);
+        } elseif ((!empty($startTime)) && !empty($endTime)) {
+            $map['t.departure_time'] = array('between', array(strtotime($startTime), strtotime($endTime) + 24 * 3600));
+        }
+
+        if ($driver_ids) {
+            $map['t.driver_id'] = array('in', $driver_ids);
+        }
+
+        if ($company_ids) {
+            $map['t.company_id'] = array('in', $company_ids);
+        }
+
+
+        if ($type == 1) {
+
+            $map['c.is_del'] = 0;
+
+            $field = 't.driver_id,c.driver_name,c.driver_phone,count(t.driver_id) AS finishCount,sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount,sum(t.parking_rate_sum +t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as qitacount,sum(totle_rate) as heji ';
+
+            $drivers = M("Driver as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.driver_id")->where($map)->group("t.driver_id")->field($field)->having('finishCount>=1')->select();
+
+            foreach ($drivers as &$val) {
+                $val["finishCount"]         = $val['finishcount'];
+                $val["companyMileageCount"] = $val["companymileagecount"] ? $val["companymileagecount"] : 0;
+                $val["luqiaoCount"]         = $val["luqiaocount"] ? $val["luqiaocount"] : 0;
+                $val["fuwufeiCount"]        = $val["fuwufeicount"] ? $val["fuwufeicount"] : 0;
+                $val["buzhuCount"]          = $val["buzhucount"] ? $val["buzhucount"] : 0;
+                $val["qitaCount"]           = $val["qitacount"] ? $val["qitacount"] : 0;
+                $val["heji"]                = $val["heji"] ? $val["heji"] : 0;
+            }
+            unset($val);
+            $this->ajaxReturn(array('data' => $drivers, 'type' => $type));
+        }
+
+        if ($type == 2) {
+            if ($searchKey) { // 搜索司机姓名或者单位或者用车人
+                $user = M("user")->where(array("is_del" => 0, "user_name" => array("like", "%" . $searchKey . "%")))->field("id")->select();
+                if ($user) {
+                    $map["_string"] = " t.use_user_id in (" . implode(",", $this->_array_column($user, "id")) . ")";
+                }
+            }
+
+            $field   = "t.use_user_id,t.company_id,t.driver_id,t.serial_number,t.start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,t.driver_bt_cost,(t.parking_rate_sum +t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as else_cost ,t.totle_rate,t.jj_id,t.jj_driver_name";
+            $travels = M("Travel as t")->where($map)->field($field)->select();
+
+            foreach ($travels as &$val) {
+                //获取用车人信息
+                $user             = M("User")->where(array('id' => $val["use_user_id"]))->find();
+                $val["user_name"] = $user["user_name"];
+                //单位信息
+                $companyyy            = M("Company")->where(array('id' => $val["company_id"]))->find();
+                $val["company_namee"] = $companyyy["company_name"];
+                //司机信息
+                if ($val['jj_id']) {
+                    $val['driver_name'] = $val['jj_driver_name'];
+                } else {
+                    $driver             = M("Driver")->where(array('id' => $val["driver_id"]))->find();
+                    $val["driver_name"] = $driver["driver_name"];
+                }
+
+            }
+            unset($val);
+            $this->ajaxReturn(array('data' => $travels, 'type' => $type));
+        }
+    }
+
     //司机报表导出
     public function driver_export_to_csv($page = 1)
     {
@@ -1308,6 +1544,70 @@ class ReportController extends CommonController
         $this->assign("startTime", $startTime ? $startTime : date('Y-m-01', strtotime(date("Y-m-d"))));
         $this->assign("endTime", $endTime ? $endTime : date('Y-m-d', strtotime(date("Y-m-d"))));
         $this->display();
+    }
+
+    public function getAllUser()
+    {
+        $startTime   = trim($_REQUEST['startTime']);
+        $endTime     = trim($_REQUEST['endTime']);
+        $type        = intval($_REQUEST["type"]);
+        $searchKey   = trim($_REQUEST["searchKey"]);
+        $company_ids = $_REQUEST["company"];
+
+        $map             = array();
+        $map['t.is_del'] = 0;
+        $map['t.state']  = 9;
+
+        //获取开始时间
+        if (!empty($startTime) && empty($endTime)) {
+            $map['t.departure_time'] = array('gt', strtotime($startTime));
+        } elseif (!empty($endTime) && empty($startTime)) {
+            $map['t.departure_time'] = array('elt', strtotime($endTime) + 24 * 3600);
+        } elseif ((!empty($startTime)) && !empty($endTime)) {
+            $map['t.departure_time'] = array('between', array(strtotime($startTime), strtotime($endTime) + 24 * 3600));
+        }
+
+        if ($company_ids) {
+            $map['t.company_id'] = array('in', $company_ids);
+        }
+
+        if ($type == 1) {
+
+            $map['c.is_del'] = 0;
+
+            if (!empty($searchKey)) {
+                $map["c.user_phone|c.user_name"] = array("like", "%" . $searchKey . "%");
+            }
+
+            $field = 't.company_id,c.user_name,c.user_phone,count(t.use_user_id) AS finishCount,sum(t.mileage) as companyMileageCount,sum(t.fees_sum) as luqiaoCount ,sum(t.service_charge) as fuwufeiCount,sum(t.driver_bt_cost) as buzhuCount,sum(t.parking_rate_sum +t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as qitacount,sum(totle_rate) as heji ';
+
+            $users = M("User as c")->join("left join " . C("DB_PREFIX") . "travel as t on c.id =  t.use_user_id")->where($map)->group("t.use_user_id")->field($field)->having('finishCount>=1')->select();
+
+            foreach ($users as &$val) {
+                $val["finishCount"]         = $val['finishcount'];
+                $val["companyMileageCount"] = $val["companymileagecount"] ? $val["companymileagecount"] : 0;
+                $val["luqiaoCount"]         = $val["luqiaocount"] ? $val["luqiaocount"] : 0;
+                $val["fuwufeiCount"]        = $val["fuwufeicount"] ? $val["fuwufeicount"] : 0;
+                $val["buzhuCount"]          = $val["buzhucount"] ? $val["buzhucount"] : 0;
+                $val["qitaCount"]           = $val["qitacount"] ? $val["qitacount"] : 0;
+                $val["heji"]                = $val["heji"] ? $val["heji"] : 0;
+            }
+            unset($val);
+            $this->ajaxReturn(array('data' => $users, 'type' => $type));
+        }
+
+        if ($type == 2) {
+            if (!empty($searchKey)) {
+                $user_ids = M("user")->where(array("is_del" => 0, "user_name|user_phone" => array("like", "%" . $searchKey . "%")))->field("id")->select();  //查询是否匹配用车人
+                if ($user_ids) {
+                    $map["t.use_user_id"] = array("IN", $this->_array_column($user_ids, "id"));
+                }
+            }
+
+            $field   = 'c.user_name,c.user_phone,u.company_name as company_namee,t.use_user_id,t.company_id,t.travel_nature,t.serial_number,t.start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,t.else_cost,t.totle_rate,t.driver_bt_cost';
+            $travels = M("Travel as t")->join("left join " . C("DB_PREFIX") . "company as u on u.id =  t.company_id left join " . C("DB_PREFIX") . "user c on c.id = t.use_user_id")->where($map)->field($field)->select();
+            $this->ajaxReturn(array('data' => $travels, 'type' => $type));
+        }
     }
 
     //用户报表导出

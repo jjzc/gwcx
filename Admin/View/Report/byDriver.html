@@ -158,12 +158,13 @@
                 <!--startprint1-->
 
                 {if $type eq 1}
-                <div class="portlet-body">
+                <div class="portlet-body" id="print_content">
                     <table width="100%" border="1" cellpadding="0" cellspacing="0" style="border-collapse:collapse; font-size:14px;">
+                        <thead>
                         <tr><td height="40" colspan="10" style="font-size:18px; text-align:center; line-height:40px;">公务用车平台车辆用车统计报表</td></tr>
                         <tr><td height="30" colspan="10" style="font-size:16px; text-align:center; line-height:30px;">开起始时间：{$startTime}&nbsp;&nbsp;&nbsp;&nbsp;截至时间：{$endTime}&nbsp;&nbsp;&nbsp;&nbsp;金额单位：元</td></tr>
                         <tr>
-                            <td height="30" colspan="9" style="font-size:16px; text-align:center; line-height:30px;">
+                            <td height="30" colspan="10" style="font-size:16px; text-align:center; line-height:30px;">
                                 <span style="margin: 0 25px">出行次数：<label style="color: #FF3F3F;">{$total.finishcount}</label></span>
                                 <span style="margin: 0 25px">出行里程：<label style="color: #FF3F3F;">{$total.companymileagecount}</label></span>
                                 <span style="margin: 0 25px">路桥费：<label style="color: #FF3F3F;">{$total.luqiaocount}</label></span>
@@ -188,8 +189,9 @@
                             <td>其他</td>
                             <td>小计</td>
                         </tr>
+                        </thead>
+                        <tbody>
                         {foreach $drivers as $k=>$v}
-                        {if $v.finishCount neq 0}
                         <tr class="trrrrr">
                             <td nowrap>{$v.driver_name}</td>
                             <td>{$v.driver_phone}</td>
@@ -202,15 +204,16 @@
                             <td>{$v.heji}</td>
                             <td nowrap>&nbsp;</td>
                         </tr>
-                        {/if}
                         {/foreach}
+                        </tbody>
                     </table>
                 </div>
                 {/if}
 
                 {if $type eq 2}
-                <div class="portlet-body">
+                <div class="portlet-body" id="print_content">
                     <table width="100%" border="1" cellpadding="0" cellspacing="0" style="border-collapse:collapse; font-size:14px;">
+                        <thead>
                         <tr>
                             <td height="40" colspan="13" style="font-size:18px; text-align:center; line-height:40px;">公务用车平台单位用车明细报表</td>
                         </tr>
@@ -245,6 +248,8 @@
                             <td>其他</td>
                             <td>小计</td>
                         </tr>
+                        </thead>
+                        <tbody>
                         {foreach $travels as $k=>$v}
                         <tr class="trrrrr">
                             <td nowrap>{$v.driver_name}</td>
@@ -262,21 +267,7 @@
                             <td nowrap></td>
                         </tr>
                         {/foreach}
-                        <!--<tr class="trrrrr">-->
-                            <!--<td nowrap>合计</td>-->
-                            <!--<td></td>-->
-                            <!--<td nowrap></td>-->
-                            <!--<td></td>-->
-                            <!--<td></td>-->
-                            <!--<td></td>-->
-                            <!--<td>{$mileagenum}</td>-->
-                            <!--<td>{$fees_sumnum}</td>-->
-                            <!--<td>{$service_chargenum}</td>-->
-                            <!--<td>0</td>-->
-                            <!--<td>{$costnum}</td>-->
-                            <!--<td>{$totle_ratenum}</td>-->
-                            <!--<td nowrap></td>-->
-                        <!--</tr>-->
+                        </tbody>
                     </table>
                 </div>
                 {/if}
@@ -403,7 +394,68 @@
     });
 
     function dy() {
-        preview(1);
+        var startTime = $("#startTime").val();
+        var endTime = $("#endTime").val();
+        var searchKey = $("#searchKey").val();
+        var type = $("#type").val();
+        var driver = $("#driver").val();
+        var company = $("#company").val();
+        var oPop = window.open('','oPop'); // 重新打开一个打印窗口
+        $.ajax({
+            url:'getAllDriver',
+            data:{ startTime,endTime,company,type,searchKey,driver},
+            type:'post',
+            dataType:'json',
+            success:function (res) {
+                var _html = ''
+                var bdhtml = window.document.getElementById("print_content").innerHTML;//获取需要打印的html代码
+                sprnstr = "<tbody>";
+                eprnstr = "</tbody>";
+                str1 = bdhtml.substring(0,bdhtml.indexOf(sprnstr)); //截取<tbody>标签之前的html
+                str2 = bdhtml.substring(bdhtml.indexOf(eprnstr));//截取</tbody>标签之后的html
+                if(res.data){
+                    $.each(res.data, function (item, value) {
+                        _html += '<tbody>'
+                        _html += '<tr class="trrrrr">'
+                        if(res.type == 1){
+                            _html += '<td nowrap>'+value.driver_name+'</td>'
+                            _html += '<td nowrap>'+value.driver_phone+'</td>'
+                            _html += '<td>'+Math.round(value.finishCount * 100) / 100+'</td>'
+                            _html += '<td>'+Math.round(value.companyMileageCount * 100) / 100+'</td>'
+                            _html += '<td>'+Math.round(value.luqiaoCount * 100) / 100+'</td>'
+                            _html += '<td>'+Math.round(value.fuwufeiCount * 100) / 100+'</td>'
+                            _html += '<td>'+Math.round(value.buzhuCount * 100) / 100+'</td>'
+                            _html += '<td>'+Math.round(value.qitaCount * 100) / 100+'</td>'
+                            _html += '<td>'+Math.round(value.heji * 100) / 100+'</td>'
+                            _html += '<td>&nbsp;</td>'
+                        }else{
+                            _html += '<td nowrap>'+value.driver_name+'</td>'
+                            _html += '<td >'+value.serial_number+'</td>'
+                            _html += '<td >'+value.company_namee+'</td>'
+                            _html += '<td >'+value.user_name+'</td>'
+                            _html += '<td >'+value.start_car_time+'</td>'
+                            _html += '<td >'+value.to_place+'</td>'
+                            _html += '<td>'+Math.round(value.mileage * 100) / 100+'</td>'
+                            _html += '<td>'+Math.round(value.fees_sum * 100) / 100+'</td>'
+                            _html += '<td>'+Math.round(value.service_charge * 100) / 100+'</td>'
+                            _html += '<td>'+Math.round(value.driver_bt_cost * 100) / 100+'</td>'
+                            _html += '<td>'+Math.round(value.else_cost * 100) / 100+'</td>'
+                            _html += '<td>'+Math.round(value.totle_rate * 100) / 100+'</td>'
+                            _html += '<td>&nbsp;</td>'
+                        }
+                        _html += '</tr>'
+                        _html += '</tbody>'
+                    });
+                }
+                oPop.document.write(str1+_html+str2);  //把打印内容写到新的窗口
+                oPop.print();                           //打印
+                oPop.close();                           //关闭新窗口
+                // $("table tbody").empty().append(_html);
+                // window.document.body.innerHTML = document.getElementById("print_content").innerHTML;
+                // window.print();
+                // window.document.body.innerHTML = bdhtml;
+            }
+        })
     }
 
     function show(obj){
