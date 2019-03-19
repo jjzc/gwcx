@@ -204,7 +204,7 @@
                         <tr><td height="40" colspan="12" style="font-size:18px; text-align:center; line-height:40px;">公务用车平台单位用车明细报表</td></tr>
                         <tr><td height="30" colspan="12" style="font-size:16px; text-align:center; line-height:30px;">开起始时间：{$startTime}&nbsp;&nbsp;&nbsp;&nbsp;截至时间：{$endTime}&nbsp;&nbsp;&nbsp;&nbsp;金额单位：元</td></tr>
                         <tr>
-                            <td height="30" colspan="13" style="font-size:16px; text-align:center; line-height:30px;">
+                            <td height="30" colspan="12" style="font-size:16px; text-align:center; line-height:30px;">
                                 <span style="margin: 0 25px">出行里程：<label style="color: #FF3F3F;">{$total.companymileagecount}</label></span>
                                 <span style="margin: 0 25px">路桥费：<label style="color: #FF3F3F;">{$total.luqiaocount}</label></span>
                                 <span style="margin: 0 25px">出行服务费：<label style="color: #FF3F3F;">{$total.fuwufeicount}</label></span>
@@ -402,7 +402,6 @@
                             _html += '<td >'+value.serial_number+'</td>'
                             _html += '<td >'+value.company_namee+'</td>'
                             _html += '<td >'+value.start_car_time+'</td>'
-                            _html += '<td >'+value.travel_nature+'</td>'
                             _html += '<td >'+value.to_place+'</td>'
                             _html += '<td>'+Math.round(value.mileage * 100) / 100+'</td>'
                             _html += '<td>'+Math.round(value.fees_sum * 100) / 100+'</td>'
@@ -414,6 +413,7 @@
                         }
                         _html += '</tr>'
                         _html += '</tbody>'
+
                     });
                 }
                 oPop.document.write(str1+_html+str2);  //把打印内容写到新的窗口

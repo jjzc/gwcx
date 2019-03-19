@@ -195,7 +195,7 @@ class ReportController extends CommonController
                 $map["t.travel_nature"] = $travelNature;
             }
             //数据
-            $field = 'u.user_name,c.company_name as company_namee,t.use_user_id,t.company_id,t.travel_nature,t.serial_number,t.start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,t.totle_rate,t.driver_bt_cost, (t.parking_rate_sum + t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as qita';
+            $field = 'u.user_name,c.company_name as company_namee,t.use_user_id,t.company_id,t.travel_nature,t.serial_number,if(t.start_car_time>0,FROM_UNIXTIME(start_car_time,"%Y-%m-%d %H:%i:%s"),"") as start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,t.totle_rate,t.driver_bt_cost, (t.parking_rate_sum + t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as qita';
             $data  = M("Travel as t")->join("left join " . C("DB_PREFIX") . "company as c on c.id =  t.company_id left join " . C("DB_PREFIX") . "user u on u.id = t.use_user_id")->where($map)->field($field)->select();
         }
         $this->ajaxReturn(array('data' => $data, 'type' => $type));
@@ -693,6 +693,7 @@ class ReportController extends CommonController
             $travels = M("Travel t")->where($map)->select();
 
             foreach ($travels as &$val) {
+                $val['start_car_time'] = $val['start_car_time'] > 0 ? date("Y-m-d H:i:s",$val['start_car_time']) : "";
                 //获取用车人信息
                 $user             = M("User")->where(array("id" => $val["use_user_id"]))->find();
                 $val["user_name"] = $user["user_name"];
@@ -1217,7 +1218,7 @@ class ReportController extends CommonController
                 }
             }
 
-            $field   = "t.use_user_id,t.company_id,t.driver_id,t.serial_number,t.start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,t.driver_bt_cost,(t.parking_rate_sum +t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as else_cost ,t.totle_rate,t.jj_id,t.jj_driver_name";
+            $field   = "t.use_user_id,t.company_id,t.driver_id,t.serial_number,if(t.start_car_time>0,FROM_UNIXTIME(start_car_time,\"%Y-%m-%d %H:%i:%s\"),\"\") as start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,t.driver_bt_cost,(t.parking_rate_sum +t.driver_cost + t.over_time_cost + t.over_mileage_cost + t.else_cost) as else_cost ,t.totle_rate,t.jj_id,t.jj_driver_name";
             $travels = M("Travel as t")->where($map)->field($field)->select();
 
             foreach ($travels as &$val) {
@@ -1604,7 +1605,7 @@ class ReportController extends CommonController
                 }
             }
 
-            $field   = 'c.user_name,c.user_phone,u.company_name as company_namee,t.use_user_id,t.company_id,t.travel_nature,t.serial_number,t.start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,t.else_cost,t.totle_rate,t.driver_bt_cost';
+            $field   = 'c.user_name,c.user_phone,u.company_name as company_namee,t.use_user_id,t.company_id,t.travel_nature,t.serial_number,if(t.start_car_time>0,FROM_UNIXTIME(start_car_time,"%Y-%m-%d %H:%i:%s"),"") as start_car_time,t.to_place,t.mileage,t.fees_sum,t.service_charge,t.else_cost,t.totle_rate,t.driver_bt_cost';
             $travels = M("Travel as t")->join("left join " . C("DB_PREFIX") . "company as u on u.id =  t.company_id left join " . C("DB_PREFIX") . "user c on c.id = t.use_user_id")->where($map)->field($field)->select();
             $this->ajaxReturn(array('data' => $travels, 'type' => $type));
         }
