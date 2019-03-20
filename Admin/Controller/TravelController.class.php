@@ -455,7 +455,7 @@ class TravelController extends CommonController
 //                $search_sql .= " or company_id in (" . implode(",", $this->_array_column($company, "id")) . ")";
 //            }
 //            $map["_string"] = $search_sql;
-            $map['serial_number|from_place|to_place|jj_id'] = array("like","%".trim($_POST["searchKey"])."%");
+            $map['serial_number|from_place|to_place|jj_id'] = array("like", "%" . trim($_POST["searchKey"]) . "%");
         }
         if (!empty($_POST["startTime"])) {
             $map['departure_time'] = array('gt', strtotime($_POST["startTime"]));
@@ -575,7 +575,7 @@ class TravelController extends CommonController
 //            $key        = trim($_POST["searchKey"]);
 //            $search_sql = "serial_number like '%$key%' or from_place like '%$key%' or to_place like '%$key%'";
 //            $map["_string"] = $search_sql;
-            $map['serial_number|from_place|to_place'] = array("like","%".trim($_POST["searchKey"])."%");
+            $map['serial_number|from_place|to_place'] = array("like", "%" . trim($_POST["searchKey"]) . "%");
         }
 
         if (!empty($_POST["startTime"])) {
@@ -1717,87 +1717,13 @@ class TravelController extends CommonController
         $this->display();
     }
 
-
-    //派遣第三方车辆具体操作
-    public function sendCarToOtherDo_bak()
-    {
-
-//        $set=M("set")->find(1);
-//        $account="account=".$set["jjaccount"]."&pwd=".$set["jjpwd"];
-//        $res=httpFF("http://api.99huaan.com/passenger/login","",$account,"POST");
-//        $res=json_decode($res,true);
-//
-//        if(empty($res)){
-//            $this->ajaxReturn(array("code"=>0));
-//        }
-
-        $travel     = M("Travel")->find($_POST["id"]);
-        $travelType = M("TravelType")->find($travel["travel_type_id"]);
-
-        $state = 5;
-        //如果不需要派车之后的审核，则直接将状态设置为待出车
-        //如果派车之后需要审核，则直接将状态设置为待出车审核
-        if ($travelType["is_need_sendcar_review"] == 0) {
-            $state = 8;
-        } else {
-            $state = 5;
-        }
-
-        $useUser = M("User")->find($travel["use_user_id"]);
-
-
-        $data["id_member"]        = "e8b5db7e939311e8b2627cd30ab8ab74";
-        $data["user_name"]        = "道县机关事务局";
-        $data["user_mobile"]      = $useUser["user_phone"];
-        $data["passenger_name"]   = $useUser["user_name"];
-        $data["passenger_mobile"] = $useUser["user_phone"];
-        $data["id_franchisee"]    = "2a0d0c5c3ed911e8a86d70106fb1fc52";
-        $data["companyName"]      = "道县玖玖";
-        $data["id_service_type"]  = "5";
-        $data["carTypeId"]        = $_POST["car_type"];
-        $data["start_address"]    = $travel["from_place"];
-        $data["end_address"]      = $travel["to_place"];
-        $data["appointment_time"] = date('Y-m-d H:i', $travel["departure_time"]);
-        $data["order_memo"]       = "无";
-
-
-        //发送数据给创建订单服务器
-        $res = httpF("http://admin.99zcx.com/order/specialCar/createByTransport", "", json_encode($data), "POST");
-
-        $res = json_decode($res, true);
-
-        //dump $res;
-
-        if ($res["code"] = "200" && $res["data"]["success"]) {
-            //echo $res["data"]["orderId"];
-
-            $travel["jj_id"]           = $res["data"]["orderId"];
-            $travel["send_other_res"]  = $_POST["send_other_res"];
-            $travel["arrange_type_id"] = $_POST["arrange_id"];
-            $travel["state"]           = $state;
-            $travel["send_car_time"]   = time();
-
-            $travel["is_need_settlement"] = 0;//使用玖玖专车就不需要费用核算了，只有自有车辆出行才费用核算
-
-            $re = M("Travel")->save($travel);
-            if ($re) {
-                $this->ajaxReturn(array("code" => 1));
-            } else {
-                $this->ajaxReturn(array("code" => 0));
-            }
-
-        } else {
-            $this->ajaxReturn(array("code" => 0));
-        }
-    }
-
     //派遣第三方车辆具体操作
     public function sendCarToOtherDo()
     {
-        $travel                        = M("Travel")->find($_POST["id"]);
-        $travelType                    = M("TravelType")->find($travel["travel_type_id"]);
+        $travel     = M("Travel")->find($_POST["id"]);
+        $travelType = M("TravelType")->find($travel["travel_type_id"]);
 //        $travel["from_place_location"] = '';
-        $state                         = 5;
+        $state = 5;
         //如果不需要派车之后的审核，则直接将状态设置为待出车
         //如果派车之后需要审核，则直接将状态设置为待出车审核
         if ($travelType["is_need_sendcar_review"] == 0) {
@@ -1851,7 +1777,8 @@ class TravelController extends CommonController
             $save["send_car_time"]      = time();
             $save["is_need_settlement"] = 0;//使用玖玖专车就不需要费用核算了，只有自有车辆出行才费用核算
 
-            $re = M("Travel")->save($save,array("id"=>$_POST["id"]));
+//            $re = M("Travel")->save($save, array("id" => $_POST["id"]));
+            $re = M("Travel")->where(array("id"=>$_POST["id"]))->save($save);
 
 //            @file_put_contents($_SERVER["DOCUMENT_ROOT"]."/log.txt"," sendCarToOtherSql:".M("Travel")->getLastSql().PHP_EOL,FILE_APPEND);
 
@@ -1859,7 +1786,7 @@ class TravelController extends CommonController
                 A("UserCenter")->logCreatWeb("派车给第三方，出行流水号： " . $travel["serial_number"]);
                 $this->ajaxReturn(array("code" => 1));
             } else {
-                $this->ajaxReturn(array("code" => 0));
+                $this->ajaxReturn(array("code" => 0,"msg"=>"error"));
             }
         } else {
             $this->ajaxReturn(array("code" => 0, "msg" => $res["err_message"]["content"]));
@@ -1983,6 +1910,123 @@ class TravelController extends CommonController
 
         $this->display();
 
+    }
+
+    public function viewTravelTrack($id)
+    {
+//        header("content-type:text/html;charset=utf-8");
+
+        $travel = M("travel")->where(array("id" => $id))->find();
+
+//        $travel['gps_code']           = '867282034041752';
+//        $travel['start_use_car_time'] = '1552897498';
+//        $travel['end_use_car_time']   = '1552913403';
+
+        $start_time = $travel["start_use_car_time"];       //开始用车时间
+        $end_time   = $travel["end_use_car_time"];           //结束用车时间
+        $code       = $travel["gps_code"];                       //gps识别码
+        $driverPoint = array();
+        if ($start_time && $end_time && $end_time > $start_time && $code) {
+            $interval    = 3600 * 12;          //每一次查询的时间区间  时间区间最多24小时,缩短每次请求的时间区间能够提升响应速度
+            $page_size   = 1000;           //每页的轨迹点 （1-5000）
+            $count       = intval(ceil(($end_time - $start_time) / $interval));   //分割的区间数量
+            for ($i = 1; $i <= $count; $i++) {
+                $time1 = $start_time + ($i - 1) * $interval;
+                $time2 = $i < $count ? ($start_time + $i * $interval - 1) : $end_time;
+                $res   = $this->getPoint($code, $time1, $time2, 1, $page_size);
+                if ($res['status'] != 0) {
+                    continue;
+                }
+                $driverPoint = array_merge($driverPoint, $res['points']);
+                $total       = $res['total'];     //轨迹点总数量
+                $distance = $res['distance'];   //里程数
+//                echo "<BR>";
+                if ($total > $page_size) {  //如果轨迹点总数量大于每一页的数量，需要再次获取其他页面的轨迹点
+                    $totalPage = intval(ceil($total / $page_size));     //计算总的页面数
+                    for ($i = 2; $i <= $totalPage; $i++) {
+                        $res = $this->getPoint($code, $time1, $time2, $i, $page_size);
+                        if ($res['status'] == 0) {
+                            $driverPoint = array_merge($driverPoint, $res['points']); //合并第二页以及后面页面的轨迹点
+                        }
+                    }
+                }
+            }
+
+//            dump($driverPoint);
+//            exit;
+        }
+        $this->assign("driverPoint", json_encode($driverPoint));
+        $this->assign("distance", $distance);
+        $this->assign("gps_code", $travel['gps_code']);
+        $this->display();
+    }
+
+    private function getPoint($entity_name, $start_time, $end_time, $page_index = 1, $page_size = 500)
+    {
+        $url                 = 'http://yingyan.baidu.com/api/v3/track/gettrack';
+        $data['ak']          = 'QYkSVUculppscE1QlM8T7GKpyCwZ0cF8';
+        $data['service_id']  = '139490';
+        $data['entity_name'] = $entity_name;
+        $data['start_time']  = $start_time;
+        $data['end_time']    = $end_time;
+        $data['page_index']  = $page_index;
+        $data['page_size']   = $page_size;
+        $data['is_processed']   = 1;        //开启纠偏
+        $data['process_option']   = 'need_mapmatch=1'; //绑路
+        $res                 = httpF($url, $data);
+        $res                 = json_decode($res, true);
+//        dump($res);exit;
+        return $res;
+    }
+
+    public function syncInfo()
+    {
+        $id   = $_POST["id"];
+        $info = M("travel")->where(array("id" => $id))->find();
+        if ($info && $info["jj_id"]) {
+            $set     = M("set")->find(1);
+            $account = "account=" . $set["jjaccount"] . "&pwd=" . $set["jjpwd"];
+            $res     = httpFF("http://api.99huaan.com/passenger/login", "", $account, "POST");
+            $res     = json_decode($res, true);
+            $token   = $res["token"];
+            $data    = "token=" . $token . "&order_id=" . $info["jj_id"];
+            $res     = httpFF("http://api.99huaan.com/passenger/order/result", "", $data, "POST");
+            $res     = json_decode($res, true);
+
+            if ($res["result"] == 1) {
+                $res = $res["data"];
+                if ($res["status"] == 8) {
+                    $save                       = array();
+                    $save["jj_driver_name"]     = $res["real_name"];
+                    $save["jj_driver_phone"]    = $res["driver_mobile"];
+                    $save["jj_car_num"]         = $res["plate_number"];
+                    $save["gps_code"]           = $res["gps_pn"];
+//                    $save["state"]              = 9;
+                    $save["start_use_car_time"] = $res["start_service_time"] ? intval($res["start_service_time"] * 0.001) : '';     //开始用车时间
+                    $save["end_use_car_time"]   = $res["end_service_time"] ? intval($res["end_service_time"] * 0.001) : '';         //结束用车时间
+                    $save["pay_type"]           = $res["payment_type"] == 1 ? "签单" : "垫付";
+                    $save["mileage"]            = $res["distance"];
+                    $save["fees_sum"]           = $res["road_money"];   //路桥费
+                    $save["parking_rate_sum"]   = 0;
+                    $save["service_charge"]     = $res["order_money"];    //服务费
+                    $save["driver_cost"]        = 0;
+                    $save["over_time_cost"]     = 0;
+                    $save["over_mileage_cost"]  = 0;
+                    $save["else_cost"]          = $res["order_other"];    //其他费用
+                    $save["totle_rate"]         = $res["order_total"];   //总费用
+                    $rs                         = M("Travel")->where(array("id" => $info["id"]))->save($save);
+//                    echo M("Travel")->getLastSql();
+                    if (false !== $rs) {
+                        //记录日志
+                        $content = "手动同步订单费用信息，出行流水号： " . $info["serial_number"];
+                        M("Log")->add(array("user_id" => 0, "do_time" => time(), "content" => $content, "type" => 1));
+                        $this->ajaxReturn(array("code" => 1, "msg" => "同步成功"));
+                    }
+                }
+
+            }
+        }
+        $this->ajaxReturn(array("code" => 0, "msg" => "同步失败"));
     }
 
 
