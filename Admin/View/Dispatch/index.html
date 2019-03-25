@@ -1,0 +1,596 @@
+{extends file='../Public/template.html'}
+{block name=style}
+<link rel="stylesheet" href="/Public/css/dispatch.css?t=123123">
+{/block}
+{block name=pageContent}
+<div class="page-content">
+
+    <div class="container-fluid">
+        <div class="manageTop"><div class="serviceName">服务司机列表</div><div class="toggleInManage"></div></div>
+        <div class="manageBottom">
+            <div class="manageTab">
+                <div class="monitorTab">实时监控<div class="monitorTabIcon"></div></div>
+                <div class="trackTab">轨迹查询 <div class="trackTabIcon"></div> </div>
+                <div class="pointerTab pointerTabLeft"></div>
+            </div>
+
+            <div class="monitor">
+                <div class="driverSearch"><input class="searchInput" placeholder="请输入姓名/车牌号/流水号"><img src="/Public/img/search.png" class="searchBtn">
+                    <!--<div class="lineMonitor"></div>-->
+                    <!--<img src="/trace/admin/static/images/clearsearch_2x_e373e6e.png" class="clearSearchBtnMonitor hideCommon">-->
+                </div>
+
+                <div class="monitorList">
+                    <div class="monitorAll" style="">全部(<span id="monitorAll">0</span>)</div>
+                    <!--<div class="monitorOnline" style="color: rgb(10, 140, 255);">总数(9)</div>-->
+                    <!--<div class="monitorOffline" style="">离线(842)</div>-->
+                    <div class="monitorBottomLineLeft"></div>
+                </div>
+
+                <div class="driverContent">
+                    <div class="driverHeader">
+                        <div class="headerName">姓名</div>
+                        <div class="headerCarNum">车牌号</div>
+                        <div class="headerOrderNO">流水号</div>
+                    </div>
+                    <div class="driverFrame">
+                        <!--<div class="loading" style="width: 100%;line-height: 240px;text-align: center" ><img src="/Public/img/loading.gif" style="width: 30px;height: 30px"></div>-->
+                        <!--<div class="driverListItem">-->
+                            <!--<div class="driverListItemName">张三</div>-->
+                            <!--<div class="driverListItemCarNum">湘a1213</div>-->
+                            <!--<div class="driverListItemOrderNo">12121213</div>-->
+                        <!--</div>-->
+                    </div>
+
+                    <div class="driverPage hide">
+                        <div class="jumpPage">
+                            <input type="text" class="inputPage" value="1">
+                            <span class="pageNumber">/<span class="totalPage">0</span>页</span>
+                            <span class="goPage">GO</span>
+                        </div>
+                        <div class="switchPage">
+                            <span class="lastPageOn"></span>
+                            <span class="nextPageOn"></span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="track hide">
+
+                <div class="driverSearch"><input class="searchInput" placeholder="请输入姓名/车牌号"><img src="/Public/img/search.png" class="searchBtn">
+                    <!--<div class="lineMonitor"></div>-->
+                    <!--<img src="/trace/admin/static/images/clearsearch_2x_e373e6e.png" class="clearSearchBtnMonitor hideCommon">-->
+                </div>
+                <div class="trackDatetime">
+                    <!--<div class="input-append date" id="datetimepicker" data-date-format="yyyy-mm-dd">-->
+                        <!--<input type="text" class="datetimeInput" size="16" value="">-->
+                    <!--</div>-->
+                    <div class="input-group date form_datetime col-md-5" id="datetimepicker"  data-date-format="yyyy-mm-dd" >
+                        <input  class="datetimeInput" size="16" type="text" value="{$trackDate}"  readonly id="trackDate">
+                        <span class="input-group-addon" style="padding: 5px 21px 5px 9px !important; display: inline-block;float: left"><span class="glyphicon glyphicon-calendar"></span></span>
+                    </div>
+
+                </div>
+
+
+                <div class="driverContent">
+                    <div class="driverHeader">
+                        <div class="headerName">姓名</div>
+                        <div class="headerCarNum">车牌号</div>
+                        <div class="headerOrderNO">里程</div>
+                    </div>
+                    <div class="driverFrame">
+                        <!--<div style="width: 100%;line-height: 240px;text-align: center" ><img src="/Public/img/loading.gif" style="width: 30px;height: 30px"></div>-->
+                        <!--<div class="driverListItem">-->
+                        <!--<div class="driverListItemName">张三</div>-->
+                        <!--<div class="driverListItemCarNum">湘a1213</div>-->
+                        <!--<div class="driverListItemOrderNo">12121213</div>-->
+                        <!--</div>-->
+                    </div>
+
+                    <div class="driverPage hide">
+                        <div class="jumpPage">
+                            <input type="text" class="inputPage" value="1">
+                            <span class="pageNumber">/<span class="totalPage">0</span>页</span>
+                            <span class="goPage">GO</span>
+                        </div>
+                        <div class="switchPage">
+                            <span class="lastPageOn"></span>
+                            <span class="nextPageOn"></span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div id="allmap" style="z-index: 0; width: 100%; height: 800px; overflow: hidden; position: relative; background-color: rgb(243, 241, 236); color: rgb(0, 0, 0); text-align: left;"></div>
+
+        <div id="controller" class="hide" style="position: absolute; bottom: 22px ; right: 60px; ">
+            <button id="run">开始</button>
+            <button id="stop">停止</button>
+            <button id="pause">暂停</button>
+        </div>
+    </div>
+
+</div>
+{/block}
+
+
+
+{block name=script}
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/plugin/layer/layer.js" type="text/javascript"></script>
+<script	src="https://api.map.baidu.com/api?v=2.0&amp;ak=AuNk3YS21DSmHEEvIFDf9dbD" type="text/javascript"></script>
+<script src="https://api.map.baidu.com/library/TrafficControl/1.4/src/TrafficControl_min.js" type="text/javascript"></script>
+
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.PUBLIC_URL}/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
+<!--<script type="text/javascript" src="{$smarty.const.PUBLIC_URL}js/LuShu_min.js?t=0326"></script>-->
+<script type="text/javascript" src="http://api.map.baidu.com/library/LuShu/1.2/src/LuShu_min.js"></script>
+<script>
+    var map = null; //地图对象
+    var mapLoadFinish = false;
+    var currentPage=1;//实时监控当前页
+    var pageSize = 10 //每页显示的数量
+    // var count = 0; //总数量
+    var totalPage = 0; //实时监控总页数
+    var canClick = false
+
+    var markers
+
+    var currentPageTrack = 1 //轨迹查询当前页
+    var totalPageTrack = 0; //轨迹查询总页数
+
+    var isLoadTrackData = false;  //是否完成轨迹司机数据加载
+    var isLoadMonitorData = false;  //是否完成监控司机数据加载
+
+    var lushu
+
+    var loading = '<div class="loading" style="width: 100%;line-height: 240px;text-align: center"><img src="/Public/img/loading.gif" style="width: 25px;height: 25px"></div>';  //加载中图标
+
+    $(document).ready(function(){
+
+        //初始化地图
+        initialize(false);
+
+        $('.form_datetime').datetimepicker({
+            language: 'zh-CN',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            minView: 2,
+            showMeridian: 1,
+            endDate:'{$trackDate}'
+        }).on('changeDate', function (ev) {
+            initTrackData()
+        });
+
+        //tab点击实时监控
+        $(".monitorTab").bind("click",function () {
+            if(!$('#controller').hasClass('hide')){
+                $('#controller').addClass('hide')
+            }
+
+            if($(".monitor").hasClass('hide')){
+                $(".monitor").removeClass('hide')
+            }
+            if(!$(".track").hasClass('hide')){
+                $(".track").addClass('hide')
+            }
+            if($(".pointerTab").hasClass("pointerTabRight")){
+                $(".pointerTab").removeClass("pointerTabRight")
+            }
+            if(!$(".pointerTab").hasClass("pointerTabLeft")){
+                $(".pointerTab").addClass("pointerTabLeft")
+            }
+            initMonitorCar()
+        })
+
+        //tab点击轨迹查询
+        $(".trackTab").bind("click",function () {
+            if($(".track").hasClass('hide')){
+                $(".track").removeClass('hide')
+            }
+            if(!$(".monitor").hasClass('hide')){
+                $(".monitor").addClass('hide')
+            }
+            if($(".pointerTab").hasClass("pointerTabLeft")){
+                $(".pointerTab").removeClass("pointerTabLeft")
+            }
+            if(!$(".pointerTab").hasClass("pointerTabRight")){
+                $(".pointerTab").addClass("pointerTabRight")
+            }
+            map.clearOverlays(); // 清除地图上所有覆盖物
+            if(!isLoadTrackData){
+                initTrackData()
+            }
+        })
+
+        //内容收缩展开
+        $('.toggleInManage').bind('click',function () {
+            $('.manageBottom').slideToggle('slow')
+        })
+
+        //实时监控固定页码跳转
+        $('.monitor .goPage').bind('click',function () {
+            var inputPage = $('.monitor .inputPage').val();
+            if(isNaN(inputPage) || inputPage > totalPage){ // 非数字或者输入的数字大于总页数 默认跳转到第一页
+                inputPage = 1
+                $('.monitor .inputPage').val(1)
+            }
+            if(inputPage === currentPage){
+                return false;
+            }
+            currentPage = inputPage
+            initData()
+        })
+        //实时监控上一页跳转
+        $('.monitor .lastPageOn').bind('click',function () {
+            if(currentPage > 1){
+                if(canClick){
+                    canClick = false
+                    currentPage --
+                    initData()
+                    // $('.inputPage').val(currentPage)
+                }
+            }
+        })
+        //实时监控下一页跳转
+        $('.monitor .nextPageOn').bind('click',function () {
+            if(currentPage < totalPage){
+                if(canClick){
+                    canClick = false
+                    currentPage ++
+                    initData()
+                    // $('.inputPage').val(currentPage)
+                }
+
+            }
+        })
+
+        //实时监控固定页码跳转
+        $('.track .goPage').bind('click',function () {
+            var inputPage = $('.track .inputPage').val();
+            if(isNaN(inputPage) || inputPage > totalPageTrack){ // 非数字或者输入的数字大于总页数 默认跳转到第一页
+                inputPage = 1
+                $('.track .inputPage').val(1)
+            }
+            if(inputPage === currentPageTrack){
+                return false;
+            }
+            currentPageTrack = inputPage
+            initTrackData()
+        })
+        //实时监控上一页跳转
+        $('.track .lastPageOn').bind('click',function () {
+            if(currentPageTrack > 1){
+                if(canClick){
+                    canClick = false
+                    currentPageTrack --
+                    initTrackData()
+                    // $('.inputPage').val(currentPage)
+                }
+            }
+        })
+        //实时监控下一页跳转
+        $('.track .nextPageOn').bind('click',function () {
+            if(currentPageTrack < totalPageTrack){
+                if(canClick){
+                    canClick = false
+                    currentPageTrack ++
+                    initTrackData()
+                    // $('.inputPage').val(currentPage)
+                }
+
+            }
+        })
+
+        //点击实时监控司机列表打开相应的窗口信息
+        $('.monitor .driverFrame').on('click','.driverListItem',function () {
+            var $this = $(this)
+            var longitude = $this.data('longitude');
+            var latitude = $this.data('latitude');
+            var serial_number = $this.data('serial_number');
+            var jj_car_num = $this.data('jj_car_num');
+            var from_place = $this.data('from_place');
+            var to_place = $this.data('to_place');
+            var gps_code = $this.data('gps_code');
+            var loc_time = $this.data('loc_time');
+            var formatted_address = $this.data('formatted_address');
+            var points = new BMap.Point(longitude,latitude)
+            var sContent = "<h4 class='windowInfo'>" + serial_number + "</h4>"
+            sContent += "<p class='windowInfo'>车牌：" + jj_car_num + "</p>"
+            sContent += "<p class='windowInfo'>路程：" + from_place + "—" +to_place + "</p>"
+            sContent += "<p class='windowInfo'>gps：" + gps_code + "</p>"
+            sContent += "<p class='windowInfo'>定位时间：" + formatDate(loc_time) + "</p>"
+            sContent += "<p class='windowInfo'>定位地址：" + formatted_address + "</p>"
+            map.panTo(points);
+            var infoWindow = new BMap.InfoWindow(sContent);  // 创建信息窗口对象
+            map.openInfoWindow(infoWindow,points); //开启信息窗口
+
+        })
+
+        //实时监控搜索
+        $('.monitor .searchBtn').bind('click',function () {
+            currentPage = 1
+            initData();
+        })
+
+        //点击轨迹查询司机列表显示当天的轨迹路线
+        $('.track .driverFrame').on('click','.driverListItem',function () {
+            map.clearOverlays(); //先清理地图
+            var $this = $(this)
+            var gps_code = $this.data('gps_code')
+            var trackDate = $("#trackDate").val()
+            // alert(trackDate);
+            $.get('getTrack',{ gps_code ,trackDate},function(results){
+                var data = results.data;
+                if(data.length > 0){
+                    var arrPois = [];
+                    for(var i = 0 ; i < data.length ; i++){
+                        arrPois.push(new BMap.Point(data[i].longitude,data[i].latitude))
+                    }
+                    //画线
+                    var polyline = new BMap.Polyline(arrPois,{ strokeColor:"red", strokeWeight:7, strokeOpacity:1 });
+                    map.addOverlay(polyline);
+
+                    //提供坐标视野
+                    map.setViewport(arrPois);
+
+                    //轨迹回放
+                    lushu = new BMapLib.LuShu(map,arrPois,{
+                        defaultContent:"",//"从天安门到百度大厦"
+                        autoView:true,//是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
+                        icon  : new BMap.Icon('http://developer.baidu.com/map/jsdemo/img/car.png', new BMap.Size(52,26),{ anchor : new BMap.Size(27, 13)}),
+                        speed: 2500,
+                        enableRotation:true, //是否设置marker随着道路的走向进行旋转
+                        landmarkPois:[] // 此字段删除报错
+                    });
+
+                    $('#controller').removeClass('hide')
+                }
+            });
+        })
+
+        //轨迹查询搜索
+        $('.track .searchBtn').bind('click',function () {
+            currentPageTrack = 1
+            initTrackData();
+        })
+
+        $("#run").bind('click',function(){
+            lushu.start();
+        })
+        $("#stop").bind('click',function(){
+            lushu.stop();
+        })
+        $("#pause").bind('click',function(){
+            lushu.pause();
+        })
+
+
+    });
+
+    function initialize(refresh){
+        if(refresh){
+            initData(refresh);
+        }
+        else{
+            var point = new BMap.Point('111.54571316982', '25.584466661104');
+            map = new BMap.Map("allmap");
+            map.centerAndZoom(point, 11);
+            map.enableScrollWheelZoom();
+            map.addControl(new BMap.MapTypeControl({ anchor: BMAP_ANCHOR_TOP_RIGHT, mapTypes: [BMAP_NORMAL_MAP,BMAP_HYBRID_MAP]}));
+            map.addControl(new BMap.NavigationControl({ anchor: BMAP_ANCHOR_BOTTOM_RIGHT, type: BMAP_NAVIGATION_CONTROL_SMALL}));  //右上角，仅包含平移和缩放按钮
+
+            //地图加载完毕
+            map.addEventListener('tilesloaded',function(){
+                if(!mapLoadFinish){
+                    mapLoadFinish = true;
+                    initMonitorCar();
+                    initData(refresh);
+                }
+            });
+        }
+    }
+
+    //添加地图标注
+    function addMk(points,showInfo) {
+        markers = new BMap.Marker( points,{
+            icon  : new BMap.Icon('http://developer.baidu.com/map/jsdemo/img/car.png', new BMap.Size(52,26),{ anchor : new BMap.Size(27, 13)})
+        })
+        map.addOverlay(markers);
+
+        var sContent = "<h4 class='windowInfo'>" + showInfo.serial_number + "</h4>"
+        sContent += "<p class='windowInfo'>车牌：" + showInfo.jj_car_num + "</p>"
+        sContent += "<p class='windowInfo'>路程：" + showInfo.from_place + "—" + showInfo.to_place + "</p>"
+        sContent += "<p class='windowInfo'>gps：" + showInfo.gps_code + "</p>"
+        sContent += "<p class='windowInfo'>定位时间：" + formatDate(showInfo.loc_time) + "</p>"
+        sContent += "<p class='windowInfo'>定位地址：" + showInfo.formatted_address + "</p>"
+
+        //添加标注点击事件
+
+        markers.addEventListener("click",function () {
+            var infoWindow = new BMap.InfoWindow(sContent);  // 创建信息窗口对象
+            this.openInfoWindow(infoWindow,points); //开启信息窗口
+        })
+    }
+
+    //初始化监控车辆标注
+    function initMonitorCar() {
+        map.clearOverlays(); //先清理地图
+        //需要实时监控的车辆数据
+        var driverData = '{$travels}';
+        driverData=eval(JSON.parse(driverData));
+        var arrPois = [];
+        for(i = 0 ;i< driverData.length ; i++){
+            //添加车辆标注
+            var points = new BMap.Point(driverData[i].entities.latest_location.longitude,driverData[i].entities.latest_location.latitude)
+            arrPois.push(points);
+            var gps_code = driverData[i].gps_code;                              //gps识别码
+            var serial_number = driverData[i].serial_number;                    //流水号
+            var from_place = driverData[i].from_place;                          //出发地
+            var to_place = driverData[i].to_place;                              //目的地
+            var jj_driver_name = driverData[i].jj_driver_name;                  //司机姓名
+            var jj_driver_phone = driverData[i].jj_driver_phone;                //司机电话
+            var jj_car_num = driverData[i].jj_car_num;                          //车牌号
+            var loc_time = driverData[i].entities.latest_location.loc_time;     //最新定位时间（定位时设备的时间）
+            var formatted_address = driverData[i].formatted_address;   //定位地址
+            var showInfo = { gps_code , loc_time ,formatted_address , serial_number ,from_place,to_place,jj_driver_name,jj_driver_phone,jj_car_num}
+            addMk(points,showInfo)
+
+        }
+        map.setViewport(arrPois);
+        // console.log(map.getOverlays());
+
+    }
+
+    //初始化实时监控司机数据
+    function initData(){
+        // $("#driver-busy-div").html("正在加载...");
+        $('.monitor .driverFrame').html(loading);
+        var searchKey = $('.monitor .searchInput').val();
+        $.get('getDrivers',{ currentPage,pageSize,searchKey},function(results){
+            var data = results.data
+            var content = ''
+            totalPage = results.totalPage
+            if(data.length>0){
+                $.each(data,function(index,item){
+                    // console.log(item);
+                    content += ' <div class="driverListItem" ' +
+                        'data-longitude="'+ item.entities.latest_location.longitude +'" ' +
+                        'data-latitude="'+ item.entities.latest_location.latitude +'" ' +
+                        'data-serial_number="'+item.serial_number+'" ' +
+                        'data-jj_car_num="'+ item.jj_car_num +'"' +
+                        ' data-from_place="'+ item.from_place +'" ' +
+                        'data-to_place="'+ item.to_place +'" ' +
+                        'data-gps_code="'+ item.gps_code +'" ' +
+                        'data-loc_time="'+ item.entities.latest_location.loc_time +'" ' +
+                        'data-formatted_address="'+ item.formatted_address +'">'
+                    content += ' <div class="driverListItemName">' + item.jj_driver_name + '</div>'
+                    content += ' <div class="driverListItemCarNum">' + item.jj_car_num + '</div>'
+                    content += ' <div class="driverListItemOrderNo">' + item.serial_number + '</div>'
+                    content +=  '</div>'
+
+                });
+            }
+            $('.monitor .driverFrame').empty().html(content);
+            // count = results.count
+            $('#monitorAll').empty().html(results.count);
+            initPageBox(1)
+
+        });
+    }
+
+    //初始化轨迹查询司机数据
+    function initTrackData(){
+        $('.track .driverFrame').html(loading);
+        var searchKey = $('.track .searchInput').val();
+        var trackDate = $('#trackDate').val();
+        $.get('getTrackDrivers',{ currentPageTrack,pageSize,searchKey,trackDate},function(results){
+            var data = results.data
+            var content = ''
+            totalPageTrack = results.totalPage
+            if(data.length>0){
+                $.each(data,function(index,item){
+                    // console.log(item);
+                    content += ' <div class="driverListItem" ' +
+                        // 'data-longitude="'+ item.entities.latest_location.longitude +'" ' +
+                        // 'data-latitude="'+ item.entities.latest_location.latitude +'" ' +
+                        // 'data-serial_number="'+item.serial_number+'" ' +
+                        // 'data-jj_car_num="'+ item.jj_car_num +'"' +
+                        // ' data-from_place="'+ item.from_place +'" ' +
+                        // 'data-to_place="'+ item.to_place +'" ' +
+                        'data-gps_code="'+ item.gps_code +'" ' +
+                        // 'data-loc_time="'+ item.entities.latest_location.loc_time +'" ' +
+                        'data-formatted_address="'+ item.formatted_address +'">'
+                    content += ' <div class="driverListItemName">' + item.jj_driver_name + '</div>'
+                    content += ' <div class="driverListItemCarNum">' + item.jj_car_num + '</div>'
+                    content += ' <div class="driverListItemOrderNo">' + item.distance + '</div>'
+                    content +=  '</div>'
+
+                });
+            }
+            $('.track .driverFrame').empty().html(content);
+            // count = results.count
+            initTrackPageBox()
+            isLoadTrackData = true
+        });
+    }
+
+    //初始化实时监控分页div
+    function initPageBox() {
+        if(totalPage > 1){  //分页数大于1显示分页
+            canClick = true
+            $('.monitor .inputPage').val(currentPage)
+            if(currentPage == 1){
+                $('.monitor .lastPageOn').css({ 'background-image': 'url(/Public/img/lastpageoff.png)' , 'cursor': 'default'})
+            }else{
+                $('.monitor .lastPageOn').css({ 'background-image': 'url(/Public/img/lastpageon.png)', 'cursor': 'pointer'})
+            }
+            if(currentPage == totalPage){
+                $('.monitor .nextPageOn').css({ 'background-image': 'url(/Public/img/nextpageoff.png)', 'cursor': 'default'})
+            }else{
+                $('.monitor .nextPageOn').css({ 'background-image': 'url(/Public/img/nextpageon.png)', 'cursor': 'pointer'})
+            }
+            $('.monitor .totalPage').html(totalPage)
+
+            if($('.monitor .driverPage').hasClass('hide')){
+                $('.monitor .driverPage').removeClass('hide')
+            }
+        }else{
+            $('.monitor .driverPage').addClass('hide')
+        }
+    }
+
+    //初始化轨迹查询分页div
+    function initTrackPageBox() {
+        if(totalPageTrack > 1){  //分页数大于1显示分页
+            canClick = true
+            $('.track .inputPage').val(currentPageTrack)
+            if(currentPageTrack == 1){
+                $('.track .lastPageOn').css({ 'background-image': 'url(/Public/img/lastpageoff.png)' , 'cursor': 'default'})
+            }else{
+                $('.track .lastPageOn').css({ 'background-image': 'url(/Public/img/lastpageon.png)', 'cursor': 'pointer'})
+            }
+            if(currentPageTrack == totalPageTrack){
+                $('.track .nextPageOn').css({ 'background-image': 'url(/Public/img/nextpageoff.png)', 'cursor': 'default'})
+            }else{
+                $('.track .nextPageOn').css({ 'background-image': 'url(/Public/img/nextpageon.png)', 'cursor': 'pointer'})
+            }
+            $('.track .totalPage').html(totalPageTrack)
+
+            if($('.track .driverPage').hasClass('hide')){
+                $('.track .driverPage').removeClass('hide')
+            }
+        }else{
+            $('.track .driverPage').addClass('hide')
+        }
+    }
+
+    function formatDate(times)   {
+        if(null==times || times==""){
+            return "";
+        }
+        var unixtimestamp = new Date(times*1000);
+        var year = 1900 + unixtimestamp.getYear();
+        var month = "0" + (unixtimestamp.getMonth() + 1);
+        var date = "0" + unixtimestamp.getDate();
+        var hour = "0" + unixtimestamp.getHours();
+        var minute = "0" + unixtimestamp.getMinutes();
+        var second = "0" + unixtimestamp.getSeconds();
+        return year + "-" + month.substring(month.length-2, month.length)  + "-" + date.substring(date.length-2, date.length) + " " + hour.substring(hour.length-2, hour.length) + ":" + minute.substring(minute.length-2, minute.length) + ":" + second.substring(second.length-2, second.length);
+    }
+</script>
+
+{/block}
