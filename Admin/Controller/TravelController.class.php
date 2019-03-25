@@ -1939,7 +1939,7 @@ class TravelController extends CommonController
                 }
                 $driverPoint = array_merge($driverPoint, $res['points']);
                 $total       = $res['total'];     //轨迹点总数量
-                $distance = $res['distance'];   //里程数
+                $distance = number_format($res['distance']/1000,2).'km';   //里程数
 //                echo "<BR>";
                 if ($total > $page_size) {  //如果轨迹点总数量大于每一页的数量，需要再次获取其他页面的轨迹点
                     $totalPage = intval(ceil($total / $page_size));     //计算总的页面数
