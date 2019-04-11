@@ -402,7 +402,7 @@
         var company = $("#company").val();
         var oPop = window.open('','oPop'); // 重新打开一个打印窗口
         $.ajax({
-            url:'getAllDriver',
+            url:'/index.php/Admin/Report/getAllDriver',
             data:{ startTime,endTime,company,type,searchKey,driver},
             type:'post',
             dataType:'json',

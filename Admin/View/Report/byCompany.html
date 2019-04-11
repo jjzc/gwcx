@@ -405,7 +405,7 @@
         var use_user = $("#use_user").val();
         var oPop = window.open('','oPop'); // 重新打开一个打印窗口
         $.ajax({
-            url:'getAllCompany',
+            url:'/index.php/Admin/Report/getAllCompany',
             data:{ startTime,endTime,company,type,travelNature,use_user},
             type:'post',
             dataType:'json',

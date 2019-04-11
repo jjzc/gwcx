@@ -398,7 +398,7 @@
         var searchKey = $("#searchKey").val();
         var oPop = window.open('','oPop'); // 重新打开一个打印窗口
         $.ajax({
-            url:'getAllCar',
+            url:'/index.php/Admin/Report/getAllCar',
             data:{ startTime,endTime,company,type,car,searchKey},
             type:'post',
             dataType:'json',

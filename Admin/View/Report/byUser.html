@@ -371,7 +371,7 @@
         var company = $("#company").val();
         var oPop = window.open('','oPop'); // 重新打开一个打印窗口
         $.ajax({
-            url:'getAllUser',
+            url:'/index.php/Admin/Report/getAllUser',
             data:{ startTime,endTime,company,type,searchKey},
             type:'post',
             dataType:'json',
