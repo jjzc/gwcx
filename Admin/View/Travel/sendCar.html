@@ -51,6 +51,17 @@
                                 </div>
                             </div>
 
+                            <div class="form-group col-md-12">
+                                <label class="col-md-4 control-label">车辆性质</label>
+                                <div class="col-md-8">
+                                    <select class="form-control input-inline input-medium"  name="is_law_travel" id="is_law_travel">
+                                        <option value="0">自有车辆</option>
+                                        <option value="1">执法车辆</option>
+                                        <option value="2">社会车辆</option>
+                                    </select>
+                                </div>
+                            </div>
+
 
                             <div class="form-group col-md-12">
                                 <label class="col-md-4 control-label">车辆</label>
@@ -137,7 +148,8 @@
 
         var id =$('#car_type').children().eq(0).val();
         var travelId=$("#id").val();
-        getCarList(id,travelId);
+        var isLawTravel = $("#is_law_travel").val();
+        getCarList(id,travelId,isLawTravel);
 
 
         //监听select事件
@@ -146,8 +158,18 @@
 
             var id =$('#car_type').children().eq(0).val();
             var travelId=$("#id").val();
+            var isLawTravel = $("#is_law_travel").val();
 
-            getCarList(sid,travelId);
+            getCarList(sid,travelId,isLawTravel);
+        });
+
+        //监听select事件
+        $('#is_law_travel').change(function(){
+            var sid =$('#car_type').children('option:selected').val();
+            var isLawTravel = $(this).val();
+            var travelId=$("#id").val();
+
+            getCarList(sid,travelId,isLawTravel);
         });
 
         //监听select事件
@@ -205,18 +227,15 @@
     });
 
 
-    function getCarList(id,travelId){
-        //alert(id);
-        $.post("/index.php/Admin/Travel/getFreeCar",{ type_id:id,travelId:travelId },function(result){
-            //$("span").html(result);
-            $("#car").empty();
-            $("#car").append("<option value='0'>请选择车辆</option>");
+    function getCarList(id,travelId,isLawTravel){
+        $.post("/index.php/Admin/Travel/getFreeCar",{ type_id:id,travelId:travelId ,isLawTravel},function(result){
+            var $car = $("#car")
+            $car.empty().append("<option value='0'>请选择车辆</option>");
             for(var i=0;i<result.length;i++){
-                //console.log(result[i].id);
                 if(result[i].is_dx==1){
-                    $("#car").append("<option value='"+result[i].id+"' data-dx='1' data-driver='"+result[i].driver_id+"'>"+result[i].car_num+"(定向)</option>");
+                    $car.append("<option value='"+result[i].id+"' data-dx='1' data-driver='"+result[i].driver_id+"'>"+result[i].car_num+"(定向)</option>");
                 }else{
-                    $("#car").append("<option value='"+result[i].id+"' data-dx='0'>"+result[i].car_num+"</option>");
+                    $car.append("<option value='"+result[i].id+"' data-dx='0'>"+result[i].car_num+"</option>");
                 }
             }
         });

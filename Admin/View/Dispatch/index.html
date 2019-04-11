@@ -109,8 +109,8 @@
 
         <div id="allmap" style="z-index: 0; width: 100%; height: 800px; overflow: hidden; position: relative; background-color: rgb(243, 241, 236); color: rgb(0, 0, 0); text-align: left;"></div>
 
-        <div id="controller" class="hide" style="position: absolute; bottom: 22px ; right: 60px; ">
-            <button id="run">开始</button>
+        <div id="controller" class="hide" style="position: absolute; top: 25px ; left: 420px; ">
+            <button id="run">轨迹回放</button>
             <button id="stop">停止</button>
             <button id="pause">暂停</button>
         </div>
@@ -369,6 +369,7 @@
         })
 
         $("#run").bind('click',function(){
+            map.closeInfoWindow(); //关闭信息窗口
             lushu.start();
         })
         $("#stop").bind('click',function(){
@@ -376,10 +377,25 @@
         })
         $("#pause").bind('click',function(){
             lushu.pause();
+            //显示当前地址
+            var curr_point = lushu._path[lushu.i]
+            showAddress(curr_point)
         })
 
 
     });
+
+    //获取
+    function showAddress(point) {
+        var geoc = new BMap.Geocoder();
+        geoc.getLocation(point, function(res){
+            res = res.addressComponents
+            map.panTo(point);
+            var address = res.province+res.city+res.district+res.street+res.streetNumber
+            var infoWindow = new BMap.InfoWindow(address);  // 创建信息窗口对象
+            map.openInfoWindow(infoWindow,point); //开启信息窗口
+        });
+    }
 
     function initialize(refresh){
         if(refresh){
@@ -391,7 +407,7 @@
             map.centerAndZoom(point, 11);
             map.enableScrollWheelZoom();
             map.addControl(new BMap.MapTypeControl({ anchor: BMAP_ANCHOR_TOP_RIGHT, mapTypes: [BMAP_NORMAL_MAP,BMAP_HYBRID_MAP]}));
-            map.addControl(new BMap.NavigationControl({ anchor: BMAP_ANCHOR_BOTTOM_RIGHT, type: BMAP_NAVIGATION_CONTROL_SMALL}));  //右上角，仅包含平移和缩放按钮
+            map.addControl(new BMap.NavigationControl({ anchor: BMAP_ANCHOR_TOP_LEFT, type: BMAP_NAVIGATION_CONTROL_SMALL , offset :{ width:350,height:15}}));  //右上角，仅包含平移和缩放按钮
 
             //地图加载完毕
             map.addEventListener('tilesloaded',function(){
@@ -431,7 +447,7 @@
         map.clearOverlays(); //先清理地图
         //需要实时监控的车辆数据
         var driverData = '{$travels}';
-        driverData=eval(JSON.parse(driverData));
+        driverData=JSON.parse(driverData);
         var arrPois = [];
         for(i = 0 ;i< driverData.length ; i++){
             //添加车辆标注
@@ -487,7 +503,7 @@
             $('.monitor .driverFrame').empty().html(content);
             // count = results.count
             $('#monitorAll').empty().html(results.count);
-            initPageBox(1)
+            initPageBox()
 
         });
     }
@@ -503,17 +519,7 @@
             totalPageTrack = results.totalPage
             if(data.length>0){
                 $.each(data,function(index,item){
-                    // console.log(item);
-                    content += ' <div class="driverListItem" ' +
-                        // 'data-longitude="'+ item.entities.latest_location.longitude +'" ' +
-                        // 'data-latitude="'+ item.entities.latest_location.latitude +'" ' +
-                        // 'data-serial_number="'+item.serial_number+'" ' +
-                        // 'data-jj_car_num="'+ item.jj_car_num +'"' +
-                        // ' data-from_place="'+ item.from_place +'" ' +
-                        // 'data-to_place="'+ item.to_place +'" ' +
-                        'data-gps_code="'+ item.gps_code +'" ' +
-                        // 'data-loc_time="'+ item.entities.latest_location.loc_time +'" ' +
-                        'data-formatted_address="'+ item.formatted_address +'">'
+                    content += ' <div class="driverListItem" data-gps_code="'+ item.gps_code +'">'
                     content += ' <div class="driverListItemName">' + item.jj_driver_name + '</div>'
                     content += ' <div class="driverListItemCarNum">' + item.jj_car_num + '</div>'
                     content += ' <div class="driverListItemOrderNo">' + item.distance + '</div>'

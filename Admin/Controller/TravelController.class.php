@@ -888,12 +888,14 @@ class TravelController extends CommonController
     {
         $carTypeId = $_POST["type_id"];
         $travel    = M("Travel")->find($_POST["travelId"]);
+        $isLawTravel = intval($_REQUEST['isLawTravel']);
 
         //此处需要修改，只调出该单位的定向车辆
         $dxcars = M("Car")->where(array("type_id" => $carTypeId, "state" => 1, "is_del" => 0, "is_dx" => 1, "company_id" => $travel["company_id"]))->order("is_dx desc")->select();
 
-        $cars = M("Car")->where(array("type_id" => $carTypeId, "state" => 1, "is_del" => 0, "is_dx" => 0))->order("is_dx desc")->select();
+        $cars = M("Car")->where(array("type_id" => $carTypeId, "state" => 1, "is_del" => 0, "is_dx" => 0 , 'is_law_car'=>$isLawTravel))->order("is_dx desc")->select();
 
+//        echo M("Car")->getLastSql();exit;
         $res = array_merge($dxcars, $cars);
 
 //        if(!empty($dxcars)){
