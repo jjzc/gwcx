@@ -75,7 +75,7 @@
                         {if $item.submenu}
                         <ul class="sub-menu">
                             {foreach $item.submenu as $submenu}
-                            <li class="nav-item start {if $submenu.url|strpos:$smarty.const.ACTION_NAME !== false } active open{/if}">
+                            <li class="nav-item start {if $submenu.url|substr:9|strpos:$smarty.const.ACTION_NAME !== false } active open{/if}">
                                 <a href="{$submenu.url}?mid={$mid}" class="nav-link">
                                     <i class="icon-bulb"></i>
                                     <span class="title">{$submenu.name}</span>
