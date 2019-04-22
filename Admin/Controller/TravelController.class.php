@@ -1754,7 +1754,7 @@ class TravelController extends CommonController
         $sendData .= "passenger_name=" . $useUser["user_name"] . "&";
         $sendData .= "passenger_mobile=" . $useUser["user_phone"] . "&";
         $sendData .= "franchisee_id=" . $franchisee_id . "&";
-        $sendData .= "service_type_id=5&";
+        $sendData .= "service_type_id=" . $_POST["service_type_id"] . "&";
         $sendData .= "vehicle_type_id=" . $_POST["car_type"] . "&";
         $sendData .= "start_address=" . $travel["from_place"] . "&";
         $sendData .= "start_address_latitude=" . explode(",", $travel["from_place_location"])[0] . "&";
