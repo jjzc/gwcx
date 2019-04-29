@@ -9,6 +9,7 @@
 namespace Admin\Controller;
 
 use Model\BaiDuApiModel;
+use Think\Model;
 
 class DispatchController extends CommonController
 {
@@ -84,20 +85,24 @@ class DispatchController extends CommonController
         $end_time   = strtotime(date("Y-m-d 22:59:59", $date));
 
         $where['is_del']   = 0;
-        $where['state']    = array('between', '5,8');
+//        $where['state']    = array('between', '5,8');
         $where['gps_code'] = array('neq', '');
 
+        $where_count =  'is_del = 0 and gps_code <> ""';
         if ($searchKey) {
             $where['jj_car_num|jj_driver_name'] = array('like', '%' . $searchKey . '%');
+            $where_count .= ' and jj_car_num like "%'.$searchKey.'%" or jj_driver_name like "%'. $searchKey .'%"';
         }
 
         $limit = ($currentPage - 1) * $pageSize . ',' . $pageSize;
 
-        $count = M("travel")->where($where)->field('gps_code,serial_number,from_place,to_place,jj_driver_name,jj_driver_phone,jj_car_num')->count();
+        $model = new Model();
+        $count = $model->query('select count(1) as total from (select gps_code from ot_travel where '.$where_count.' GROUP BY gps_code) as u');
+        $count = $count[0]['total'];
 
         $totalPage = ceil($count / $pageSize); //总页数
 
-        $travels = M("travel")->where($where)->limit($limit)->field('gps_code,serial_number,from_place,to_place,jj_driver_name,jj_driver_phone,jj_car_num')->order('serial_number desc')->select();  //服务中（并且能够找到gps_code）的订单
+        $travels = M("travel")->where($where)->group("gps_code")->limit($limit)->field('gps_code,jj_driver_name,jj_driver_phone,jj_car_num')->order('serial_number desc')->select();  //服务中（并且能够找到gps_code）的订单
 
         if ($travels) {
             foreach ($travels as &$val) {
