@@ -444,9 +444,9 @@
             toastr.warning('结束公里数只能为数字'); $("#end_kilometers").focus().select(); return false;
         }
 
-        if(end_kilometers<start_kilometers){
-            toastr.warning('开始公里数不得小于结束公里数'); $("#end_kilometers").focus().select(); return false;
-        }
+        // if(end_kilometers<start_kilometers){
+        //     toastr.warning('开始公里数不得小于结束公里数'); $("#end_kilometers").focus().select(); return false;
+        // }
 
         if((end_kilometers-start_kilometers)!=mileage){
             toastr.warning('结束公里数减去开始公里数与行驶里程不一致'); $("#mileage").focus().select(); return false;
