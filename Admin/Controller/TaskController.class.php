@@ -126,8 +126,7 @@ class TaskController extends Controller
 
     }
 
-    public function test()
-    {
+    public function test(){
 
     }
 
