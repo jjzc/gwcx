@@ -263,10 +263,10 @@ class TravelController extends Controller {
 
             $travelM=new TravelModel();
             //$borrow_car_model= new BorrowCarModel();
-            $count_res=$travelM->where("user_id=".$user_id)->select();
+            $count_res=$travelM->where("user_id=".$user_id)->count();
 
             //总记录数
-            $count_record=count($count_res);
+            $count_record=$count_res;
             $count_page=ceil($count_record/$pageSize);
 
             $resault=$travelM->order("id desc")->where("user_id=".$user_id)->limit($page*$pageSize,$pageSize)->select();
@@ -319,10 +319,10 @@ class TravelController extends Controller {
 
             $travelM=M("Supplement");
             //$borrow_car_model= new BorrowCarModel();
-            $count_res=$travelM->where("user_id=".$user_id)->select();
+            $count_res=$travelM->where("user_id=".$user_id)->count();
 
             //总记录数
-            $count_record=count($count_res);
+            $count_record=$count_res;
             $count_page=ceil($count_record/$pageSize);
 
             $resault=$travelM->order("id desc")->where("user_id=".$user_id)->limit($page*$pageSize,$pageSize)->select();
@@ -376,10 +376,10 @@ class TravelController extends Controller {
 
             $travelM=new TravelModel();
             //$borrow_car_model= new BorrowCarModel();
-            $count_res=$travelM->where("company_id=".$companyId)->select();
+            $count_res=$travelM->where("company_id=".$companyId)->count();
 
             //总记录数
-            $count_record=count($count_res);
+            $count_record=$count_res;
             $count_page=ceil($count_record/$pageSize);
 
             $resault=$travelM->order("id desc")->where("company_id=".$companyId)->limit($page*$pageSize,$pageSize)->select();
@@ -440,10 +440,10 @@ class TravelController extends Controller {
 
             $travelM=new TravelModel();
             //$borrow_car_model= new BorrowCarModel();
-            $count_res=$travelM->where(array("company_id"=>$companyId,"state"=>0))->select();
+            $count_res=$travelM->where(array("company_id"=>$companyId,"state"=>0))->count();
 
             //总记录数
-            $count_record=count($count_res);
+            $count_record=$count_res;
             $count_page=ceil($count_record/$pageSize);
 
             $resault=$travelM->order("id desc")->where(array("company_id"=>$companyId,"state"=>0))->limit($page*$pageSize,$pageSize)->select();
@@ -580,10 +580,10 @@ class TravelController extends Controller {
 
             $travelM=new TravelModel();
 
-            $count_res=$travelM->where(array("company_id"=>$companyId,"state"=>0))->select();
+            $count_res=$travelM->where(array("company_id"=>$companyId,"state"=>0))->count();
 
             //总记录数
-            $count_record=count($count_res);
+            $count_record=$count_res;
 
 
 
@@ -673,10 +673,10 @@ class TravelController extends Controller {
 
             $travelM=new TravelModel();
             //$borrow_car_model= new BorrowCarModel();
-            $count_res=$travelM->select();
+            $count_res=$travelM->count();
 
             //总记录数
-            $count_record=count($count_res);
+            $count_record=$count_res;
             $count_page=ceil($count_record/$pageSize);
 
             $resault=$travelM->order("id desc")->limit($page*$pageSize,$pageSize)->select();
