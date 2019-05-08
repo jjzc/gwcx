@@ -109,15 +109,15 @@ class TravelController extends CommonController
             $sql .= " and ( serial_number like '%$key%' or user_name like '%$key%' or company_id in (" . implode(",", $company_ids) . ") )";
         }
         //获取记录集总数
-        $resCount = M("Travel")->where($sql)->select();
+        $resCount = M("Travel")->where($sql)->count();
 
         $res = M("Travel")->where($sql)->limit($_POST["start"], $_POST["length"])->select();
 
         //返回数据
         $travels                    = array();
         $travels["draw"]            = $_POST["draw"];
-        $travels["recordsTotal"]    = count($resCount);//总记录条数
-        $travels["recordsFiltered"] = count($resCount);//过滤后的记录数，也就是搜索结果数据
+        $travels["recordsTotal"]    = $resCount;//总记录条数
+        $travels["recordsFiltered"] = $resCount;//过滤后的记录数，也就是搜索结果数据
         $travels["data"]            = $this->getAllInfo($res);
 
         $this->ajaxReturn($travels);
@@ -235,15 +235,15 @@ class TravelController extends CommonController
             $sql .= " and ( serial_number like '%$key%' or user_name like '%$key%' or company_id in (" . implode(",", $company_ids) . ") )";
         }
         //获取记录集总数
-        $resCount = M("Travel")->where($sql)->select();
+        $resCount = M("Travel")->where($sql)->count();
 
         $res = M("Travel")->where($sql)->limit($_POST["start"], $_POST["length"])->select();
 
         //返回数据
         $travels                    = array();
         $travels["draw"]            = $_POST["draw"];
-        $travels["recordsTotal"]    = count($resCount);//总记录条数
-        $travels["recordsFiltered"] = count($resCount);//过滤后的记录数，也就是搜索结果数据
+        $travels["recordsTotal"]    = $resCount;//总记录条数
+        $travels["recordsFiltered"] = $resCount;//过滤后的记录数，也就是搜索结果数据
         $travels["data"]            = $this->getAllInfo($res);
 
         $this->ajaxReturn($travels);
@@ -268,7 +268,7 @@ class TravelController extends CommonController
 
             $sql .= " and ( serial_number like '%$key%' or user_name like '%$key%' or jj_driver_name like '%$key%' or company_id in (" . implode(",", $company_ids) . ") )";
         }
-        $resCount = M("Travel")->where($sql)->select();
+        $resCount = M("Travel")->where($sql)->count();
 
         $res = M("Travel")->where($sql)->limit($_POST["start"], $_POST["length"])->select();
 
@@ -276,8 +276,8 @@ class TravelController extends CommonController
         //返回数据
         $travels                    = array();
         $travels["draw"]            = $_POST["draw"];
-        $travels["recordsTotal"]    = count($resCount);//总记录条数
-        $travels["recordsFiltered"] = count($resCount);//过滤后的记录数，也就是搜索结果数据
+        $travels["recordsTotal"]    = $resCount;//总记录条数
+        $travels["recordsFiltered"] = $resCount;//过滤后的记录数，也就是搜索结果数据
         $travels["data"]            = $this->getAllInfo($res);
 
         $this->ajaxReturn($travels);
@@ -300,7 +300,7 @@ class TravelController extends CommonController
 
         }
         //获取记录集总数
-        $resCount = M("Travel")->where($sql)->select();
+        $resCount = M("Travel")->where($sql)->count();
 
         $res = M("Travel")->where($sql)->limit($_POST["start"], $_POST["length"])->select();
 
@@ -308,8 +308,8 @@ class TravelController extends CommonController
         //返回数据
         $travels                    = array();
         $travels["draw"]            = $_POST["draw"];
-        $travels["recordsTotal"]    = count($resCount);//总记录条数
-        $travels["recordsFiltered"] = count($resCount);//过滤后的记录数，也就是搜索结果数据
+        $travels["recordsTotal"]    = $resCount;//总记录条数
+        $travels["recordsFiltered"] = $resCount;//过滤后的记录数，也就是搜索结果数据
         $travels["data"]            = $this->getAllInfo($res);
 
         $this->ajaxReturn($travels);
@@ -327,15 +327,15 @@ class TravelController extends CommonController
 
             $sql .= " and ( serial_number like '%$key%' or user_name like '%$key%' or jj_driver_name like '%$key%' or company_id in (" . implode(",", $company_ids) . ") ) ";
         }
-        $resCount = M("Travel")->where($sql)->select();
+        $resCount = M("Travel")->where($sql)->count();
 
         $res = M("Travel")->where($sql)->order("id desc")->limit($_POST["start"], $_POST["length"])->select();
 
         //返回数据
         $travels                    = array();
         $travels["draw"]            = $_POST["draw"];
-        $travels["recordsTotal"]    = count($resCount);//总记录条数
-        $travels["recordsFiltered"] = count($resCount);//过滤后的记录数，也就是搜索结果数据
+        $travels["recordsTotal"]    = $resCount;//总记录条数
+        $travels["recordsFiltered"] = $resCount;//过滤后的记录数，也就是搜索结果数据
         $travels["data"]            = $this->getAllInfo($res);
 
         $this->ajaxReturn($travels);
@@ -350,7 +350,7 @@ class TravelController extends CommonController
         $map["end_use_car_time"] = array('between', array($startTime, $startTime + 24 * 3600));
 
 
-        $resCount = M("Travel")->where($map)->select();
+        $resCount = M("Travel")->where($map)->count();
 
         $res = M("Travel")->where($map)->limit($_POST["start"], $_POST["length"])->select();
 
@@ -358,8 +358,8 @@ class TravelController extends CommonController
         //返回数据
         $travels                    = array();
         $travels["draw"]            = $_POST["draw"];
-        $travels["recordsTotal"]    = count($resCount);//总记录条数
-        $travels["recordsFiltered"] = count($resCount);//过滤后的记录数，也就是搜索结果数据
+        $travels["recordsTotal"]    = $resCount;//总记录条数
+        $travels["recordsFiltered"] = $resCount;//过滤后的记录数，也就是搜索结果数据
         $travels["data"]            = $this->getAllInfo($res);
 
         $this->ajaxReturn($travels);
@@ -369,15 +369,15 @@ class TravelController extends CommonController
     //获取待取消操作的出行
     public function getWaitCancelTravels()
     {
-        $resCount = M("Travel")->where("state=10 and is_del=0")->select();
+        $resCount = M("Travel")->where("state=10 and is_del=0")->count();
 
         $res = M("Travel")->where("state=10 and is_del=0")->limit($_POST["start"], $_POST["length"])->select();
 
         //返回数据
         $travels                    = array();
         $travels["draw"]            = $_POST["draw"];
-        $travels["recordsTotal"]    = count($resCount);//总记录条数
-        $travels["recordsFiltered"] = count($resCount);//过滤后的记录数，也就是搜索结果数据
+        $travels["recordsTotal"]    = $resCount;//总记录条数
+        $travels["recordsFiltered"] = $resCount;//过滤后的记录数，也就是搜索结果数据
         $travels["data"]            = $this->getAllInfo($res);
 
         $this->ajaxReturn($travels);
@@ -444,6 +444,7 @@ class TravelController extends CommonController
     public function getAllTravels()
     {
 
+//        ini_set('memory_limit','256M');
         //获取筛选条件
         $map["is_del"] = array('eq', 0);
 
@@ -481,15 +482,15 @@ class TravelController extends CommonController
             $map['state'] = array('eq', $_POST["state"]);
         }
 
-        $resCount = M("Travel")->where($map)->select();
+        $resCount = M("Travel")->where($map)->count();
 
         $res = M("Travel")->where($map)->order("id desc")->limit($_POST["start"], $_POST["length"])->select();
 
         //返回数据
         $travels                    = array();
         $travels["draw"]            = $_POST["draw"];
-        $travels["recordsTotal"]    = count($resCount);//总记录条数
-        $travels["recordsFiltered"] = count($resCount);//过滤后的记录数，也就是搜索结果数据
+        $travels["recordsTotal"]    = $resCount;//总记录条数
+        $travels["recordsFiltered"] = $resCount;//过滤后的记录数，也就是搜索结果数据
         $travels["data"]            = $this->getAllInfo($res);
 
         $this->ajaxReturn($travels);
@@ -503,15 +504,15 @@ class TravelController extends CommonController
             $sql .= " and ( serial_number like '%$key%' or user_name like '%$key%' )";
         }
 
-        $resCount = M("Travel")->where($sql)->select();
+        $resCount = M("Travel")->where($sql)->count();
 
         $res = M("Travel")->where($sql)->limit($_POST["start"], $_POST["length"])->select();
 
         //返回数据
         $travels                    = array();
         $travels["draw"]            = $_POST["draw"];
-        $travels["recordsTotal"]    = count($resCount);//总记录条数
-        $travels["recordsFiltered"] = count($resCount);//过滤后的记录数，也就是搜索结果数据
+        $travels["recordsTotal"]    = $resCount;//总记录条数
+        $travels["recordsFiltered"] = $resCount;//过滤后的记录数，也就是搜索结果数据
         $travels["data"]            = $this->getAllInfo($res);
 
         $this->ajaxReturn($travels);
@@ -718,15 +719,15 @@ class TravelController extends CommonController
 
     public function getRecycleTravels()
     {
-        $resCount = M("Travel")->where("is_del=1")->select();
+        $resCount = M("Travel")->where("is_del=1")->count();
 
         $res = M("Travel")->where("is_del=1")->order("id desc")->limit($_POST["start"], $_POST["length"])->select();
 
         //返回数据
         $travels                    = array();
         $travels["draw"]            = $_POST["draw"];
-        $travels["recordsTotal"]    = count($resCount);//总记录条数
-        $travels["recordsFiltered"] = count($resCount);//过滤后的记录数，也就是搜索结果数据
+        $travels["recordsTotal"]    = $resCount;//总记录条数
+        $travels["recordsFiltered"] = $resCount;//过滤后的记录数，也就是搜索结果数据
         $travels["data"]            = $res;
 
         $this->ajaxReturn($travels);
@@ -1479,15 +1480,15 @@ class TravelController extends CommonController
     public function getAllSupplement()
     {
         $map["supplement_res"] = 0;
-        $resCount              = M("Supplement")->where($map)->select();
+        $resCount              = M("Supplement")->where($map)->count();
 
         $res = M("Supplement")->where($map)->order("id desc")->limit($_POST["start"], $_POST["length"])->select();
 
         //返回数据
         $travels                    = array();
         $travels["draw"]            = $_POST["draw"];
-        $travels["recordsTotal"]    = count($resCount);//总记录条数
-        $travels["recordsFiltered"] = count($resCount);//过滤后的记录数，也就是搜索结果数据
+        $travels["recordsTotal"]    = $resCount;//总记录条数
+        $travels["recordsFiltered"] = $resCount;//过滤后的记录数，也就是搜索结果数据
         $travels["data"]            = $this->getAllInfo($res);
 
         $this->ajaxReturn($travels);
