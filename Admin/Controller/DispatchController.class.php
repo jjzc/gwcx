@@ -15,7 +15,7 @@ class DispatchController extends CommonController
 {
     public function index()
     {
-        $travels = M("travel")->where(" state BETWEEN '5' AND '8' AND gps_code != '' AND is_del = 0 ")->field('gps_code,serial_number,from_place,to_place,jj_driver_name,jj_driver_phone,jj_car_num')->select();  //服务中（并且能够找到gps_code）的订单
+        $travels = M("travel")->where(" state BETWEEN '5' AND '8' AND gps_code != '' AND is_del = 0 ")->group("gps_code")->field('gps_code,max(serial_number) as serial_number,from_place,to_place,jj_driver_name,jj_driver_phone,jj_car_num')->select();  //服务中（并且能够找到gps_code）的订单
 
         $baiDuApi = new BaiDuApiModel();
         foreach ($travels as &$val) {
@@ -44,19 +44,29 @@ class DispatchController extends CommonController
         $where['is_del']   = 0;
         $where['state']    = array('between', '5,8');
         $where['gps_code'] = array('neq', '');
+        $where_count       = 'is_del = 0 and state between 5 and 8  and gps_code <> ""';
 
         if ($searchKey) {
             $where['serial_number|jj_car_num|jj_driver_name'] = array('like', '%' . $searchKey . '%');
+
+            $where_count .= ' and ( jj_car_num like "%' . $searchKey . '%" or jj_driver_name like "%' . $searchKey . '%" or serial_number like "%'.$searchKey.'%" )';
         }
 
         $limit = ($currentPage - 1) * $pageSize . ',' . $pageSize;
 
-        $count = M("travel")->where($where)->field('gps_code,serial_number,from_place,to_place,jj_driver_name,jj_driver_phone,jj_car_num')->count();
+//        $count = M("travel")->where($where)->group("gps_code")->field('gps_code')->count();
+
+        $model = new Model();
+        $count = $model->query('select count(1) as total from (select gps_code from ot_travel where ' . $where_count . ' GROUP BY gps_code) as u');
+        $count = $count[0]['total'];
+
+//        file_put_contents($_SERVER['DOCUMENT_ROOT'].'/jzw.txt',' sql:'.'select count(1) as total from (select gps_code from ot_travel where ' . $where_count . ' GROUP BY gps_code) as u',FILE_APPEND);
 
         $totalPage = ceil($count / $pageSize); //总页数
 
-        $travels = M("travel")->where($where)->limit($limit)->field('gps_code,serial_number,from_place,to_place,jj_driver_name,jj_driver_phone,jj_car_num')->order('serial_number desc')->select();  //服务中（并且能够找到gps_code）的订单
+        $travels = M("travel")->where($where)->group("gps_code")->limit($limit)->field('gps_code,max(serial_number) as serial_number,from_place,to_place,jj_driver_name,jj_driver_phone,jj_car_num')->select();  //服务中（并且能够找到gps_code）的订单
 
+//        echo  M("travel")->getLastSql();
         if ($travels) {
             $baiDuApi = new BaiDuApiModel();
             foreach ($travels as &$val) {
@@ -84,28 +94,29 @@ class DispatchController extends CommonController
         $start_time = strtotime(date("Y-m-d 00:00:00", $date));
         $end_time   = strtotime(date("Y-m-d 22:59:59", $date));
 
-        $where['is_del']   = 0;
+        $where['is_del'] = 0;
 //        $where['state']    = array('between', '5,8');
         $where['gps_code'] = array('neq', '');
 
-        $where_count =  'is_del = 0 and gps_code <> ""';
+        $where_count = 'is_del = 0 and gps_code <> ""';
         if ($searchKey) {
             $where['jj_car_num|jj_driver_name'] = array('like', '%' . $searchKey . '%');
-            $where_count .= ' and jj_car_num like "%'.$searchKey.'%" or jj_driver_name like "%'. $searchKey .'%"';
+            $where_count                        .= ' and ( jj_car_num like "%' . $searchKey . '%" or jj_driver_name like "%' . $searchKey . '%" )';
         }
 
         $limit = ($currentPage - 1) * $pageSize . ',' . $pageSize;
 
         $model = new Model();
-        $count = $model->query('select count(1) as total from (select gps_code from ot_travel where '.$where_count.' GROUP BY gps_code) as u');
+        $count = $model->query('select count(1) as total from (select jj_car_num from ot_travel where ' . $where_count . ' GROUP BY jj_car_num) as u');
         $count = $count[0]['total'];
 
         $totalPage = ceil($count / $pageSize); //总页数
 
-        $travels = M("travel")->where($where)->group("gps_code")->limit($limit)->field('gps_code,jj_driver_name,jj_driver_phone,jj_car_num')->order('serial_number desc')->select();  //服务中（并且能够找到gps_code）的订单
+        $travels = M("travel")->where($where)->group("jj_car_num")->limit($limit)->field('max(id) as id ,jj_driver_name,jj_driver_phone,jj_car_num')->select();  //服务中（并且能够找到gps_code）的订单
 
         if ($travels) {
             foreach ($travels as &$val) {
+                $val['gps_code'] = M("travel")->where(array('id'=>$val['id']))->getField('gps_code');
                 //获取里程
                 $baiDuApi        = new BaiDuApiModel();
                 $res             = $baiDuApi->getDistance($val['gps_code'], $start_time, $end_time);
@@ -144,15 +155,15 @@ class DispatchController extends CommonController
         $id       = intval($_REQUEST["id"]);
         $gps_code = trim($_REQUEST["gps_code"]);
 
-        if(M("car")->where(array("gps_code"=>$gps_code))->find()){
-            $this->ajaxReturn(array('code' => 0,'msg'=>'该设备已绑定其他车辆'));
+        if (M("car")->where(array("gps_code" => $gps_code))->find()) {
+            $this->ajaxReturn(array('code' => 0, 'msg' => '该设备已绑定其他车辆'));
         }
 
-        $res      = M("car")->where(array("id" => $id, "is_del" => 0))->save(array("gps_code" => $gps_code));
+        $res = M("car")->where(array("id" => $id, "is_del" => 0))->save(array("gps_code" => $gps_code));
         if ($res !== false) {
-            $this->ajaxReturn(array('code' => 1 , 'msg'=>'绑定成功!'));
+            $this->ajaxReturn(array('code' => 1, 'msg' => '绑定成功!'));
         } else
-            $this->ajaxReturn(array('code' => 0 , 'msg'=>'绑定失败，请重试!'));
+            $this->ajaxReturn(array('code' => 0, 'msg' => '绑定失败，请重试!'));
     }
 
     public function unbind()
@@ -165,7 +176,8 @@ class DispatchController extends CommonController
             $this->ajaxReturn(array('data' => 0));
     }
 
-    public function own(){
+    public function own()
+    {
 
         $travels = M("car")->where(" gps_code != '' and is_del = 0")->field("car_num as jj_car_num,gps_code")->select();
 
@@ -187,12 +199,13 @@ class DispatchController extends CommonController
         $this->display();
     }
 
-    public function getOwnDrivers(){
+    public function getOwnDrivers()
+    {
         $currentPage = $_REQUEST['currentPage'] > 0 ? intval($_REQUEST['currentPage']) : 1;  //当前页
         $pageSize    = intval($_REQUEST['pageSize']);  //每页显示数量
         $searchKey   = trim($_REQUEST['searchKey']);   //搜索关键字
 
-        $where['is_del']   = 0;
+        $where['is_del'] = 0;
 //        $where['state']    = array('between', '5,8');
         $where['gps_code'] = array('neq', '');
 
@@ -235,7 +248,7 @@ class DispatchController extends CommonController
         $start_time = strtotime(date("Y-m-d 00:00:00", $date));
         $end_time   = strtotime(date("Y-m-d 22:59:59", $date));
 
-        $where['is_del']   = 0;
+        $where['is_del'] = 0;
 //        $where['state']    = array('between', '5,8');
         $where['gps_code'] = array('neq', '');
 

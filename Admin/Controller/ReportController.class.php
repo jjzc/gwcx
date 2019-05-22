@@ -224,7 +224,7 @@ class ReportController extends CommonController
             $map['t.departure_time'] = array('between', array(strtotime($startTime), strtotime($endTime) + 24 * 3600 - 1));
         }
 
-        if ($company_ids) {
+        if ($company_ids && $company_ids != 'null') {
             $map["t.company_id"] = array("IN", $company_ids);
         }
 
