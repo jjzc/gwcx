@@ -505,7 +505,17 @@ class TravelController extends Controller {
                 $travelM=new TravelModel();
                 $travel=$travelM->find($_POST["id"]);
 
-                $travel["state"]=1;
+                if($travel["is_need_center_review"]==1){
+                    $travel["state"]=1;
+                }else{
+                    if($travel["is_arrange_car"]==1){
+                        $travel["state"]=3;
+                    }else{
+                        $travel["state"]=9;
+                    }
+                }
+
+//                $travel["state"]=1;
                 $travel["manage_res"]=1;
                 $travel["manage_time"]=time();
                 $travelM->save($travel);

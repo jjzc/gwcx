@@ -35,6 +35,7 @@ class SystemController extends Controller {
         $table_change += array('{drivers}' => $driver["driver_name"]);
         $table_change += array('{driver_phone}' => $driver["driver_phone"]);  //司机手机号
         $table_change += array('{cars}' => $car["car_num"]);
+        $table_change += array('{car_type}' => $car["seat_num"].'座'.$car["brand"]);
 
         $content=strtr($sms_con["sms_content"],$table_change);
 
@@ -65,6 +66,9 @@ class SystemController extends Controller {
         $companyM=new CompanyModel();
         $company=$companyM->find($user["user_company"]);
 
+        $carM=new CarModel();
+        $car=$carM->find($travel["car_id"]);
+
 
         //替换内容
         $table_change = array('{start_time}' => date('Y-m-d H:i:s', $travel["departure_time"]));
@@ -73,6 +77,8 @@ class SystemController extends Controller {
         $table_change += array('{user_name}' => $user["user_name"]);
         $table_change += array('{user_company}' => $company["company_name"]);
         $table_change += array('{phone}' => $user["user_phone"]);
+        $table_change += array('{cars}' => $car["car_num"]);
+        $table_change += array('{car_type}' => $car["seat_num"].'座'.$car["brand"]);
 
         $content=strtr($sms_con["sms_content"],$table_change);
 

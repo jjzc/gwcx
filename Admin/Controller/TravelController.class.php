@@ -223,7 +223,8 @@ class TravelController extends CommonController
     public function getWaitSendCarTravels()
     {
         //dump($_POST);
-        $sql = "state=3 and is_need_center_review=1 and is_del=0";
+//        $sql = "state=3 and is_need_center_review=1 and is_del=0";
+        $sql = "state=3 and is_del=0";
         if (!empty($_POST["search"]["value"])) {
 
             $key = trim($_POST["search"]["value"]);
@@ -258,7 +259,8 @@ class TravelController extends CommonController
     //如果状态为5，则需要派车完之后还要审核
     public function getWaitReviewSendCar()
     {
-        $sql = "state=5 and is_need_center_review=1 and is_del=0";
+//        $sql = "state=5 and is_need_center_review=1 and is_del=0";
+        $sql = "state=5 and  is_del=0";
         if (!empty($_POST["search"]["value"])) {
             $key = trim($_POST["search"]["value"]);
 

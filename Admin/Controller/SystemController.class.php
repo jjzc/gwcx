@@ -40,6 +40,8 @@ class SystemController extends Controller {
         $driverM=new DriverModel();
         $driver=$driverM->find($travel["driver_id"]);
 
+        $car = M("car")->where(array("id"=>$travel["car_id"]))->find();
+
 
         //替换内容
         $table_change = array('{creat_time}'=>date('Y-m-d H:i:s', $travel["sign_time"]));
@@ -49,6 +51,7 @@ class SystemController extends Controller {
         $table_change += array('{drivers}' => $travel["drivers"]);
         $table_change += array('{driver_phone}' => $travel["driver_phone"]);  //司机手机号driver_phone
         $table_change += array('{cars}' => $travel["cars"]);
+        $table_change += array('{car_type}' => $car["seat_num"].'座'.$car["brand"]);
 
         $content=strtr($sms_con["sms_content"],$table_change);
 
@@ -68,6 +71,9 @@ class SystemController extends Controller {
 
     //发送短信给司机，提示派车成功(使用自有车辆)
     public function sendSendCarOkDriver($phone,$travel){
+//        header("content-Type:text/html; charset=utf-8");
+//        $phone = '15173200422';
+//        $travel = M('travel')->find(8531);
         $aa=$this->getSet();
         //如果关闭了短信，直接返回true
         if(!$aa){
@@ -96,6 +102,7 @@ class SystemController extends Controller {
         $table_change += array('{user_company}' => $company["company_name"]);
         $table_change += array('{phone}' => $user["user_phone"]);
         $table_change += array('{cars}' => $car["car_num"]);
+        $table_change += array('{car_type}' => $car["seat_num"].'座'.$car["brand"]);
 
         $content=strtr($sms_con["sms_content"],$table_change);
 
@@ -105,6 +112,7 @@ class SystemController extends Controller {
 
         $str=$sms->sendSms($phone, $content);
 
+//        dump($content);
 
         if($str['status'] == 0){//status=0表示发送成功
             return true;
