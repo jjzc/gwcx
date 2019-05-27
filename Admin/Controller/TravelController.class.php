@@ -1813,6 +1813,8 @@ class TravelController extends CommonController
 
             $travel = M("Travel")->find($id);
 
+            $state = $travel["state"];
+
             //先不管怎么样，都是要将状态设置为取消的，将取消原因录进去的
             $travel["old_state"]     = $travel["state"];
             $travel["cancel_reason"] = $center_error_msg;
@@ -1821,7 +1823,7 @@ class TravelController extends CommonController
             M("travel")->save($travel);
             A("UserCenter")->logCreatWeb("管理员取消出行，出行流水号： " . $travel["serial_number"]);
 
-            switch ($travel["state"]) {
+            switch ($state) {
                 case 5:
                     //派车信息待审核，此时虽然不用发短信给司机，但是需要将司机、车辆状态重置
                     if ($travel["is_arrange_car"] == 1) {
