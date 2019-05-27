@@ -250,6 +250,7 @@ class DriverController  extends CommonController
         $_POST["induction_time"]=strtotime($_POST["induction_time"]);
         $_POST["contract_start_time"]=strtotime($_POST["contract_start_time"]);
         $_POST["contract_end_time"]=strtotime($_POST["contract_end_time"]);
+        $_POST["leave_time"]=strtotime($_POST["leave_time"]);
         $res=M("Driver")->save($_POST);
 
         $file='Public/images/'.$_POST["id"].'.png';

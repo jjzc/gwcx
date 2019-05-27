@@ -45,6 +45,7 @@
                                         <th class="all">出行总数</th>
                                         <th class="all">出行总里程数</th>
                                         <th class="all">是否定向</th>
+                                        <th class="all">离职时间</th>
                                         <th class="all">状态</th>
                                         <th class="all" width="40">操作</th>
                                         <!--隐藏内容-->
@@ -189,6 +190,12 @@
                             }
 
                         }},
+                    { "data": "leave_time","defaultContent": "<i>暂无</i>","render":function(data,type,full,meta){
+                            if(data!=""&&data!=null){
+                                return new Date(data*1000).format("yyyy-MM-dd");
+                            }
+
+                        } },
 
                     { "data": "state","defaultContent": "<i>暂无</i>" ,"render":function(val,type,full,meta){
                             if(val=="-1"){
