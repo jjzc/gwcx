@@ -9,6 +9,7 @@
 namespace Admin\Controller;
 
 use Model\BaiDuApiModel;
+use Model\CarHereApiModel;
 use Think\Model;
 
 class DispatchController extends CommonController
@@ -49,7 +50,7 @@ class DispatchController extends CommonController
         if ($searchKey) {
             $where['serial_number|jj_car_num|jj_driver_name'] = array('like', '%' . $searchKey . '%');
 
-            $where_count .= ' and ( jj_car_num like "%' . $searchKey . '%" or jj_driver_name like "%' . $searchKey . '%" or serial_number like "%'.$searchKey.'%" )';
+            $where_count .= ' and ( jj_car_num like "%' . $searchKey . '%" or jj_driver_name like "%' . $searchKey . '%" or serial_number like "%' . $searchKey . '%" )';
         }
 
         $limit = ($currentPage - 1) * $pageSize . ',' . $pageSize;
@@ -116,7 +117,7 @@ class DispatchController extends CommonController
 
         if ($travels) {
             foreach ($travels as &$val) {
-                $val['gps_code'] = M("travel")->where(array('id'=>$val['id']))->getField('gps_code');
+                $val['gps_code'] = M("travel")->where(array('id' => $val['id']))->getField('gps_code');
                 //获取里程
                 $baiDuApi        = new BaiDuApiModel();
                 $res             = $baiDuApi->getDistance($val['gps_code'], $start_time, $end_time);
@@ -131,11 +132,37 @@ class DispatchController extends CommonController
     {
         $date       = $_REQUEST['trackDate'] ? strtotime(trim($_REQUEST['trackDate'])) : time();
         $gps_code   = trim($_REQUEST['gps_code']);
+        $gps_model   = intval($_REQUEST['gps_model']);
         $start_time = strtotime(date("Y-m-d 00:00:00", $date));
         $end_time   = strtotime(date("Y-m-d 23:59:59", $date));
-        $baiDuApi   = new BaiDuApiModel();
-        $data       = $baiDuApi->getTrack($gps_code, $start_time, $end_time);
-        $this->ajaxReturn(array('data' => $data));
+        if($gps_model == 1){
+            $baiDuApi   = new BaiDuApiModel();
+            $data       = $baiDuApi->getTrack($gps_code, $start_time, $end_time);
+//            echo "<pre>";
+//            print_r($data);exit;
+            foreach ( $data as $k=>&$v){
+
+                $v['loc_time'] = date("Y-m-d H:i:s",$v['loc_time']);
+//                @file_put_contents($_SERVER['DOCUMENT_ROOT'].'/jzw.txt'," \t\t\n\n ",FILE_APPEND);
+                @file_put_contents($_SERVER['DOCUMENT_ROOT'].'/jzw.txt'," time:".$v['loc_time']." lat:".$v['latitude']." lon:".$v['longitude'].PHP_EOL,FILE_APPEND);
+//                print_r( $v['utcTime']);
+//                echo "\t\t\n";
+            }
+//            print_r($data);
+//            exit;
+        }
+        if($gps_model == 2){
+            $carHereApi   = new CarHereApiModel();
+            $data       = $carHereApi->getTrack($gps_code, $start_time, $end_time);
+            foreach ( $data as $k=>&$v){
+                $v['loc_time'] = date("Y-m-d H:i:s",ceil($v['utcTime']/1000));
+//                print_r($v['utcTime']);
+//                echo "\t\t\n";
+            }
+//            print_r($data);
+//            exit;
+        }
+        $this->ajaxReturn(array('data' => $data,'gps_model'=>$gps_model));
     }
 
     public function deviceBind()
@@ -152,14 +179,16 @@ class DispatchController extends CommonController
 
     public function bindDo()
     {
-        $id       = intval($_REQUEST["id"]);
-        $gps_code = trim($_REQUEST["gps_code"]);
+        $id        = intval($_REQUEST["id"]);
+        $gps_code  = trim($_REQUEST["gps_code"]);
+        $gps_model = intval($_REQUEST["gps_model"]);
 
-        if (M("car")->where(array("gps_code" => $gps_code))->find()) {
+
+        if (M("car")->where(array("gps_code" => $gps_code, "id" => array('neq', $id)))->find()) {
             $this->ajaxReturn(array('code' => 0, 'msg' => '该设备已绑定其他车辆'));
         }
 
-        $res = M("car")->where(array("id" => $id, "is_del" => 0))->save(array("gps_code" => $gps_code));
+        $res = M("car")->where(array("id" => $id, "is_del" => 0))->save(array("gps_code" => $gps_code, "gps_model" => $gps_model));
         if ($res !== false) {
             $this->ajaxReturn(array('code' => 1, 'msg' => '绑定成功!'));
         } else
@@ -169,7 +198,7 @@ class DispatchController extends CommonController
     public function unbind()
     {
         $id  = intval($_REQUEST["id"]);
-        $res = M("car")->where(array("id" => $id, "is_del" => 0))->save(array("gps_code" => ''));
+        $res = M("car")->where(array("id" => $id, "is_del" => 0))->save(array("gps_code" => '', 'gps_model' => 0));
         if ($res !== false) {
             $this->ajaxReturn(array('code' => 1));
         } else
@@ -179,21 +208,47 @@ class DispatchController extends CommonController
     public function own()
     {
 
-        $travels = M("car")->where(" gps_code != '' and is_del = 0")->field("car_num as jj_car_num,gps_code")->select();
+        $travels = M("car")->where(" gps_code != '' and is_del = 0")->field("car_num ,gps_code,gps_model")->select();
 
-        $baiDuApi = new BaiDuApiModel();
+        $baiDuApi   = new BaiDuApiModel();
+        $carHereApi = new CarHereApiModel();
 
         foreach ($travels as &$val) {
-            $res = $baiDuApi->search($val['gps_code']);
-            if ($res['status'] == 0 && $res['total'] >= 1) {
-                $val['entities']          = $res['entities'][0];
-                $location                 = $val['entities']['latest_location']['latitude'] . ',' . $val['entities']['latest_location']['longitude'];
-                $rs                       = $baiDuApi->geocoder($location);
-                $val['formatted_address'] = $rs['status'] == 0 ? $rs['result']['formatted_address'] : '';
+            if ($val['gps_model'] == 1) {
+                $res = $baiDuApi->search($val['gps_code']);
+                if ($res['status'] == 0 && $res['total'] >= 1) {
+//                    dump($res);
+//                    $val['entities']          = $res['entities'][0];
+                    $val['speed']             = $res['entities'][0]['latest_location']['speed'];
+                    $val['latitude']          = $res['entities'][0]['latest_location']['latitude'];
+                    $val['longitude']         = $res['entities'][0]['latest_location']['longitude'];
+                    $val['loc_time']          = $res['entities'][0]['latest_location']['loc_time'];
+                    $location                 = $val['latitude'] . ',' . $val['longitude'];
+                    $rs                       = $baiDuApi->geocoder($location);
+                    $val['formatted_address'] = $rs['status'] == 0 ? $rs['result']['formatted_address'] : '';
+                }
             }
+            if ($val['gps_model'] == 2) {
+                $res = $carHereApi->search($val['gps_code']);
+//                dump($res);
+                if (isset($res[0])) {
+//                    echo 1;
+                    $res                      = $res[0];
+                    $val['speed']             = $res['location']['speed'];
+                    $val['latitude']          = $res['location']['bdLat'];
+                    $val['longitude']         = $res['location']['bdLon'];
+                    $val['loc_time']          = ceil($res['location']['utcTime'] / 1000);
+                    $location                 = $val['latitude'] . ',' . $val['longitude'];
+                    $rs                       = $baiDuApi->geocoder($location);
+                    $val['formatted_address'] = $rs['status'] == 0 ? $rs['result']['formatted_address'] : '';
+                }
+            }
+
         }
         unset($val);
 
+//        dump($travels);
+//        exit;
         $this->assign("travels", json_encode($travels));
         $this->assign("trackDate", date("Y-m-d"));
         $this->display();
@@ -219,19 +274,42 @@ class DispatchController extends CommonController
 
         $totalPage = ceil($count / $pageSize); //总页数
 
-        $travels = M("Car")->where($where)->limit($limit)->field('gps_code,car_num as jj_car_num')->order('id desc')->select();
+        $travels = M("Car")->where($where)->limit($limit)->field('gps_code,car_num,gps_model')->order('id desc')->select();
 
         if ($travels) {
-            $baiDuApi = new BaiDuApiModel();
-            foreach ($travels as &$val) {
-                $res = $baiDuApi->search($val['gps_code']);
-                if ($res['status'] == 0 && $res['total'] >= 1) {
-                    $val['entities']          = $res['entities'][0];
-                    $location                 = $val['entities']['latest_location']['latitude'] . ',' . $val['entities']['latest_location']['longitude'];
-                    $rs                       = $baiDuApi->geocoder($location, 0);
-                    $val['formatted_address'] = $rs['status'] == 0 ? $rs['result']['formatted_address'] : '';
 
+            $baiDuApi   = new BaiDuApiModel();
+            $carHereApi = new CarHereApiModel();
+            foreach ($travels as &$val) {
+                if ($val['gps_model'] == 1) {
+                    $res = $baiDuApi->search($val['gps_code']);
+                    if ($res['status'] == 0 && $res['total'] >= 1) {
+                        $val['speed']             = $res['entities'][0]['latest_location']['speed'];
+                        $val['latitude']          = $res['entities'][0]['latest_location']['latitude'];
+                        $val['longitude']         = $res['entities'][0]['latest_location']['longitude'];
+                        $val['loc_time']          = $res['entities'][0]['latest_location']['loc_time'];
+                        $location                 = $val['latitude'] . ',' . $val['longitude'];
+                        $rs                       = $baiDuApi->geocoder($location);
+                        $val['formatted_address'] = $rs['status'] == 0 ? $rs['result']['formatted_address'] : '';
+
+                    }
                 }
+
+                if ($val['gps_model'] == 2) {
+                    $res = $carHereApi->search($val['gps_code']);
+                    if (isset($res[0])) {
+//                    echo 1;
+                        $res                      = $res[0];
+                        $val['speed']             = $res['location']['speed'];
+                        $val['latitude']          = $res['location']['bdLat'];
+                        $val['longitude']         = $res['location']['bdLon'];
+                        $val['loc_time']          = ceil($res['location']['utcTime'] / 1000);
+                        $location                 = $val['latitude'] . ',' . $val['longitude'];
+                        $rs                       = $baiDuApi->geocoder($location);
+                        $val['formatted_address'] = $rs['status'] == 0 ? $rs['result']['formatted_address'] : '';
+                    }
+                }
+
             }
             unset($val);
         }
@@ -262,14 +340,22 @@ class DispatchController extends CommonController
 
         $totalPage = ceil($count / $pageSize); //总页数
 
-        $travels = M("car")->where($where)->limit($limit)->field('gps_code,car_num')->order('id desc')->select();
+        $travels = M("car")->where($where)->limit($limit)->field('gps_code,gps_model,car_num')->order('id desc')->select();
 
         if ($travels) {
             foreach ($travels as &$val) {
                 //获取里程
-                $baiDuApi        = new BaiDuApiModel();
-                $res             = $baiDuApi->getDistance($val['gps_code'], $start_time, $end_time);
-                $val['distance'] = $res['status'] == 0 ? number_format($res['distance'] / 1000, 2) . 'km' : 0.00 . 'km';
+                $baiDuApi   = new BaiDuApiModel();
+                $carHereApi = new CarHereApiModel();
+                if ($val["gps_model"] == 1) {
+                    $res             = $baiDuApi->getDistance($val['gps_code'], $start_time, $end_time);
+                    $val['distance'] = $res['status'] == 0 ? number_format($res['distance'] / 1000, 2) . 'km' : 0.00 . 'km';
+                }
+                if ($val["gps_model"] == 2) {
+//                    $res             = $carHereApi->getDistance($val['gps_code'], $start_time, $end_time);
+//                    $val['distance'] = $res['status'] == 0 ? number_format($res['distance'] / 1000, 2) . 'km' : 0.00 . 'km';
+                    $val['distance'] =  '暂不能获取';
+                }
             }
             unset($val);
         }

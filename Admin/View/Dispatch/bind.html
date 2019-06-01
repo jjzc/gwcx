@@ -41,6 +41,16 @@
                             </div>
                         </div>
                         <div class="form-group col-md-12">
+                            <label class="col-md-4 control-label">GPS型号</label>
+                            <div class="col-md-8">
+                                <select name="gps_model">
+                                    <option value="1" {if $car.gps_model == 1 } selected{/if} >百度鹰眼</option>
+                                    <option  value="2" {if $car.gps_model == 2 } selected{/if}>X11</option>
+                                </select>
+                                <span style="color: #FF0000;">*</span>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
                             <label class="col-md-4 control-label">GPS码</label>
                             <div class="col-md-8">
                                 <input type="text" class="form-control input-inline input-medium" value="{$car['gps_code']}" placeholder="GPS码" name="gps_code" id="gps_code">

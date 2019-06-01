@@ -30,8 +30,9 @@
                 <div class="driverContent">
                     <div class="driverHeader">
                         <!--<div class="headerName">姓名</div>-->
-                        <div class="headerCarNum" style="width: 50% !important;">车牌号</div>
-                        <div class="headerOrderNO" style="width: 50% !important;">状态</div>
+                        <div class="headerCarNum" style="width: 30% !important;">车牌号</div>
+                        <div class="headerCarNum" style="width: 40% !important;">PN码</div>
+                        <div class="headerOrderNO" style="width: 30% !important;">状态</div>
                     </div>
                     <div class="driverFrame">
                         <!--<div class="loading" style="width: 100%;line-height: 240px;text-align: center" ><img src="/Public/img/loading.gif" style="width: 30px;height: 30px"></div>-->
@@ -78,8 +79,9 @@
                 <div class="driverContent">
                     <div class="driverHeader">
                         <!--<div class="headerName">姓名</div>-->
-                        <div class="headerCarNum" style="width: 50% !important;">车牌号</div>
-                        <div class="headerOrderNO" style="width: 50% !important;">里程</div>
+                        <div class="headerCarNum" style="width: 30% !important;">车牌号</div>
+                        <div class="headerOrderNO" style="width: 40% !important;">PN码</div>
+                        <div class="headerOrderNO" style="width: 30% !important;">里程</div>
                     </div>
                     <div class="driverFrame">
                         <!--<div style="width: 100%;line-height: 240px;text-align: center" ><img src="/Public/img/loading.gif" style="width: 30px;height: 30px"></div>-->
@@ -117,6 +119,7 @@
     </div>
 
 </div>
+
 {/block}
 
 
@@ -152,6 +155,12 @@
     var isLoadMonitorData = false;  //是否完成监控司机数据加载
 
     var lushu
+
+    var index = 0
+
+    var distance = 0
+
+    var flag = false
 
     var loading = '<div class="loading" style="width: 100%;line-height: 240px;text-align: center"><img src="/Public/img/loading.gif" style="width: 25px;height: 25px"></div>';  //加载中图标
 
@@ -329,24 +338,160 @@
 
         //点击轨迹查询司机列表显示当天的轨迹路线
         $('.track .driverFrame').on('click','.driverListItem',function () {
+            console.log(flag)
+            if(lushu && lushu._fromStop === false){
+                // console.log()
+                lushu.stop()
+            }
+            if(flag){
+                return false
+            }
+            flag = true
+
+            // lushu.stop()
+            var msg_index = layer.msg('历史轨迹正在查询中，请稍等...', { time:30000,icon:6});
+
             map.clearOverlays(); //先清理地图
-            var $this = $(this)
-            var gps_code = $this.data('gps_code')
-            var trackDate = $("#trackDate").val()
-            // alert(trackDate);
-            $.get('getTrack',{ gps_code ,trackDate},function(results){
-                var data = results.data;
+            let $this = $(this)
+            let gps_code = $this.data('gps_code')
+            let gps_model = $this.data('model')
+            let trackDate = $("#trackDate").val()
+
+            let page_distance = 0   //点击列表后显示的里程
+            index = 0  //重置轨迹点索引
+            distance = 0 //重置窗口中的里程
+            $.get('getTrack',{ gps_model, gps_code ,trackDate},function(results){
+
+                map.clearOverlays()
+                let data = results.data;
+                let model = results.gps_model
                 if(data.length > 0){
                     var arrPois = [];
-                    for(var i = 0 ; i < data.length ; i++){
-                        arrPois.push(new BMap.Point(data[i].longitude,data[i].latitude))
+                    var s_point , e_point
+                    for(let i = 0 , len = data.length ; i < len ; i++){
+                        if(model == 1){
+                            arrPois.push(new BMap.Point(data[i].longitude,data[i].latitude))
+                            if(i < len - 1){
+                                s_point = new BMap.Point(data[i].longitude,data[i].latitude)
+                                e_point = new BMap.Point(data[i+1].longitude,data[i+1].latitude)
+                            }
+                        }else if(model == 2){
+                            arrPois.push(new BMap.Point(data[i].bdLon,data[i].bdLat))
+                            if( i < len - 1){
+                                s_point = new BMap.Point(data[i].bdLon,data[i].bdLat)
+                                e_point = new BMap.Point(data[i+1].bdLon,data[i+1].bdLat)
+                            }
+                        }
+                        //计算总里程
+                        if(i < len-1){
+                            let _page_distance = map.getDistance(s_point,e_point)  //获取2点之间的距离
+                            _page_distance = _page_distance.toFixed(2)
+                            page_distance = (page_distance*100+_page_distance*100)/100       //累计里程
+                        }
+
+
                     }
+
+                    console.log((page_distance/1000).toFixed(2))
+                    $this.find('.distance').text((page_distance/1000).toFixed(2))
+
                     //画线
-                    var polyline = new BMap.Polyline(arrPois,{ strokeColor:"red", strokeWeight:7, strokeOpacity:1 });
-                    map.addOverlay(polyline);
+                    // var polyline = new BMap.Polyline(arrPois,{ strokeColor:"red", strokeWeight:7, strokeOpacity:1 });
+                    // map.addOverlay(polyline);
 
                     //提供坐标视野
                     map.setViewport(arrPois);
+
+                    //重写边走边画线需求
+                    BMapLib.LuShu.prototype._move=function(initPos,targetPos,effect) {
+                        // console.log(initPos)
+                        // console.log(targetPos)
+                        let _distance = map.getDistance(initPos,targetPos)  //获取2点之间的距离
+                        _distance = _distance.toFixed(2)
+                        distance = (_distance*100+distance*100)/100       //累计里程
+                        var pointsArr=[initPos,targetPos];  //点数组
+                        var me = this,
+                            //当前的帧数
+                            currentCount = 0,
+                            //步长，米/秒
+                            timer = 10,
+                            step = this._opts.speed / (1000 / timer),
+                            //初始坐标
+                            init_pos = this._projection.lngLatToPoint(initPos),
+                            //获取结束点的(x,y)坐标
+                            target_pos = this._projection.lngLatToPoint(targetPos),
+                            //总的步长
+                            count = Math.round(me._getDistance(init_pos, target_pos) / step);
+
+                        //显示折线 syj201607191107
+                        this._map.addOverlay(new BMap.Polyline(pointsArr, {
+                            strokeColor : "green",
+                            strokeWeight : 8,
+                            strokeOpacity : 1
+                        })); // 画线
+
+                        let loc_time,speed
+                        loc_time = data[index]['loc_time']
+                        speed = data[index]['speed']
+                        console.log(index)
+                        index++
+                        if(index === data.length-1){
+                            index = 0
+                        }
+
+                        //显示窗口信息
+                        var sContent = ""
+                        sContent += "<p class='windowInfo'>gps：" + gps_code + "</p>"
+                        sContent += "<p class='windowInfo'>速度：" + speed.toFixed(2) + "km/h</p>"
+                        sContent += "<p class='windowInfo'>里程：" + (distance/1000).toFixed(2) + "km</p>"
+                        sContent += "<p class='windowInfo'>定位时间：" + loc_time + "</p>"
+                        var infoWindow = new BMap.InfoWindow(sContent);  // 创建信息窗口对象
+                        map.openInfoWindow(infoWindow,initPos); //开启信息窗口
+
+                        // map.setViewport(pointsArr,5);
+                        //如果小于1直接移动到下一点
+                        if (count < 1) {
+                            me._moveNext(++me.i);
+                            return;
+                        }
+                        me._intervalFlag = setInterval(function() {
+                            //两点之间当前帧数大于总帧数的时候，则说明已经完成移动
+                            if (currentCount >= count) {
+                                clearInterval(me._intervalFlag);
+                                //移动的点已经超过总的长度
+                                if(me.i > me._path.length){
+                                    return;
+                                }
+                                //运行下一个点
+                                me._moveNext(++me.i);
+                            }else {
+                                currentCount++;
+                                var x = effect(init_pos.x, target_pos.x, currentCount, count),
+                                    y = effect(init_pos.y, target_pos.y, currentCount, count),
+                                    pos = me._projection.pointToLngLat(new BMap.Pixel(x, y));
+                                //设置marker
+                                if(currentCount == 1){
+                                    var proPos = null;
+                                    if(me.i - 1 >= 0){
+                                        proPos = me._path[me.i - 1];
+                                    }
+                                    if(me._opts.enableRotation == true){
+                                        me.setRotation(proPos,initPos,targetPos);
+                                    }
+                                    if(me._opts.autoView){
+                                        if(!me._map.getBounds().containsPoint(pos)){
+                                            me._map.setCenter(pos);
+                                        }
+                                    }
+                                }
+                                //正在移动
+                                me._marker.setPosition(pos);
+                                //设置自定义overlay的位置
+                                me._setInfoWin(pos);
+                            }
+                        },timer);
+                    };
+
 
                     //轨迹回放
                     lushu = new BMapLib.LuShu(map,arrPois,{
@@ -359,7 +504,15 @@
                     });
 
                     $('#controller').removeClass('hide')
+                    layer.close(msg_index)
+                    lushu.start()
+
+                }else{
+                    layer.close(msg_index)
+                    layer.msg('没有查询到历史轨迹', { time:2000,icon:6});
                 }
+
+                flag = false
             });
         })
 
@@ -371,9 +524,15 @@
 
         $("#run").bind('click',function(){
             map.closeInfoWindow(); //关闭信息窗口
+
+            if(index === 0){
+                map.clearOverlays()
+                distance = 0
+            }
             lushu.start();
         })
         $("#stop").bind('click',function(){
+            index = 0
             lushu.stop();
         })
         $("#pause").bind('click',function(){
@@ -452,7 +611,7 @@
         var arrPois = [];
         for(i = 0 ;i< driverData.length ; i++){
             //添加车辆标注
-            var points = new BMap.Point(driverData[i].entities.latest_location.longitude,driverData[i].entities.latest_location.latitude)
+            var points = new BMap.Point(driverData[i].longitude,driverData[i].latitude)
             arrPois.push(points);
             var gps_code = driverData[i].gps_code;                              //gps识别码
             var serial_number = driverData[i].serial_number;                    //流水号
@@ -460,8 +619,8 @@
             var to_place = driverData[i].to_place;                              //目的地
             var jj_driver_name = driverData[i].jj_driver_name;                  //司机姓名
             var jj_driver_phone = driverData[i].jj_driver_phone;                //司机电话
-            var jj_car_num = driverData[i].jj_car_num;                          //车牌号
-            var loc_time = driverData[i].entities.latest_location.loc_time;     //最新定位时间（定位时设备的时间）
+            var jj_car_num = driverData[i].car_num;                          //车牌号
+            var loc_time = driverData[i].loc_time;     //最新定位时间（定位时设备的时间）
             var formatted_address = driverData[i].formatted_address;   //定位地址
             var showInfo = { gps_code , loc_time ,formatted_address , serial_number ,from_place,to_place,jj_driver_name,jj_driver_phone,jj_car_num}
             addMk(points,showInfo)
@@ -481,20 +640,18 @@
             if(data.length>0){
                 $.each(data,function(index,item){
                     // console.log(item);
-                    let speed = item.entities.latest_location.speed === 0 ? '静止' : item.entities.latest_location.speed+'km/h'
+                    let speed = item.speed === 0 ? '静止' : item.speed+'km/h'
                     content += ' <div class="driverListItem" ' +
-                        'data-longitude="'+ item.entities.latest_location.longitude +'" ' +
-                        'data-latitude="'+ item.entities.latest_location.latitude +'" ' +
-                        // 'data-serial_number="'+item.serial_number+'" ' +
-                        'data-jj_car_num="'+ item.jj_car_num +'"' +
-                        // ' data-from_place="'+ item.from_place +'" ' +
-                        // 'data-to_place="'+ item.to_place +'" ' +
+                        'data-longitude="'+ item.longitude +'" ' +
+                        'data-latitude="'+ item.latitude +'" ' +
+                        'data-jj_car_num="'+ item.car_num +'"' +
                         'data-gps_code="'+ item.gps_code +'" ' +
-                        'data-loc_time="'+ item.entities.latest_location.loc_time +'" ' +
+                        'data-loc_time="'+ item.loc_time +'" ' +
                         'data-formatted_address="'+ item.formatted_address +'">'
                     // content += ' <div class="driverListItemName">' + item.jj_driver_name + '</div>'
-                    content += ' <div class="driverListItemCarNum" style="width: 50% !important;">' + item.jj_car_num + '</div>'
-                    content += ' <div class="driverListItemOrderNo" style="width: 50% !important;">' + speed  + '</div>'
+                    content += ' <div class="driverListItemCarNum" style="width: 30% !important;">' + item.car_num + '</div>'
+                    content += ' <div class="driverListItemCarNum" style="width: 40% !important;">' + item.gps_code + '</div>'
+                    content += ' <div class="driverListItemOrderNo" style="width: 30% !important;">' + speed  + '</div>'
                     content +=  '</div>'
 
                 });
@@ -518,10 +675,11 @@
             totalPageTrack = results.totalPage
             if(data.length>0){
                 $.each(data,function(index,item){
-                    content += ' <div class="driverListItem" data-gps_code="'+ item.gps_code +'">'
+                    content += ' <div class="driverListItem" data-gps_code="'+ item.gps_code +'" data-model="'+ item.gps_model +'" >'
                     // content += ' <div class="driverListItemName">' + item.jj_driver_name + '</div>'
-                    content += ' <div class="driverListItemCarNum" style="width: 50% !important;">' + item.car_num + '</div>'
-                    content += ' <div class="driverListItemOrderNo" style="width: 50% !important;">' + item.distance + '</div>'
+                    content += ' <div class="driverListItemCarNum" style="width: 30% !important;">' + item.car_num + '</div>'
+                    content += ' <div class="driverListItemOrderNo" style="width: 40% !important;">' + item.gps_code + '</div>'
+                    content += ' <div class="driverListItemCarNum distance" style="width: 30% !important;">' + '0' + '</div>'
                     content +=  '</div>'
 
                 });

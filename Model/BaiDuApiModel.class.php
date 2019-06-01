@@ -19,13 +19,13 @@ class BaiDuApiModel
     }
 
     //地理编码 type = 1 地址转经纬度 else 经纬度转地址
-    public function geocoder($param,$type=0)
+    public function geocoder($param, $type = 0)
     {
-        $data['ak']           = $this->ak;
-        if($type == 1){
-            $data['address']     = $param;
-        }else{
-            $data['location']     = $param;
+        $data['ak'] = $this->ak;
+        if ($type == 1) {
+            $data['address'] = $param;
+        } else {
+            $data['location'] = $param;
         }
         $data['output']       = 'json';
         $data['latest_admin'] = 1;
@@ -35,7 +35,8 @@ class BaiDuApiModel
     }
 
     //搜索当前所在位置
-    public function search($query){
+    public function search($query)
+    {
         $data               = array();
         $data['ak']         = $this->ak;
         $data['service_id'] = $this->service_id;
@@ -106,6 +107,19 @@ class BaiDuApiModel
         $data['process_option'] = 'need_mapmatch=1'; //绑路
         $res                    = httpF(self::GET_TRACK_URL, $data);
         $res                    = json_decode($res, true);
+        return $res;
+    }
+
+    public function uploadTrack($entity_name,$startTime,$endTime)
+    {
+        $http = '192.168.1.110:8081/order/uploadTrack';
+
+        $data['token']     = $this->service_id;
+        $data['gps_pn']    = $entity_name;
+        $data['startTime'] = $startTime;
+        $data['endTime']   = $endTime;
+        $res               = httpF($http,'' ,$data,"post");
+        $res               = json_decode($res, true);
         return $res;
     }
 
