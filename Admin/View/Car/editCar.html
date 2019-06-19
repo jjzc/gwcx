@@ -81,7 +81,8 @@
                                 <select class="form-control input-inline input-medium"  name="is_law_car">
                                     <option value="0" {if $car.is_law_car eq 0}selected = "selected"{/if}>自有车辆</option>
                                     <option value="1" {if $car.is_law_car eq 1}selected = "selected"{/if}>执法车辆</option>
-                                    <option value="2" {if $car.is_law_car eq 2}selected = "selected"{/if}>社会车辆</option>
+                                    <!--<option value="2" {if $car.is_law_car eq 2}selected = "selected"{/if}>社会车辆</option>-->
+                                    <option value="3" {if $car.is_law_car eq 3}selected = "selected"{/if}>第三方车辆</option>
                                 </select>
                             </div>
                         </div>
